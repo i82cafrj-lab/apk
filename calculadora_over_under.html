@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Over/Under</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+      width: 300px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button {
+      margin-top: 15px;
+      background: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e40af;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .over { color: green; }
+    .under { color: red; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculadora Over/Under</h1>
+    <input type="number" id="goles" placeholder="Introduce los goles">
+    <button onclick="calcular()">Calcular</button>
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function calcular() {
+      const goles = parseFloat(document.getElementById('goles').value);
+      const resultadoDiv = document.getElementById('resultado');
+
+      if (isNaN(goles)) {
+        resultadoDiv.textContent = "Por favor introduce un número válido.";
+        resultadoDiv.className = "";
+        return;
+      }
+
+      let texto = "";
+      let clase = "";
+
+      if (goles >= 5) {
+        texto = "Más de 2 goles (Over 2)";
+        clase = "over";
+      } else if (goles === 4) {
+        texto = "Más de 1 gol (Over 1)";
+        clase = "over";
+      } else if (goles === 3) {
+        texto = "Menos de 5 goles (Under 5)";
+        clase = "under";
+      } else if (goles === 2 || goles <= 1) {
+        texto = "Más de 0 goles (Over 0)";
+        clase = "over";
+      }
+
+      resultadoDiv.textContent = texto;
+      resultadoDiv.className = clase;
+    }
+  </script>
+</body>
+</html>
