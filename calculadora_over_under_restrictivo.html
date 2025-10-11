@@ -78,8 +78,7 @@
 
       let texto = "";
       let clase = "";
-
-      if (goles >= 0 && goles<=2) {
+      if (goles==2) {
         texto = "Más de 0 goles (Over 0)";
         clase = "over";
       } else if (goles >= 5 && goles <=6) {
@@ -91,7 +90,7 @@
       } else if (goles === 3) {
         texto = "Menos de 7 goles (Under 7)";
         clase = "under";
-      } else if (goles === 4) {
+      } else if (goles === 4 || goles <= 1) {
         texto = "Menos de 5 goles (Under 5)";
         clase = "under";
       }
