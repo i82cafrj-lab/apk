@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking Pro | Carga Masiva Multiformato</title>
+    <title>Ranking Pro | Gestión Total</title>
     <style>
         :root {
             --primary: #2c3e50; --success: #27ae60; --warning: #f39c12;
@@ -14,96 +14,120 @@
         .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 15px; border-top: 4px solid var(--primary); }
         h2 { margin-top: 0; color: var(--primary); font-size: 0.9rem; text-transform: uppercase; }
         
-        textarea { width: 100%; height: 120px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: monospace; font-size: 13px; background: #fafafa; }
-        .btn-bulk { background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; transition: 0.3s; }
-        .btn-bulk:hover { background: #1a252f; }
+        .mode-selector { display: flex; background: #eee; padding: 4px; border-radius: 8px; margin-bottom: 15px; }
+        .mode-btn { flex: 1; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s; color: #7f8c8d; }
+        .mode-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        .banca-input-group { display: flex; align-items: center; gap: 10px; background: #eef2f3; padding: 10px; border-radius: 8px; }
+        .banca-input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100px; font-weight: bold; color: var(--success); font-size: 16px; }
+
+        .formato-ayuda { background: #fff9e6; border: 1px solid #ffeaa7; padding: 10px; border-radius: 8px; font-size: 11px; margin-bottom: 10px; }
+        textarea { width: 100%; height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: monospace; font-size: 13px; background: #fafafa; }
+        .btn-bulk { background: var(--primary); color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
         
         table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
-        th { text-align: left; padding: 10px; color: #7f8c8d; border-bottom: 2px solid #eee; }
-        td { padding: 10px; border-bottom: 1px solid #eee; }
-        .rank-badge { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eee; font-weight: bold; }
-        .top-3 { background: var(--gold); color: #000; }
+        td, th { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        .top-3-row { background: #fff9e6; }
 
-        #panelEstrategia { display: none; background: var(--primary); color: white; padding: 15px; border-radius: 12px; border-left: 8px solid var(--gold); margin-top: 15px; }
+        #panelEstrategia { display: none; background: #1a252f; color: white; padding: 20px; border-radius: 12px; border-left: 8px solid var(--gold); margin-top: 15px; }
+        .perfil-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; background: var(--gold); color: #000; }
+
+        .control-sesion { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed rgba(255,255,255,0.2); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; text-align: center; }
+        .stat-val { display: block; font-size: 18px; font-weight: bold; color: var(--gold); }
+        .btn-action { padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; color: white; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    <div class="card" style="border-top-color: var(--success);">
-        <h2>🚀 Carga Masiva (Multiformato)</h2>
-        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
-            Formatos válidos: <br>
-            • Equipo A 1:2 Equipo B <br>
-            • Equipo A vs Equipo B 1-2 <br>
-            • Equipo A - Equipo B (1-2)
-        </p>
-        <textarea id="bulkText" placeholder="Pega aquí tus partidos..."></textarea>
-        <button class="btn-bulk" onclick="procesarMasivo()">Analizar Todo el Listado</button>
+    <div class="card" style="border-top-color: var(--warning);">
+        <h2>⚙️ Configuración y Modo</h2>
+        <div class="mode-selector">
+            <button id="btnAnalisis" class="mode-btn active" onclick="setModo('analisis')">SOLO ANÁLISIS</button>
+            <button id="btnHistorial" class="mode-btn" onclick="setModo('historial')">MODO SESIÓN (HISTORIAL)</button>
+        </div>
+        <div class="banca-input-group">
+            <input type="number" id="bancaTotal" value="20" oninput="actualizarBanca()">
+            <label>€ Capital de Trabajo</label>
+        </div>
     </div>
 
-    <div class="card" style="border-top-color: var(--gold);">
-        <h2>🏆 Ranking de Selección</h2>
+    <div class="card" style="border-top-color: var(--success);">
+        <h2>🚀 Importar Resultados</h2>
+        <div class="formato-ayuda">
+            <b>Ejemplo:</b> Equipo A 3:1 Equipo B
+        </div>
+        <textarea id="bulkText" placeholder="Pega aquí los partidos..."></textarea>
+        <button class="btn-bulk" onclick="procesarMasivo()">ANALIZAR CON LÓGICA ORIGINAL</button>
+    </div>
+
+    <div class="card">
+        <h2>🏆 Ranking de Probabilidad</h2>
         <table id="tablaPartidos">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Partido</th>
-                    <th>Marcador</th>
-                    <th>Apuesta Sugerida</th>
-                    <th>Conf.</th>
-                </tr>
-            </thead>
+            <thead><tr><th>#</th><th>Partido</th><th>Marcador</th><th>Sugerencia</th><th>Conf.</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
 
     <div id="panelEstrategia">
-        <h3 style="margin:0 0 10px 0; color: var(--gold); font-size: 14px;">💰 ESTRATEGIA DE BANCA (20€)</h3>
+        <div id="badgePerfil" class="perfil-badge"></div>
+        <h3 id="tituloEstrategia" style="margin:0 0 15px 0;"></h3>
         <div id="textoEstrategia" style="font-size: 13px; line-height: 1.5;"></div>
-        <button onclick="location.reload()" style="background:none; color: #aaa; border:none; margin-top:10px; cursor:pointer; font-size: 10px; text-decoration: underline;">Limpiar Todo</button>
+
+        <div id="seccionHistorial" class="control-sesion" style="display: none;">
+            <b>🎮 REGISTRO DE SESIÓN</b>
+            <div class="stats-grid">
+                <div class="stat-box">Saldo Actual<span id="saldoActual" class="stat-val">20.00€</span></div>
+                <div class="stat-box">Bala Sugerida<span id="balaActual" class="stat-val">5.00€</span></div>
+            </div>
+            <div class="stats-grid">
+                <button class="btn-action" style="background:var(--success)" onclick="registrarResultado(true)">GANADO</button>
+                <button class="btn-action" style="background:var(--danger)" onclick="registrarResultado(false)">PERDIDO</button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
 let partidos = [];
+let saldoSesion = 20;
+let balaCalculada = 5;
+let modoActual = 'analisis';
+
+function setModo(modo) {
+    modoActual = modo;
+    document.getElementById('btnAnalisis').classList.toggle('active', modo === 'analisis');
+    document.getElementById('btnHistorial').classList.toggle('active', modo === 'historial');
+    document.getElementById('seccionHistorial').style.display = modo === 'historial' ? 'block' : 'none';
+    if(partidos.length >= 3) actualizarVista();
+}
+
+function actualizarBanca() {
+    saldoSesion = parseFloat(document.getElementById('bancaTotal').value) || 0;
+    document.getElementById('saldoActual').innerText = saldoSesion.toFixed(2) + "€";
+    if(partidos.length >= 3) actualizarVista();
+}
 
 function procesarMasivo() {
     const texto = document.getElementById('bulkText').value;
+    if (!texto.trim()) return;
     const lineas = texto.split('\n');
-    partidos = []; // Reiniciar lista al procesar
-    
+    partidos = []; 
     lineas.forEach(linea => {
-        if (!linea.trim()) return;
-
-        // RegEx mejorada: Busca dos grupos de números separados por : o -
-        // Soporta espacios entre los números y el separador
-        const marcadorMatch = linea.match(/(\d+)\s*[:\-\/]\s*(\d+)/);
-        
-        if (marcadorMatch) {
-            const num1 = marcadorMatch[1];
-            const num2 = marcadorMatch[2];
-            const marcadorCompleto = marcadorMatch[0];
-            const marcadorEstandar = `${num1}-${num2}`;
-
-            // Extraemos los nombres de los equipos eliminando el marcador de la línea
-            // También limpiamos palabras como "vs", guiones sueltos o paréntesis
-            let nombreLimpio = linea.replace(marcadorCompleto, '')
-                                    .replace(/\bs\b/gi, '') // Quita "vs" (case insensitive)
-                                    .replace(/[()]/g, '')   // Quita paréntesis si los hay
-                                    .replace(/\s+/g, ' ')   // Normaliza espacios
-                                    .trim();
-
-            if (nombreLimpio && marcadorEstandar) {
-                clasificarPartido(nombreLimpio, marcadorEstandar);
-            }
+        const match = linea.match(/(\d+)\s*[:\-\/]\s*(\d+)/);
+        if (match) {
+            const marcadorEstandar = `${match[1]}-${match[2]}`;
+            let nombre = linea.replace(match[0], '').replace(/\bs\b/gi, '').replace(/[()]/g, '').trim();
+            clasificarPartido(nombre, marcadorEstandar);
         }
     });
-
     partidos.sort((a, b) => b.score - a.score);
     actualizarVista();
 }
 
+// ESTA ES TU LÓGICA ORIGINAL DE PORCENTAJES
 function clasificarPartido(eq, mar) {
     const goles = mar.split('-');
     const g1 = parseInt(goles[0]);
@@ -111,7 +135,6 @@ function clasificarPartido(eq, mar) {
     const suma = g1 + g2;
     let fiab, apuesta, prob, score;
 
-    // Lógica de clasificación
     if (mar === "2-0" || mar === "0-2" || mar === "1-0" || mar === "0-1") {
         fiab = 10; apuesta = "Under 3.5"; prob = 98; score = 100;
     } else if (mar === "2-1" || mar === "1-2") {
@@ -129,29 +152,47 @@ function clasificarPartido(eq, mar) {
 function actualizarVista() {
     const tbody = document.querySelector("#tablaPartidos tbody");
     tbody.innerHTML = "";
-    
     partidos.forEach((p, idx) => {
-        const isTop3 = idx < 3 ? 'top-3' : '';
-        tbody.innerHTML += `<tr>
-            <td><div class="rank-badge ${isTop3}">${idx + 1}</div></td>
-            <td><b>${p.eq}</b></td>
-            <td>${p.mar}</td>
-            <td><b>${p.apuesta}</b></td>
-            <td>${p.prob}%</td>
-        </tr>`;
+        const rowClass = idx < 3 ? 'class="top-3-row"' : '';
+        tbody.innerHTML += `<tr ${rowClass}><td>${idx+1}</td><td><b>${p.eq}</b></td><td>${p.mar}</td><td><b>${p.apuesta}</b></td><td>${p.prob}%</td></tr>`;
     });
 
     if (partidos.length >= 3) {
         document.getElementById('panelEstrategia').style.display = "block";
-        let html = "<b>Tu Bloque de Oro para hoy:</b><br>";
-        for(let i=0; i<3; i++) {
-            html += `• ${partidos[i].eq} → <b>${partidos[i].apuesta}</b><br>`;
+        const badge = document.getElementById('badgePerfil');
+        
+        if (saldoSesion <= 10) {
+            balaCalculada = saldoSesion / 2;
+            badge.innerText = "Modo: Supervivencia";
+        } else if (saldoSesion <= 50) {
+            balaCalculada = saldoSesion / 4;
+            badge.innerText = "Modo: Crecimiento";
+        } else {
+            balaCalculada = saldoSesion / 10;
+            badge.innerText = "Modo: Profesional";
         }
-        html += `<br><div style='background:rgba(255,255,255,0.1); padding:10px; border-radius:5px;'>
-                 💵 <b>Inversión Sugerida: 5.00€</b> (Bala 1 de 4)<br>
-                 <small>Si aciertas, guarda la base y reinvierte solo beneficio.</small></div>`;
-        document.getElementById('textoEstrategia').innerHTML = html;
+
+        document.getElementById('tituloEstrategia').innerText = "ESTRATEGIA CALCULADA";
+        document.getElementById('balaActual').innerText = balaCalculada.toFixed(2) + "€";
+        document.getElementById('textoEstrategia').innerHTML = `
+            <b>Selección Top 3:</b><br>
+            • ${partidos[0].eq} (${partidos[0].apuesta})<br>
+            • ${partidos[1].eq} (${partidos[1].apuesta})<br>
+            • ${partidos[2].eq} (${partidos[2].apuesta})<br><br>
+            <b>Importe sugerido: ${balaCalculada.toFixed(2)}€</b>
+        `;
     }
+}
+
+function registrarResultado(ganador) {
+    if (modoActual !== 'historial') return;
+    if (ganador) {
+        saldoSesion += (balaCalculada * 0.70);
+    } else {
+        saldoSesion -= balaCalculada;
+    }
+    document.getElementById('bancaTotal').value = saldoSesion.toFixed(2);
+    actualizarBanca();
 }
 </script>
 </body>
