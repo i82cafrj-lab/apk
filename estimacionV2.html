@@ -3,154 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking Pro | Selección de Bloque de 3</title>
+    <title>Ranking Pro | Carga Masiva Multiformato</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --gold: #f1c40f;
-            --bg: #f4f7f6;
+            --primary: #2c3e50; --success: #27ae60; --warning: #f39c12;
+            --danger: #e74c3c; --gold: #f1c40f; --bg: #f4f7f6;
         }
-
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .main-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
-
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 5px solid var(--primary); }
-        h2 { margin-top: 0; color: var(--primary); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .full-width { grid-column: span 2; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #333; }
+        .main-container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 15px; border-top: 4px solid var(--primary); }
+        h2 { margin-top: 0; color: var(--primary); font-size: 0.9rem; text-transform: uppercase; }
         
-        label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #666; text-transform: uppercase; }
-        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 14px; background: #fafafa; }
+        textarea { width: 100%; height: 120px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: monospace; font-size: 13px; background: #fafafa; }
+        .btn-bulk { background: var(--primary); color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; transition: 0.3s; }
+        .btn-bulk:hover { background: #1a252f; }
         
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; text-transform: uppercase; }
-        .btn-add { background: var(--success); color: white; margin-top: 10px; box-shadow: 0 3px 6px rgba(39, 174, 96, 0.3); }
-        .btn-add:hover { background: #219150; transform: translateY(-1px); }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        th { text-align: left; padding: 10px; color: #7f8c8d; border-bottom: 2px solid #eee; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .rank-badge { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eee; font-weight: bold; }
+        .top-3 { background: var(--gold); color: #000; }
 
-        /* Tabla de partidos con Ranking */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; font-size: 13px; }
-        th { background: #f8f9fa; padding: 12px 10px; text-align: left; border-bottom: 2px solid #eee; color: #7f8c8d; }
-        td { padding: 12px 10px; border-bottom: 1px solid #eee; }
-        
-        .rank-badge { width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eee; font-weight: bold; font-size: 12px; }
-        .top-3 { background: var(--gold); color: #000; box-shadow: 0 0 8px rgba(241, 196, 15, 0.5); }
-        
-        .prob-bar { height: 4px; background: #eee; border-radius: 2px; margin-top: 4px; width: 50px; }
-        .prob-fill { height: 100%; background: var(--success); border-radius: 2px; }
-
-        .remove-btn { color: #ccc; cursor: pointer; font-size: 18px; }
-        .remove-btn:hover { color: var(--danger); }
-
-        #panelEstrategia { display: none; background: #2c3e50; color: white; padding: 20px; border-radius: 12px; margin-top: 20px; animation: slideIn 0.4s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #panelEstrategia { display: none; background: var(--primary); color: white; padding: 15px; border-radius: 12px; border-left: 8px solid var(--gold); margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    
-    <div>
-        <div class="card">
-            <h2>1. Entrada de Datos</h2>
-            <div class="form-grid">
-                <div class="full-width">
-                    <label>Encuentro</label>
-                    <input type="text" id="equipos" placeholder="Ej: Liverpool - Chelsea">
-                </div>
-                <div>
-                    <label>Pronóstico Fuente</label>
-                    <input type="text" id="marcador" placeholder="Ej: 2-0">
-                </div>
-                <div>
-                    <label>&nbsp;</label>
-                    <button class="btn-add" onclick="procesarPartido()">Analizar y Clasificar</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="border-top-color: var(--gold);">
-            <h2>2. Ranking de Selección (Top 3 Automático)</h2>
-            <table id="tablaPartidos">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Partido</th>
-                        <th>Est.</th>
-                        <th>Apuesta Sugerida</th>
-                        <th>Éxito</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+    <div class="card" style="border-top-color: var(--success);">
+        <h2>🚀 Carga Masiva (Multiformato)</h2>
+        <p style="font-size: 11px; color: #666; margin-bottom: 10px;">
+            Formatos válidos: <br>
+            • Equipo A 1:2 Equipo B <br>
+            • Equipo A vs Equipo B 1-2 <br>
+            • Equipo A - Equipo B (1-2)
+        </p>
+        <textarea id="bulkText" placeholder="Pega aquí tus partidos..."></textarea>
+        <button class="btn-bulk" onclick="procesarMasivo()">Analizar Todo el Listado</button>
     </div>
 
-    <div>
-        <div class="card" style="border-top-color: var(--info);">
-            <h2>Guía de Optimización</h2>
-            <p style="font-size: 13px; color: #666;">El sistema ordena los partidos por <b>Índice de Rentabilidad</b>:</p>
-            <ul style="font-size: 12px; padding-left: 15px; color: #444; line-height: 1.6;">
-                <li><b>Rango 1 (Prioridad Oro):</b> Marcadores 2-0, 0-2, 1-0. Son los más estables en tu histórico.</li>
-                <li><b>Rango 2 (Prioridad Plata):</b> Marcadores 2-1, 1-2. Aportan cuota mediante el Over 1.5.</li>
-                <li><b>Rango 3 (Prioridad Bronce):</b> Marcador 1-1. Clásico de Under 4.5.</li>
-                <li><b>Rango 4 (Descarte):</b> Marcadores con más de 3 goles o 0-0.</li>
-            </ul>
-        </div>
-
-        <div id="panelEstrategia">
-            <h3 style="margin:0 0 15px 0; color: var(--gold); border-bottom: 1px solid #444; padding-bottom: 10px;">🏆 BLOQUE DE 3 SELECCIONADO</h3>
-            <div id="textoEstrategia"></div>
-            <button onclick="limpiarTodo()" style="background:none; border: 1px solid #666; color: #aaa; margin-top: 15px; padding: 5px; font-size: 10px; width: auto;">Limpiar Lista</button>
-        </div>
+    <div class="card" style="border-top-color: var(--gold);">
+        <h2>🏆 Ranking de Selección</h2>
+        <table id="tablaPartidos">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Partido</th>
+                    <th>Marcador</th>
+                    <th>Apuesta Sugerida</th>
+                    <th>Conf.</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 
+    <div id="panelEstrategia">
+        <h3 style="margin:0 0 10px 0; color: var(--gold); font-size: 14px;">💰 ESTRATEGIA DE BANCA (20€)</h3>
+        <div id="textoEstrategia" style="font-size: 13px; line-height: 1.5;"></div>
+        <button onclick="location.reload()" style="background:none; color: #aaa; border:none; margin-top:10px; cursor:pointer; font-size: 10px; text-decoration: underline;">Limpiar Todo</button>
+    </div>
 </div>
 
 <script>
 let partidos = [];
 
-function procesarPartido() {
-    const eq = document.getElementById('equipos').value.trim();
-    const mar = document.getElementById('marcador').value.trim();
-    const regex = /^(\d+)-(\d+)$/;
-    const match = mar.match(regex);
-
-    if (!eq || !match) {
-        alert("Introduce equipos y marcador válido"); return;
-    }
-
-    const golesL = parseInt(match[1]);
-    const golesV = parseInt(match[2]);
-    const suma = golesL + golesV;
+function procesarMasivo() {
+    const texto = document.getElementById('bulkText').value;
+    const lineas = texto.split('\n');
+    partidos = []; // Reiniciar lista al procesar
     
+    lineas.forEach(linea => {
+        if (!linea.trim()) return;
+
+        // RegEx mejorada: Busca dos grupos de números separados por : o -
+        // Soporta espacios entre los números y el separador
+        const marcadorMatch = linea.match(/(\d+)\s*[:\-\/]\s*(\d+)/);
+        
+        if (marcadorMatch) {
+            const num1 = marcadorMatch[1];
+            const num2 = marcadorMatch[2];
+            const marcadorCompleto = marcadorMatch[0];
+            const marcadorEstandar = `${num1}-${num2}`;
+
+            // Extraemos los nombres de los equipos eliminando el marcador de la línea
+            // También limpiamos palabras como "vs", guiones sueltos o paréntesis
+            let nombreLimpio = linea.replace(marcadorCompleto, '')
+                                    .replace(/\bs\b/gi, '') // Quita "vs" (case insensitive)
+                                    .replace(/[()]/g, '')   // Quita paréntesis si los hay
+                                    .replace(/\s+/g, ' ')   // Normaliza espacios
+                                    .trim();
+
+            if (nombreLimpio && marcadorEstandar) {
+                clasificarPartido(nombreLimpio, marcadorEstandar);
+            }
+        }
+    });
+
+    partidos.sort((a, b) => b.score - a.score);
+    actualizarVista();
+}
+
+function clasificarPartido(eq, mar) {
+    const goles = mar.split('-');
+    const g1 = parseInt(goles[0]);
+    const g2 = parseInt(goles[1]);
+    const suma = g1 + g2;
     let fiab, apuesta, prob, score;
 
-    // LÓGICA DE RANKING (PUNTUACIÓN POR PROBABILIDAD + GANANCIA)
+    // Lógica de clasificación
     if (mar === "2-0" || mar === "0-2" || mar === "1-0" || mar === "0-1") {
-        fiab = 10; apuesta = "Under 3.5"; prob = 98; score = 100; // Máximo éxito
+        fiab = 10; apuesta = "Under 3.5"; prob = 98; score = 100;
     } else if (mar === "2-1" || mar === "1-2") {
-        fiab = 9; apuesta = "Over 1.5"; prob = 89; score = 95; // Gran balance ganancia/prob
+        fiab = 9; apuesta = "Over 1.5"; prob = 89; score = 95;
     } else if (mar === "1-1") {
-        fiab = 8; apuesta = "Under 4.5"; prob = 92; score = 90; // Seguro pero cuota baja
-    } else if (suma >= 4) {
-        fiab = 5; apuesta = "Over 2.5"; prob = 72; score = 50; // Inestable
+        fiab = 8; apuesta = "Under 4.5"; prob = 92; score = 90;
+    } else if (suma > 3) {
+        fiab = 7; apuesta = "Over 2.5"; prob = 80; score = 75;
     } else {
-        fiab = 7; apuesta = "Under 3.5"; prob = 85; score = 70; // Medio
+        fiab = 6; apuesta = "Under 3.5"; prob = 75; score = 60;
     }
-
     partidos.push({ eq, mar, fiab, apuesta, prob, score });
-    
-    // ORDENAR AUTOMÁTICAMENTE POR SCORE (GANANCIA/PROBABILIDAD)
-    partidos.sort((a, b) => b.score - a.score);
-    
-    actualizarVista();
-    document.getElementById('equipos').value = "";
-    document.getElementById('marcador').value = "";
 }
 
 function actualizarVista() {
@@ -159,47 +132,27 @@ function actualizarVista() {
     
     partidos.forEach((p, idx) => {
         const isTop3 = idx < 3 ? 'top-3' : '';
-        tbody.innerHTML += `
-            <tr>
-                <td><div class="rank-badge ${isTop3}">${idx + 1}</div></td>
-                <td><b>${p.eq}</b></td>
-                <td><small>${p.mar}</small></td>
-                <td><span style="color:var(--primary); font-weight:bold">${p.apuesta}</span></td>
-                <td>
-                    <span style="font-weight:bold">${p.prob}%</span>
-                    <div class="prob-bar"><div class="prob-fill" style="width:${p.prob}%"></div></div>
-                </td>
-                <td><span class="remove-btn" onclick="eliminar(${idx})">×</span></td>
-            </tr>
-        `;
+        tbody.innerHTML += `<tr>
+            <td><div class="rank-badge ${isTop3}">${idx + 1}</div></td>
+            <td><b>${p.eq}</b></td>
+            <td>${p.mar}</td>
+            <td><b>${p.apuesta}</b></td>
+            <td>${p.prob}%</td>
+        </tr>`;
     });
 
     if (partidos.length >= 3) {
-        const panel = document.getElementById('panelEstrategia');
-        const texto = document.getElementById('textoEstrategia');
-        panel.style.display = "block";
-        
-        let html = "<ul style='padding-left:15px; margin:0;'>";
+        document.getElementById('panelEstrategia').style.display = "block";
+        let html = "<b>Tu Bloque de Oro para hoy:</b><br>";
         for(let i=0; i<3; i++) {
-            html += `<li style='margin-bottom:8px'><b>${partidos[i].eq}</b> <br> <span style='color:var(--gold)'>→ ${partidos[i].apuesta}</span> (${partidos[i].prob}% éxito)</li>`;
+            html += `• ${partidos[i].eq} → <b>${partidos[i].apuesta}</b><br>`;
         }
-        html += "</ul>";
-        texto.innerHTML = html;
+        html += `<br><div style='background:rgba(255,255,255,0.1); padding:10px; border-radius:5px;'>
+                 💵 <b>Inversión Sugerida: 5.00€</b> (Bala 1 de 4)<br>
+                 <small>Si aciertas, guarda la base y reinvierte solo beneficio.</small></div>`;
+        document.getElementById('textoEstrategia').innerHTML = html;
     }
 }
-
-function eliminar(idx) {
-    partidos.splice(idx, 1);
-    actualizarVista();
-    if (partidos.length < 3) document.getElementById('panelEstrategia').style.display = "none";
-}
-
-function limpiarTodo() {
-    partidos = [];
-    actualizarVista();
-    document.getElementById('panelEstrategia').style.display = "none";
-}
 </script>
-
 </body>
 </html>
