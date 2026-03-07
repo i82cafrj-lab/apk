@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking Pro | Estrategia Híbrida Optimizada</title>
+    <style>
+        :root {
+            --primary: #2c3e50; --success: #27ae60; --warning: #f39c12;
+            --danger: #e74c3c; --gold: #f1c40f; --bg: #f4f7f6; --accent: #3498db;
+        }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; color: #333; }
+        .main-container { max-width: 950px; margin: 0 auto; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 15px; border-top: 4px solid var(--primary); }
+        h2 { margin-top: 0; color: var(--primary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .mode-selector { display: flex; background: #eee; padding: 4px; border-radius: 8px; margin-bottom: 15px; }
+        .mode-btn { flex: 1; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s; color: #7f8c8d; }
+        .mode-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        .banca-input-group { display: flex; align-items: center; gap: 10px; background: #eef2f3; padding: 10px; border-radius: 8px; }
+        .banca-input-group input { padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100px; font-weight: bold; color: var(--success); font-size: 16px; }
+
+        .formato-ayuda { background: #fff9e6; border: 1px solid #ffeaa7; padding: 10px; border-radius: 8px; font-size: 11px; margin-bottom: 10px; }
+        textarea { width: 100%; height: 100px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-family: monospace; font-size: 13px; background: #fafafa; }
+        .btn-bulk { background: var(--primary); color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; text-transform: uppercase; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; background: white; }
+        td, th { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f8f9fa; color: var(--primary); font-weight: bold; text-transform: uppercase; font-size: 10px; }
+        .top-3-row { background: #fffdf2; border-left: 5px solid var(--gold); }
+        
+        .tag-complemento { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: #d4edda; color: #155724; font-weight: bold; display: inline-block; margin-top: 4px; border: 1px solid #c3e6cb; }
+        .tag-seguridad { background: #cfe2ff; color: #084298; border-color: #b6d4fe; }
+
+        #panelEstrategia { display: none; background: #1a252f; color: white; padding: 20px; border-radius: 12px; border-left: 8px solid var(--gold); margin-top: 15px; }
+        .perfil-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; background: var(--gold); color: #000; }
+
+        .control-sesion { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px dashed rgba(255,255,255,0.2); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; text-align: center; }
+        .stat-val { display: block; font-size: 18px; font-weight: bold; color: var(--gold); }
+        .btn-action { padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; color: white; margin-top: 5px; width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="card" style="border-top-color: var(--warning);">
+        <h2>⚙️ Configuración del Sistema</h2>
+        <div class="mode-selector">
+            <button id="btnAnalisis" class="mode-btn active" onclick="setModo('analisis')">SOLO ANÁLISIS</button>
+            <button id="btnHistorial" class="mode-btn" onclick="setModo('historial')">MODO SESIÓN</button>
+        </div>
+        <div class="banca-input-group">
+            <input type="number" id="bancaTotal" value="20" oninput="actualizarBanca()">
+            <label>€ Capital Disponible</label>
+        </div>
+    </div>
+
+    <div class="card" style="border-top-color: var(--success);">
+        <h2>🚀 Importar Jornada</h2>
+        <div class="formato-ayuda">
+            <b>Ejemplo:</b> "Everton 2:0 Burnley" o "Newcastle (2-3) ManUnited"
+        </div>
+        <textarea id="bulkText" placeholder="Pega los partidos aquí..."></textarea>
+        <button class="btn-bulk" onclick="procesarMasivo()">Analizar y Ordenar por Probabilidad</button>
+    </div>
+
+    <div class="card">
+        <h2>🏆 Ranking de Probabilidad (Ordenado por Fiabilidad)</h2>
+        <table id="tablaPartidos">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Partido</th>
+                    <th>Prev.</th>
+                    <th>Principal (O/U)</th>
+                    <th>Complemento Histórico</th>
+                    <th>Conf. Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="panelEstrategia">
+        <div id="badgePerfil" class="perfil-badge"></div>
+        <h3 id="tituloEstrategia" style="margin:0 0 15px 0;"></h3>
+        <div id="textoEstrategia" style="font-size: 13px; line-height: 1.6;"></div>
+
+        <div id="seccionHistorial" class="control-sesion" style="display: none;">
+            <b>🎮 PANEL DE CONTROL DE SESIÓN</b>
+            <div class="stats-grid">
+                <div class="stat-box">Saldo Actual<span id="saldoActual" class="stat-val">20.00€</span></div>
+                <div class="stat-box">Bala Recomendada<span id="balaActual" class="stat-val">5.00€</span></div>
+            </div>
+            <div class="stats-grid">
+                <button class="btn-action" style="background:var(--success)" onclick="registrarResultado(true)">COMBINADA GANADA</button>
+                <button class="btn-action" style="background:var(--danger)" onclick="registrarResultado(false)">COMBINADA PERDIDA</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Variables Globales
+    let partidos = [];
+    let saldoSesion = 20;
+    let balaCalculada = 5;
+    let modoActual = 'analisis';
+
+    function setModo(modo) {
+        modoActual = modo;
+        document.getElementById('btnAnalisis').classList.toggle('active', modo === 'analisis');
+        document.getElementById('btnHistorial').classList.toggle('active', modo === 'historial');
+        document.getElementById('seccionHistorial').style.display = modo === 'historial' ? 'block' : 'none';
+        if(partidos.length >= 3) actualizarVista();
+    }
+
+    function actualizarBanca() {
+        saldoSesion = parseFloat(document.getElementById('bancaTotal').value) || 0;
+        document.getElementById('saldoActual').innerText = saldoSesion.toFixed(2) + "€";
+        if(partidos.length >= 3) actualizarVista();
+    }
+
+    function clasificarPartidoOptimizado(eq, g1, g2) {
+        const suma = g1 + g2;
+        const mar = g1 + "-" + g2;
+        let fiab, apuesta, prob, score, complemento, ef_comp;
+
+        // 1. Mercado Principal (O/U)
+        if (mar === "2-0" || mar === "0-2" || mar === "1-0" || mar === "0-1") {
+            fiab = 10; apuesta = "Under 3.5"; prob = 98; score = 100;
+        } else if (mar === "2-1" || mar === "1-2") {
+            fiab = 9; apuesta = "Over 1.5"; prob = 89; score = 95;
+        } else if (mar === "1-1") {
+            fiab = 8; apuesta = "Under 4.5"; prob = 92; score = 90;
+        } else if (suma > 3) {
+            fiab = 7; apuesta = "Over 2.5"; prob = 80; score = 75;
+        } else {
+            fiab = 6; apuesta = "Under 3.5"; prob = 75; score = 60;
+        }
+
+        // 2. Complemento (Hándicap)
+        if (g1 > g2) {
+            if (g1 - g2 >= 2) { complemento = "Local +2.5"; ef_comp = "92%"; }
+            else { complemento = "Local +1.5"; ef_comp = "85%"; }
+        } else if (g2 > g1) {
+            if (g2 - g1 >= 2) { complemento = "Visitante +2.5"; ef_comp = "92%"; }
+            else { complemento = "Visitante +1.5"; ef_comp = "85%"; }
+        } else {
+            complemento = "U2.5 (1ª Parte)"; ef_comp = "96%";
+        }
+
+        partidos.push({ eq, mar, fiab, apuesta, prob, score, complemento, ef_comp });
+    }
+
+    function procesarMasivo() {
+        const texto = document.getElementById('bulkText').value;
+        if (!texto.trim()) return;
+        
+        const lineas = texto.split('\n');
+        partidos = []; 
+        
+        lineas.forEach(linea => {
+            const match = linea.match(/(\d+)\s*[:\-\/]\s*(\d+)/);
+            if (match) {
+                const m1 = parseInt(match[1]);
+                const m2 = parseInt(match[2]);
+                let nombre = linea.replace(match[0], '').replace(/\bs\b/gi, '').replace(/[()]/g, '').trim();
+                if(!nombre) nombre = "Partido Desconocido";
+                clasificarPartidoOptimizado(nombre, m1, m2);
+            }
+        });
+
+        // Ordenar por probabilidad y fiabilidad histórica
+        partidos.sort((a, b) => {
+            if (b.prob !== a.prob) return b.prob - a.prob;
+            const peso = (p) => (p.ef_comp === "92%" || p.ef_comp === "96%") ? 1 : 0;
+            return peso(b) - peso(a);
+        });
+
+        actualizarVista();
+    }
+
+    function actualizarVista() {
+        const tbody = document.querySelector("#tablaPartidos tbody");
+        tbody.innerHTML = "";
+        
+        partidos.forEach((p, idx) => {
+            const rowClass = idx < 3 ? 'class="top-3-row"' : '';
+            const tagClass = (p.ef_comp === "92%" || p.ef_comp === "96%") ? "tag-seguridad" : "";
+            
+            tbody.innerHTML += `
+                <tr ${rowClass}>
+                    <td>${idx+1}</td>
+                    <td><b>${p.eq}</b></td>
+                    <td>${p.mar}</td>
+                    <td><b>${p.apuesta}</b></td>
+                    <td>
+                        <b>${p.complemento}</b>
+                        <span class="tag-complemento ${tagClass}">Fiab. Hist: ${p.ef_comp}</span>
+                    </td>
+                    <td><span style="color:var(--success); font-weight:bold;">${p.prob}%</span></td>
+                </tr>`;
+        });
+
+        if (partidos.length >= 3) {
+            document.getElementById('panelEstrategia').style.display = "block";
+            const badge = document.getElementById('badgePerfil');
+            
+            if (saldoSesion <= 15) {
+                balaCalculada = saldoSesion / 2;
+                badge.innerText = "Perfil: Supervivencia (Stake 50%)";
+            } else if (saldoSesion <= 60) {
+                balaCalculada = saldoSesion / 4;
+                badge.innerText = "Perfil: Crecimiento (Stake 25%)";
+            } else {
+                balaCalculada = saldoSesion / 10;
+                badge.innerText = "Perfil: Profesional (Stake 10%)";
+            }
+
+            document.getElementById('tituloEstrategia').innerText = "TOP 3: COMBINADA RECOMENDADA";
+            document.getElementById('balaActual').innerText = balaCalculada.toFixed(2) + "€";
+            document.getElementById('textoEstrategia').innerHTML = `
+                <strong>Estrategia de hoy:</strong><br>
+                Crea una combinada con los 3 primeros partidos del ranking.<br><br>
+                1. <b>${partidos[0].eq}</b>: ${partidos[0].apuesta} + ${partidos[0].complemento}<br>
+                2. <b>${partidos[1].eq}</b>: ${partidos[1].apuesta} + ${partidos[1].complemento}<br>
+                3. <b>${partidos[2].eq}</b>: ${partidos[2].apuesta} + ${partidos[2].complemento}<br><br>
+                <strong>Inversión sugerida: ${balaCalculada.toFixed(2)}€</strong>
+            `;
+        }
+    }
+
+    function registrarResultado(ganador) {
+        if (modoActual !== 'historial') return;
+        if (ganador) {
+            saldoSesion += (balaCalculada * 0.75); 
+        } else {
+            saldoSesion -= balaCalculada;
+        }
+        document.getElementById('bancaTotal').value = saldoSesion.toFixed(2);
+        actualizarBanca();
+    }
+</script>
+</body>
+</html>
