@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BetOpt v3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--sur:#111118;--sur2:#18181f;--bor:rgba(255,255,255,0.07);--bor2:rgba(255,255,255,0.13);--tx:#f0eee8;--mu:#6b6b7a;--t1:#c8f060;--t2:#f0a060;--t3:#60d4f0;--dng:#f06060;--grn:#60f0a0;--mono:'DM Mono',monospace;--sans:'Syne',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+.gbg{position:fixed;inset:0;background-image:linear-gradient(rgba(200,240,96,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,240,96,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.glo{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,240,96,.06) 0%,transparent 70%);top:-200px;left:-100px;pointer-events:none;z-index:0}
+.glo2{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(96,212,240,.05) 0%,transparent 70%);bottom:-100px;right:-100px;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:40px 24px 80px}
+header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--bor)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:34px;height:34px;background:var(--t1);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.logo-text span{color:var(--t1)}
+.hbadge{font-family:var(--mono);font-size:11px;color:var(--mu);letter-spacing:.1em}
+
+/* NAV TABS */
+.nav{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--bor);padding-bottom:0}
+.ntab{padding:10px 18px;font-family:var(--sans);font-size:13px;font-weight:600;background:transparent;border:none;cursor:pointer;color:var(--mu);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.ntab:hover{color:var(--tx)}
+.ntab.on{color:var(--t1);border-bottom-color:var(--t1)}
+.ntab.on.t2c{color:var(--t2);border-bottom-color:var(--t2)}
+.ntab.on.t3c{color:var(--t3);border-bottom-color:var(--t3)}
+.page{display:none}.page.on{display:block}
+
+/* TIPSTER SELECTOR */
+.tsel{display:flex;gap:8px;margin-bottom:24px}
+.tbtn{flex:1;padding:12px 16px;border-radius:10px;border:1px solid var(--bor2);background:var(--sur);cursor:pointer;text-align:left;transition:all .2s;font-family:var(--sans)}
+.tbtn:hover{background:var(--sur2)}
+.tbtn.st1{border-color:var(--t1);background:rgba(200,240,96,.06)}
+.tbtn.st2{border-color:var(--t2);background:rgba(240,160,96,.06)}
+.tbtn.st3{border-color:var(--t3);background:rgba(96,212,240,.06)}
+.tp{display:inline-block;font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:99px;margin-bottom:5px}
+.pt1{background:rgba(200,240,96,.12);color:var(--t1)}
+.pt2{background:rgba(240,160,96,.12);color:var(--t2)}
+.pt3{background:rgba(96,212,240,.12);color:var(--t3)}
+.tbname{font-size:13px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.st1 .tbname{color:var(--t1)}.st2 .tbname{color:var(--t2)}.st3 .tbname{color:var(--t3)}
+.tbst{font-family:var(--mono);font-size:11px;color:var(--mu)}
+
+/* INPUTS */
+.ilabel{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:block;color:var(--t1)}
+.ilabel.c2{color:var(--t2)}.ilabel.c3{color:var(--t3)}
+.ihint{font-family:var(--mono);font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.7}
+.ihint code{background:var(--sur2);padding:1px 5px;border-radius:3px;color:var(--t3)}
+textarea{width:100%;background:var(--sur);border:1px solid var(--bor2);border-radius:10px;color:var(--tx);font-family:var(--mono);font-size:13px;padding:14px 16px;resize:vertical;min-height:140px;outline:none;transition:border-color .2s;line-height:1.8}
+textarea:focus{border-color:var(--t1)}
+textarea.c2:focus{border-color:var(--t2)}
+textarea.c3:focus{border-color:var(--t3)}
+textarea::placeholder{color:var(--mu)}
+input[type=text]{width:100%;background:var(--sur);border:1px solid var(--bor2);border-radius:8px;color:var(--tx);font-family:var(--mono);font-size:13px;padding:9px 13px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--t3)}
+.brow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+button{font-family:var(--sans);font-weight:600;font-size:13px;border:none;cursor:pointer;border-radius:8px;padding:9px 18px;transition:all .15s}
+.bp{background:var(--t1);color:#0a0a0f}.bp:hover{filter:brightness(1.1);transform:translateY(-1px)}.bp.c2{background:var(--t2)}.bp.c3{background:var(--t3);color:#0a0a0f}
+.bg{background:transparent;color:var(--mu);border:1px solid var(--bor2)}.bg:hover{color:var(--tx);background:var(--sur2)}
+.bex{background:transparent;color:var(--t3);border:1px solid rgba(96,212,240,.2);font-size:12px;padding:7px 13px}.bex:hover{background:rgba(96,212,240,.06)}
+.bdng{background:rgba(240,96,96,.1);color:var(--dng);border:1px solid rgba(240,96,96,.2);font-size:12px;padding:7px 13px}
+
+/* RESULTS */
+#results{display:none}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.rtitle{font-size:12px;font-weight:600;color:var(--mu);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em}
+.sbar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.sch{font-family:var(--mono);font-size:12px;padding:5px 12px;border-radius:99px;border:1px solid var(--bor2);color:var(--mu);background:var(--sur)}
+.sch strong{color:var(--tx)}
+.mblock{background:var(--sur);border:1px solid var(--bor);border-radius:14px;margin-bottom:10px;overflow:hidden;animation:fu .3s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.mblock:hover{border-color:var(--bor2)}
+.mhdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:1px solid var(--bor);flex-wrap:wrap;gap:6px}
+.mteams{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.mbadge{font-family:var(--mono);font-size:11px;background:var(--sur2);border:1px solid var(--bor2);border-radius:5px;padding:3px 9px;color:var(--t3)}
+.ttag{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:99px}
+.tg1{background:rgba(200,240,96,.12);color:var(--t1)}.tg2{background:rgba(240,160,96,.12);color:var(--t2)}.tg3{background:rgba(96,212,240,.12);color:var(--t3)}
+.mbody{padding:12px 18px 14px}
+.bgrid{display:flex;flex-direction:column;gap:6px}
+.brow2{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--sur2);border:1px solid transparent}
+.brow2.rtop{border-color:rgba(200,240,96,.2)}.brow2.rtop2{border-color:rgba(240,160,96,.25)}.brow2.rtop3{border-color:rgba(96,212,240,.2)}
+.brow2.rgood{border-color:rgba(96,240,160,.12)}.brow2.rmid{border-color:var(--bor)}.brow2.rlow{border-color:var(--bor);opacity:.6}
+.brank{font-family:var(--mono);font-size:11px;color:var(--mu);min-width:16px;text-align:center}
+.bmkt{flex:1;font-size:13px;font-weight:600;color:var(--tx)}
+.bcond{font-family:var(--mono);font-size:11px;color:var(--mu);background:rgba(255,255,255,.04);padding:2px 7px;border-radius:3px;white-space:nowrap}
+.bpw{display:flex;align-items:center;gap:6px;min-width:100px;justify-content:flex-end}
+.bbar{flex:1;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;min-width:36px}
+.bbf{height:100%;border-radius:2px}
+.bpct{font-family:var(--mono);font-size:12px;font-weight:500;min-width:40px;text-align:right}
+.ct1{color:var(--t1)}.ct2{color:var(--t2)}.ct3{color:var(--t3)}.cgrn{color:var(--grn)}.cmid{color:var(--t2)}.cmu{color:var(--mu)}
+.ft1{background:var(--t1)}.ft2{background:var(--t2)}.ft3{background:var(--t3)}.fgrn{background:var(--grn)}.fmid{background:var(--t2)}.fmu{background:var(--mu)}
+.star{font-size:13px}
+.perr{font-family:var(--mono);font-size:12px;color:var(--dng);background:rgba(240,96,96,.08);border:1px solid rgba(240,96,96,.2);border-radius:7px;padding:9px 12px;margin-bottom:7px}
+.nobets{font-family:var(--mono);font-size:12px;color:var(--mu);padding:9px 12px;background:var(--sur2);border-radius:8px;border:1px solid var(--bor)}
+.legend{display:flex;gap:14px;margin-top:16px;flex-wrap:wrap}
+.litem{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;color:var(--mu)}
+.ldot{width:7px;height:7px;border-radius:50%}
+
+/* HISTÓRICO */
+.hform{background:var(--sur);border:1px solid var(--bor2);border-radius:14px;padding:20px;margin-bottom:20px}
+.hform-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.hform-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.flabel{font-family:var(--mono);font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.htable-wrap{overflow-x:auto;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{font-family:var(--mono);font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;text-align:left;border-bottom:1px solid var(--bor2)}
+td{padding:7px 10px;border-bottom:1px solid var(--bor);font-family:var(--mono);font-size:12px;color:var(--tx)}
+tr:hover td{background:var(--sur2)}
+.del-btn{background:transparent;border:none;color:var(--mu);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:4px}
+.del-btn:hover{color:var(--dng);background:rgba(240,96,96,.1)}
+
+/* ANÁLISIS */
+.abox{background:var(--sur);border:1px solid var(--bor2);border-radius:14px;padding:20px;margin-bottom:16px}
+.abox-title{font-size:13px;font-weight:700;color:var(--t3);margin-bottom:14px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:16px}
+.scard{background:var(--sur2);border-radius:8px;padding:10px 12px}
+.sc-l{font-size:11px;color:var(--mu);margin-bottom:3px}
+.sc-v{font-size:18px;font-weight:500;color:var(--tx)}
+.sc-s{font-size:11px;color:var(--mu);margin-top:1px}
+.rule-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--sur2);border-radius:8px;margin-bottom:6px;border:1px solid transparent}
+.rule-row.r-top{border-color:rgba(96,212,240,.25)}
+.rr-mkt{flex:1;font-size:12px;font-weight:600;color:var(--tx)}
+.rr-cond{font-family:var(--mono);font-size:10px;color:var(--mu);background:rgba(255,255,255,.04);padding:2px 6px;border-radius:3px}
+.rr-pct{font-family:var(--mono);font-size:13px;font-weight:500;min-width:44px;text-align:right}
+.rr-n{font-family:var(--mono);font-size:10px;color:var(--mu);min-width:40px;text-align:right}
+.nodata{text-align:center;padding:40px 20px;font-family:var(--mono);font-size:13px;color:var(--mu)}
+.imp-area{background:var(--sur2);border:1px dashed var(--bor2);border-radius:8px;padding:12px;margin-bottom:12px}
+.warn-min{font-family:var(--mono);font-size:11px;color:var(--t2);background:rgba(240,160,96,.08);border:1px solid rgba(240,160,96,.2);border-radius:6px;padding:8px 12px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="gbg"></div><div class="glo"></div><div class="glo2"></div>
+<div class="wrap">
+
+<header>
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 18 18" fill="none"><path d="M2 15h14M5 11l4-8 4 8" stroke="#0a0a0f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="logo-text">Bet<span>Opt</span></div>
+  </div>
+  <div class="hbadge">v3.0 · multi-tipster</div>
+</header>
+
+<nav class="nav">
+  <button class="ntab on" onclick="goTab(0)">Analizar jornada</button>
+  <button class="ntab t3c" onclick="goTab(1)">Histórico &amp; análisis</button>
+</nav>
+
+<!-- ═══════════════════ TAB 0: ANALIZAR ═══════════════════ -->
+<div class="page on" id="tab0">
+
+  <div class="tsel" id="tsel"></div>
+
+  <div>
+    <label class="ilabel" id="ilabel">Listado de partidos pronosticados</label>
+    <div class="ihint">
+      Formatos: <code>EquipoA 2-0 EquipoB</code> · <code>EquipoA vs EquipoB [2-0]</code> · <code>EquipoA 2 0 EquipoB</code> · <code>EquipoA&nbsp;&nbsp;EquipoB&nbsp;&nbsp;1 0</code> (columnar)
+    </div>
+    <textarea id="input" placeholder="Real Madrid 2-1 Barcelona&#10;Bayern Munich vs Dortmund [3-0]&#10;Arsenal 1 0 Chelsea"></textarea>
+    <div class="brow">
+      <button class="bp" id="btn-analyze" onclick="analyze()">Analizar partidos</button>
+      <button class="bex" onclick="loadExample()">Ejemplo</button>
+      <button class="bg" onclick="clearAll()">Limpiar</button>
+    </div>
+  </div>
+
+  <div id="results" style="margin-top:28px">
+    <div class="rh"><div class="rtitle">Apuestas recomendadas</div><div id="rcount" style="font-family:var(--mono);font-size:12px;color:var(--mu)"></div></div>
+    <div class="sbar" id="sbar"></div>
+    <div id="mout"></div>
+    <div class="legend">
+      <div class="litem"><div class="ldot" style="background:var(--t1)"></div>≥90% T.A</div>
+      <div class="litem"><div class="ldot" style="background:var(--t2)"></div>≥90% Mueh</div>
+      <div class="litem"><div class="ldot" style="background:var(--t3)"></div>≥90% custom</div>
+      <div class="litem"><div class="ldot" style="background:var(--grn)"></div>80–89%</div>
+      <div class="litem"><div class="ldot" style="background:var(--t2)"></div>60–79%</div>
+      <div class="litem"><div class="ldot" style="background:var(--mu)"></div>&lt;60%</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TAB 1: HISTÓRICO ═══════════════════ -->
+<div class="page" id="tab1">
+
+  <!-- Tipster selector -->
+  <div style="margin-bottom:20px">
+    <div style="font-size:12px;color:var(--mu);font-family:var(--mono);margin-bottom:10px">Tipster activo en histórico:</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="h-tsel"></div>
+  </div>
+
+  <!-- Añadir tipster -->
+  <div class="hform" id="new-tipster-form" style="display:none">
+    <div style="font-size:13px;font-weight:600;color:var(--t3);margin-bottom:14px">Nuevo tipster</div>
+    <div class="hform-grid">
+      <div><div class="flabel">Nombre</div><input type="text" id="nt-name" placeholder="Ej: Forebet, MiTipster..."></div>
+      <div><div class="flabel">Descripción (opcional)</div><input type="text" id="nt-desc" placeholder="Ligas, estilo..."></div>
+    </div>
+    <div class="brow"><button class="bp c3" onclick="createTipster()">Crear tipster</button><button class="bg" onclick="document.getElementById('new-tipster-form').style.display='none'">Cancelar</button></div>
+  </div>
+  <div class="brow" style="margin-bottom:20px">
+    <button class="bp c3" onclick="document.getElementById('new-tipster-form').style.display='block'">+ Nuevo tipster</button>
+    <button class="bex" onclick="showImport()">Importar CSV</button>
+  </div>
+
+  <!-- Import CSV -->
+  <div class="hform" id="import-form" style="display:none">
+    <div style="font-size:13px;font-weight:600;color:var(--t3);margin-bottom:10px">Importar CSV</div>
+    <div class="warn-min">Formato esperado: <code style="color:var(--t3)">local,visitante,pred_l,pred_v,real_l,real_v</code> (una fila por partido, sin cabecera o con cabecera)</div>
+    <textarea id="csv-input" placeholder="Real Madrid,Barcelona,2,1,3,0&#10;Bayern,Dortmund,3,0,2,1" style="min-height:100px"></textarea>
+    <div class="brow" style="margin-top:10px"><button class="bp c3" onclick="importCSV()">Importar</button><button class="bg" onclick="document.getElementById('import-form').style.display='none'">Cancelar</button></div>
+  </div>
+
+  <!-- Añadir partido -->
+  <div class="hform" id="add-form">
+    <div style="font-size:13px;font-weight:600;color:var(--t3);margin-bottom:14px">Registrar partido</div>
+    <div class="hform-grid">
+      <div><div class="flabel">Equipo local</div><input type="text" id="f-local" placeholder="Ej: Real Madrid"></div>
+      <div><div class="flabel">Equipo visitante</div><input type="text" id="f-visit" placeholder="Ej: Barcelona"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px">
+      <div><div class="flabel">Pronós. local</div><input type="text" id="f-pl" placeholder="2"></div>
+      <div><div class="flabel">Pronós. visit.</div><input type="text" id="f-pv" placeholder="1"></div>
+      <div><div class="flabel">Real local</div><input type="text" id="f-rl" placeholder="3"></div>
+      <div><div class="flabel">Real visit.</div><input type="text" id="f-rv" placeholder="0"></div>
+    </div>
+    <div class="brow"><button class="bp c3" onclick="addMatch()">Guardar partido</button><button class="bg" onclick="clearForm()">Limpiar</button></div>
+  </div>
+
+  <!-- Tabla histórico -->
+  <div id="h-table-section">
+    <div class="rh" style="margin-bottom:12px">
+      <div class="rtitle" id="h-title">Sin datos</div>
+      <button class="bdng" onclick="clearHistory()" style="font-size:11px;padding:5px 10px">Borrar todo</button>
+    </div>
+    <div class="htable-wrap">
+      <table id="h-table">
+        <thead><tr><th>#</th><th>Local</th><th>Visitante</th><th>Pron</th><th>Real</th><th>Diff</th><th>Sign P</th><th>Sign R</th><th></th></tr></thead>
+        <tbody id="h-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Análisis -->
+  <div id="h-analysis"></div>
+
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════════════
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
+function load(key,def){try{const v=localStorage.getItem(key);return v?JSON.parse(v):def}catch(e){return def}}
+
+// ══════════════════════════════════════════════════
+// TIPSTER DATA
+// ══════════════════════════════════════════════════
+const BUILTIN=[
+  {id:'t1',name:'Tipster A',desc:'185 partidos · 1X2: 47.6%',color:'t1',builtin:true,
+   rules:[
+    {market:'Under 3.5',cond:'PronTotal ≤ 1',pct:98.0,cat:'Under',fn:r=>r.t<=1},
+    {market:'Under 3.5',cond:'PronTotal ≤ 2',pct:96.8,cat:'Under',fn:r=>r.t<=2},
+    {market:'Over 0.5', cond:'PronTotal ≥ 3',pct:93.3,cat:'Over', fn:r=>r.t>=3},
+    {market:'DO X2',    cond:'Pronós. visitante',pct:91.7,cat:'DO',fn:r=>r.s==='2'},
+    {market:'HC0 local',cond:'PronL−PronV > 1',pct:91.7,cat:'HC',fn:r=>(r.pl-r.pv)>1},
+    {market:'Under 2.5',cond:'PronTotal ≤ 1',pct:90.2,cat:'Under',fn:r=>r.t<=1},
+    {market:'DO 1X',    cond:'Pronós. local',pct:88.0,cat:'DO',fn:r=>r.s==='1'},
+    {market:'HC0 local',cond:'PronL−PronV > 0',pct:88.0,cat:'HC',fn:r=>(r.pl-r.pv)>0},
+    {market:'Over 0.5', cond:'PronTotal ≥ 2',pct:86.6,cat:'Over',fn:r=>r.t>=2},
+    {market:'Under 2.5',cond:'PronTotal ≤ 2',pct:85.6,cat:'Under',fn:r=>r.t<=2},
+    {market:'Over 1.5', cond:'PronTotal ≥ 3',pct:68.3,cat:'Over',fn:r=>r.t>=3},
+    {market:'DO 1-2',   cond:'Pronós. empate',pct:63.1,cat:'DO',fn:r=>r.s==='X'},
+    {market:'1X2 local',cond:'Pronóstico = 1',pct:55.6,cat:'1X2',fn:r=>r.s==='1'},
+    {market:'1X2 empate',cond:'Pronóstico = X',pct:36.9,cat:'1X2',fn:r=>r.s==='X'},
+    {market:'1X2 visit.',cond:'Pronóstico = 2',pct:33.3,cat:'1X2',fn:r=>r.s==='2'},
+  ]},
+  {id:'t2',name:'Muehlous',desc:'338 partidos · 1X2: 57.7%',color:'t2',builtin:true,
+   rules:[
+    {market:'Over 0.5', cond:'PronTotal ≥ 6',pct:100.0,cat:'Over',fn:r=>r.t>=6},
+    {market:'Over 1.5', cond:'PronTotal ≥ 6',pct:100.0,cat:'Over',fn:r=>r.t>=6},
+    {market:'Under 5.5',cond:'PronTotal ≤ 2',pct:96.1, cat:'Under',fn:r=>r.t<=2},
+    {market:'Over 0.5', cond:'PronTotal ≥ 2',pct:94.1, cat:'Over',fn:r=>r.t>=2},
+    {market:'Under 5.5',cond:'PronTotal ≤ 1',pct:93.8, cat:'Under',fn:r=>r.t<=1},
+    {market:'Over 0.5', cond:'PronTotal ≥ 1',pct:93.9, cat:'Over',fn:r=>r.t>=1},
+    {market:'Under 5.5',cond:'PronTotal ≤ 3',pct:93.2, cat:'Under',fn:r=>r.t<=3},
+    {market:'Under 4.5',cond:'PronTotal ≤ 2',pct:91.4, cat:'Under',fn:r=>r.t<=2},
+    {market:'HC0 local',cond:'PronL−PronV > 2',pct:89.3,cat:'HC',fn:r=>(r.pl-r.pv)>2},
+    {market:'Over 1.5', cond:'PronTotal ≥ 5',pct:89.7, cat:'Over',fn:r=>r.t>=5},
+    {market:'Under 5.5',cond:'PronTotal ≤ 4',pct:92.3, cat:'Under',fn:r=>r.t<=4},
+    {market:'DO 1X',    cond:'Pronós. local',pct:85.1, cat:'DO',fn:r=>r.s==='1'},
+    {market:'HC0 local',cond:'PronL−PronV > 1',pct:85.1,cat:'HC',fn:r=>(r.pl-r.pv)>1},
+    {market:'Over 1.5', cond:'PronTotal ≥ 2',pct:80.1, cat:'Over',fn:r=>r.t>=2},
+    {market:'Under 4.5',cond:'PronTotal ≤ 3',pct:88.1, cat:'Under',fn:r=>r.t<=3},
+    {market:'1X2 local',cond:'Pronóstico = 1',pct:70.2, cat:'1X2',fn:r=>r.s==='1'},
+    {market:'DO X2',    cond:'Pronós. visitante',pct:78.8,cat:'DO',fn:r=>r.s==='2'},
+    {market:'DO 1-2',   cond:'Pronós. empate',pct:68.5, cat:'DO',fn:r=>r.s==='X'},
+    {market:'1X2 visit.',cond:'Pronóstico = 2',pct:56.7, cat:'1X2',fn:r=>r.s==='2'},
+    {market:'1X2 empate',cond:'Pronóstico = X',pct:31.5, cat:'1X2',fn:r=>r.s==='X'},
+  ]},
+];
+
+function getTipsters(){
+  const custom=load('betopt_tipsters',[]);
+  return [...BUILTIN,...custom];
+}
+function getCustomTipsters(){return load('betopt_tipsters',[])}
+function saveCustom(arr){save('betopt_tipsters',arr)}
+function getHistory(tid){return load('betopt_hist_'+tid,[])}
+function saveHistory(tid,arr){save('betopt_hist_'+tid,arr)}
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let AT=0; // active tipster index in getTipsters()
+let AHT=0; // active tipster for history tab
+
+// ══════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════
+function goTab(n){
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('on',i===n));
+  document.querySelectorAll('.ntab').forEach((t,i)=>t.classList.toggle('on',i===n));
+  if(n===1) renderHistoryTab();
+}
+
+// ══════════════════════════════════════════════════
+// TIPSTER SELECTOR (tab0)
+// ══════════════════════════════════════════════════
+function renderTselTab0(){
+  const ts=getTipsters();
+  const el=document.getElementById('tsel');
+  el.innerHTML=ts.map((t,i)=>{
+    const active=AT===i;
+    const cl=active?'tbtn s'+t.color:'tbtn';
+    return `<button class="${cl}" onclick="selectTipster(${i})">
+      <div class="tp pt${t.color.replace('t','')}">${t.name} ${t.builtin?'·':'·'} ${(getHistory(t.id).length||0)+(t.builtin?[185,338][i]||0:0)} partidos</div>
+      <div class="tbname">${t.name}</div>
+      <div class="tbst">${t.desc}</div>
+    </button>`;
+  }).join('');
+}
+
+function selectTipster(i){
+  AT=i;
+  renderTselTab0();
+  const t=getTipsters()[i];
+  const lbl=document.getElementById('ilabel');
+  lbl.textContent='Listado de partidos — '+t.name;
+  lbl.className='ilabel c'+t.color.replace('t','');
+  document.getElementById('input').className=t.color==='t1'?'':'c'+t.color.replace('t','');
+  document.getElementById('btn-analyze').className='bp c'+t.color.replace('t','');
+  document.getElementById('results').style.display='none';
+}
+
+// ══════════════════════════════════════════════════
+// PARSER
+// ══════════════════════════════════════════════════
+function parseMatch(line){
+  line=line.trim(); if(!line) return null;
+  line=line.replace(/[\[\]]/g,'');
+  let cleaned=line.replace(/\s+vs\s+/i,' vs ');
+  let A,B,sA,sB,m;
+  m=cleaned.match(/^(.+?)\s+vs\s+(.+?)\s+(\d+)[-\s](\d+)$/i);
+  if(m){A=m[1].trim();B=m[2].trim();sA=+m[3];sB=+m[4];}
+  if(!A){m=cleaned.match(/^(.+?)\s+(\d+)-(\d+)\s+(.+)$/);if(m){A=m[1].trim();B=m[4].trim();sA=+m[2];sB=+m[3];}}
+  if(!A){m=cleaned.match(/^(.+?)\s+(\d+)\s+(\d+)\s+(.+)$/);if(m){A=m[1].trim();B=m[4].trim();sA=+m[2];sB=+m[3];}}
+  if(!A){
+    const cols=line.split(/\t+|\s{2,}/).map(c=>c.trim()).filter(c=>c);
+    if(cols.length>=3){
+      const last=cols[cols.length-1],sl=cols[cols.length-2];
+      let sm=last.match(/^(\d+)[-\s](\d+)$/);
+      if(sm){sA=+sm[1];sB=+sm[2];A=cols[0];B=cols.slice(1,cols.length-1).join(' ');}
+      else if(/^\d+$/.test(last)&&/^\d+$/.test(sl)&&cols.length>=4){sA=+sl;sB=+last;A=cols[0];B=cols.slice(1,cols.length-2).join(' ');}
+      else if(cols.length===3){sm=cols[2].match(/^(\d+)[-\s](\d+)$/);if(sm){A=cols[0];B=cols[1];sA=+sm[1];sB=+sm[2];}}
+    }
+  }
+  if(!A||sA===undefined||sB===undefined) return{error:line};
+  const d=sA-sB;
+  return{teamA:A,teamB:B,pl:sA,pv:sB,t:sA+sB,s:d>0?'1':d<0?'2':'X'};
+}
+
+// ══════════════════════════════════════════════════
+// ANALYZE (tab0)
+// ══════════════════════════════════════════════════
+function dedupe(bets){const s={};return bets.filter(b=>{const k=b.cat+'|'+b.market;if(s[k])return false;s[k]=true;return true;})}
+
+function getCls(pct,tc){
+  const top=pct>=90,good=pct>=80,mid=pct>=60;
+  const rowC=top?'brow2 rtop'+tc.replace('t',''):good?'brow2 rgood':mid?'brow2 rmid':'brow2 rlow';
+  const pC=top?'ct'+tc.replace('t',''):good?'cgrn':mid?'cmid':'cmu';
+  const fC=top?'ft'+tc.replace('t',''):good?'fgrn':mid?'fmid':'fmu';
+  return{rowC,pC,fC};
+}
+function stars(p){return p>=98?'★★★':p>=90?'★★':p>=80?'★':'';}
+
+function getRules(tipster){
+  if(tipster.builtin) return tipster.rules;
+  // custom tipster: compute rules from history
+  return computeRules(getHistory(tipster.id));
+}
+
+function analyze(){
+  const raw=document.getElementById('input').value;
+  const lines=raw.split('\n').filter(l=>l.trim());
+  if(!lines.length) return;
+  const tipster=getTipsters()[AT];
+  const rules=getRules(tipster);
+  if(!rules||!rules.length){
+    document.getElementById('mout').innerHTML='<div class="nobets">Este tipster aún no tiene suficientes datos históricos para generar reglas. Añade al menos 30 partidos en la pestaña Histórico.</div>';
+    document.getElementById('results').style.display='block';
+    return;
+  }
+  const tc=tipster.color;
+  const out=document.getElementById('mout');
+  out.innerHTML=''; let total=0,top=0,err=0;
+  lines.forEach((line,idx)=>{
+    const m=parseMatch(line); if(!m) return;
+    if(m.error){err++;out.innerHTML+=`<div class="perr" style="animation-delay:${idx*.04}s">No parseado: "${m.error}"</div>`;return;}
+    const bets=dedupe(rules.filter(r=>{try{return r.fn(m)}catch(e){return false}}).sort((a,b)=>b.pct-a.pct));
+    total+=bets.length; top+=bets.filter(b=>b.pct>=90).length;
+    const bHtml=bets.length?bets.map((b,i)=>{const{rowC,pC,fC}=getCls(b.pct,tc);return `
+      <div class="${rowC}"><div class="brank">${i+1}</div><div class="bmkt">${b.market}</div>
+      <div class="bcond">${b.cond}</div>
+      <div class="bpw"><div class="bbar"><div class="bbf ${fC}" style="width:${Math.min(b.pct,100)}%"></div></div>
+      <div class="bpct ${pC}">${b.pct.toFixed(1)}%</div><span class="star">${stars(b.pct)}</span></div></div>`;}).join('')
+      :`<div class="nobets">Sin apuestas recomendadas.</div>`;
+    const sl=m.s==='1'?'Local fav.':m.s==='2'?'Visit. fav.':'Empate';
+    out.innerHTML+=`<div class="mblock" style="animation-delay:${idx*.04}s">
+      <div class="mhdr"><div class="mteams">${m.teamA} <span style="color:var(--mu);font-weight:400">vs</span> ${m.teamB}</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <span class="ttag tg${tc.replace('t','')}">${tipster.name}</span>
+        <span class="mbadge">Pron ${m.pl}–${m.pv}</span>
+        <span class="mbadge" style="color:var(--mu)">Total ${m.t} · ${sl}</span>
+      </div></div>
+      <div class="mbody"><div class="bgrid">${bHtml}</div></div></div>`;
+  });
+  const ac=`var(--${tc})`;
+  document.getElementById('rcount').textContent=`${lines.length-err} partidos · ${tipster.name}`;
+  document.getElementById('sbar').innerHTML=`
+    <div class="sch">Apuestas: <strong>${total}</strong></div>
+    <div class="sch">≥90%: <strong style="color:${ac}">${top}</strong></div>
+    <div class="sch">Tipster: <strong style="color:${ac}">${tipster.name}</strong></div>
+    ${err?`<div class="sch" style="border-color:rgba(240,96,96,.3);color:var(--dng)">No parseados: <strong>${err}</strong></div>`:''}`;
+  document.getElementById('results').style.display='block';
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function loadExample(){
+  const tipster=getTipsters()[AT];
+  document.getElementById('input').value=tipster.id==='t2'
+    ?`Mainz vs Dortmund 0-2\nPaok 2-1 M. Tel Aviv\nZagreb vs Fenerbache [2-2]\nLiverpool 4-2 Arsenal`
+    :`Real Madrid 2-1 Barcelona\nBayern Munich vs Dortmund [3-0]\nArsenal 1 0 Chelsea\nCrawley Town\tGrimsby Town\t1 0`;
+}
+function clearAll(){document.getElementById('input').value='';document.getElementById('results').style.display='none';}
+
+// ══════════════════════════════════════════════════
+// HISTORY TAB
+// ══════════════════════════════════════════════════
+function renderHistoryTab(){
+  renderHTsel();
+  renderHTable();
+  renderAnalysis();
+}
+
+function renderHTsel(){
+  const ts=getTipsters();
+  document.getElementById('h-tsel').innerHTML=ts.map((t,i)=>`
+    <button class="${AHT===i?'tbtn s'+t.color:'tbtn'}" onclick="selectHTipster(${i})" style="flex:none;padding:8px 14px">
+      <div class="tp pt${t.color.replace('t','')}">${t.name}</div>
+      <div class="tbst">${getHistory(t.id).length} registros</div>
+    </button>`).join('')+`<button class="tbtn" onclick="document.getElementById('new-tipster-form').style.display='block'" style="flex:none;padding:8px 14px;border-style:dashed">
+      <div class="tbst" style="color:var(--t3)">+ Nuevo</div></button>`;
+}
+
+function selectHTipster(i){AHT=i;renderHistoryTab();}
+
+function renderHTable(){
+  const tipster=getTipsters()[AHT];
+  const hist=getHistory(tipster.id);
+  document.getElementById('h-title').textContent=`${tipster.name} — ${hist.length} partidos registrados`;
+  const tbody=document.getElementById('h-tbody');
+  if(!hist.length){tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--mu);padding:20px">Sin partidos registrados aún</td></tr>`;return;}
+  tbody.innerHTML=hist.slice().reverse().map((r,i)=>{
+    const idx=hist.length-1-i;
+    const pt=r.pl+r.pv,rt=r.rl+r.rv;
+    const sp=r.pl>r.pv?'1':r.pl<r.pv?'2':'X';
+    const sr=r.rl>r.rv?'1':r.rl<r.rv?'2':'X';
+    const ok=sp===sr;
+    return `<tr>
+      <td style="color:var(--mu)">${idx+1}</td>
+      <td>${r.local}</td><td>${r.visitante}</td>
+      <td style="color:var(--t3)">${r.pl}–${r.pv} <span style="color:var(--mu)">(${pt})</span></td>
+      <td style="color:${ok?'var(--grn)':'var(--dng)'}">${r.rl}–${r.rv} <span style="color:var(--mu)">(${rt})</span></td>
+      <td style="color:var(--mu)">${r.pl-r.pv>0?'+':''}${r.pl-r.pv}</td>
+      <td>${sp}</td><td style="color:${ok?'var(--grn)':'var(--dng)'}">${sr}</td>
+      <td><button class="del-btn" onclick="delMatch(${idx})">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function addMatch(){
+  const local=document.getElementById('f-local').value.trim();
+  const visit=document.getElementById('f-visit').value.trim();
+  const pl=parseInt(document.getElementById('f-pl').value);
+  const pv=parseInt(document.getElementById('f-pv').value);
+  const rl=parseInt(document.getElementById('f-rl').value);
+  const rv=parseInt(document.getElementById('f-rv').value);
+  if(!local||!visit||isNaN(pl)||isNaN(pv)||isNaN(rl)||isNaN(rv)) return alert('Rellena todos los campos');
+  const tipster=getTipsters()[AHT];
+  const hist=getHistory(tipster.id);
+  hist.push({local,visitante:visit,pl,pv,rl,rv,date:new Date().toISOString().slice(0,10)});
+  saveHistory(tipster.id,hist);
+  clearForm(); renderHistoryTab();
+}
+
+function delMatch(idx){
+  const tipster=getTipsters()[AHT];
+  const hist=getHistory(tipster.id);
+  hist.splice(idx,1);
+  saveHistory(tipster.id,hist);
+  renderHistoryTab();
+}
+
+function clearForm(){
+  ['f-local','f-visit','f-pl','f-pv','f-rl','f-rv'].forEach(id=>document.getElementById(id).value='');
+}
+
+function clearHistory(){
+  if(!confirm('¿Borrar todo el histórico de este tipster?')) return;
+  const tipster=getTipsters()[AHT];
+  saveHistory(tipster.id,[]);
+  renderHistoryTab();
+}
+
+function createTipster(){
+  const name=document.getElementById('nt-name').value.trim();
+  if(!name) return;
+  const desc=document.getElementById('nt-desc').value.trim();
+  const custom=getCustomTipsters();
+  const id='custom_'+Date.now();
+  custom.push({id,name,desc:desc||'Tipster personalizado',color:'t3',builtin:false});
+  saveCustom(custom);
+  document.getElementById('new-tipster-form').style.display='none';
+  document.getElementById('nt-name').value='';
+  document.getElementById('nt-desc').value='';
+  AHT=getTipsters().length-1;
+  renderTselTab0(); renderHistoryTab();
+}
+
+function showImport(){document.getElementById('import-form').style.display='block';}
+
+function importCSV(){
+  const text=document.getElementById('csv-input').value.trim();
+  if(!text) return;
+  const tipster=getTipsters()[AHT];
+  const hist=getHistory(tipster.id);
+  let added=0;
+  text.split('\n').forEach(line=>{
+    line=line.trim(); if(!line) return;
+    const cols=line.split(',').map(c=>c.trim());
+    if(cols.length<6) return;
+    // skip header
+    if(isNaN(parseInt(cols[2]))) return;
+    const [local,visitante,pl,pv,rl,rv]=cols;
+    hist.push({local,visitante,pl:+pl,pv:+pv,rl:+rl,rv:+rv,date:new Date().toISOString().slice(0,10)});
+    added++;
+  });
+  saveHistory(tipster.id,hist);
+  document.getElementById('csv-input').value='';
+  document.getElementById('import-form').style.display='none';
+  renderHistoryTab();
+  alert(`${added} partidos importados.`);
+}
+
+// ══════════════════════════════════════════════════
+// AUTO-ANALYSIS
+// ══════════════════════════════════════════════════
+function computeRules(hist){
+  if(hist.length<15) return null;
+  const rules=[];
+  const candidates=[
+    {market:'Over 0.5', cat:'Over', fn:r=>r.t>=1, check:r=>r.rt>0.5, cond:'PronTotal ≥ 1'},
+    {market:'Over 0.5', cat:'Over', fn:r=>r.t>=2, check:r=>r.rt>0.5, cond:'PronTotal ≥ 2'},
+    {market:'Over 0.5', cat:'Over', fn:r=>r.t>=3, check:r=>r.rt>0.5, cond:'PronTotal ≥ 3'},
+    {market:'Over 1.5', cat:'Over', fn:r=>r.t>=3, check:r=>r.rt>1.5, cond:'PronTotal ≥ 3'},
+    {market:'Over 1.5', cat:'Over', fn:r=>r.t>=4, check:r=>r.rt>1.5, cond:'PronTotal ≥ 4'},
+    {market:'Over 1.5', cat:'Over', fn:r=>r.t>=5, check:r=>r.rt>1.5, cond:'PronTotal ≥ 5'},
+    {market:'Over 2.5', cat:'Over', fn:r=>r.t>=5, check:r=>r.rt>2.5, cond:'PronTotal ≥ 5'},
+    {market:'Under 1.5',cat:'Under',fn:r=>r.t<=1, check:r=>r.rt<=1.5,cond:'PronTotal ≤ 1'},
+    {market:'Under 2.5',cat:'Under',fn:r=>r.t<=1, check:r=>r.rt<=2.5,cond:'PronTotal ≤ 1'},
+    {market:'Under 2.5',cat:'Under',fn:r=>r.t<=2, check:r=>r.rt<=2.5,cond:'PronTotal ≤ 2'},
+    {market:'Under 3.5',cat:'Under',fn:r=>r.t<=1, check:r=>r.rt<=3.5,cond:'PronTotal ≤ 1'},
+    {market:'Under 3.5',cat:'Under',fn:r=>r.t<=2, check:r=>r.rt<=3.5,cond:'PronTotal ≤ 2'},
+    {market:'Under 3.5',cat:'Under',fn:r=>r.t<=3, check:r=>r.rt<=3.5,cond:'PronTotal ≤ 3'},
+    {market:'Under 4.5',cat:'Under',fn:r=>r.t<=3, check:r=>r.rt<=4.5,cond:'PronTotal ≤ 3'},
+    {market:'Under 5.5',cat:'Under',fn:r=>r.t<=3, check:r=>r.rt<=5.5,cond:'PronTotal ≤ 3'},
+    {market:'HC0 local', cat:'HC',  fn:r=>r.d>0,  check:r=>r.rl>=r.rv,cond:'PronL−PronV > 0'},
+    {market:'HC0 local', cat:'HC',  fn:r=>r.d>1,  check:r=>r.rl>=r.rv,cond:'PronL−PronV > 1'},
+    {market:'HC0 local', cat:'HC',  fn:r=>r.d>2,  check:r=>r.rl>=r.rv,cond:'PronL−PronV > 2'},
+    {market:'DO 1X',     cat:'DO',  fn:r=>r.sp==='1',check:r=>r.sr==='1'||r.sr==='X',cond:'Pronós. local'},
+    {market:'DO X2',     cat:'DO',  fn:r=>r.sp==='2',check:r=>r.sr==='2'||r.sr==='X',cond:'Pronós. visitante'},
+    {market:'DO 1-2',    cat:'DO',  fn:r=>r.sp==='X',check:r=>r.sr!=='X',cond:'Pronós. empate'},
+    {market:'1X2 local', cat:'1X2', fn:r=>r.sp==='1',check:r=>r.sr==='1',cond:'Pronóstico = 1'},
+    {market:'1X2 empate',cat:'1X2', fn:r=>r.sp==='X',check:r=>r.sr==='X',cond:'Pronóstico = X'},
+    {market:'1X2 visit.',cat:'1X2', fn:r=>r.sp==='2',check:r=>r.sr==='2',cond:'Pronóstico = 2'},
+  ];
+  // Enrich hist
+  const enriched=hist.map(r=>{
+    const t=r.pl+r.pv,rt=r.rl+r.rv,d=r.pl-r.pv;
+    const sp=r.pl>r.pv?'1':r.pl<r.pv?'2':'X';
+    const sr=r.rl>r.rv?'1':r.rl<r.rv?'2':'X';
+    return{...r,t,rt,d,sp,sr};
+  });
+  const seen={};
+  candidates.forEach(c=>{
+    const sub=enriched.filter(r=>{try{return c.fn(r)}catch(e){return false}});
+    if(sub.length<8) return;
+    const pct=sub.filter(r=>{try{return c.check(r)}catch(e){return false}}).length/sub.length*100;
+    const key=c.cat+'|'+c.market;
+    if(!seen[key]||pct>seen[key]){
+      seen[key]=pct;
+      const existing=rules.findIndex(r=>r.cat===c.cat&&r.market===c.market);
+      const rule={market:c.market,cond:c.cond,pct:parseFloat(pct.toFixed(1)),cat:c.cat,n:sub.length,
+        fn:(function(fn){return fn})(c.fn)};
+      if(existing>=0) rules[existing]=rule; else rules.push(rule);
+    }
+  });
+  return rules.filter(r=>r.pct>50).sort((a,b)=>b.pct-a.pct);
+}
+
+function renderAnalysis(){
+  const tipster=getTipsters()[AHT];
+  const hist=getHistory(tipster.id);
+  const el=document.getElementById('h-analysis');
+  const MIN=15;
+  if(hist.length<MIN){
+    el.innerHTML=`<div class="abox">
+      <div class="abox-title">Análisis automático</div>
+      <div class="warn-min">Necesitas al menos ${MIN} partidos para generar reglas. Tienes ${hist.length}. Faltan ${MIN-hist.length}.</div>
+      <div style="font-size:12px;color:var(--mu)">Cuando superes los ${MIN} partidos, el sistema calculará automáticamente los mejores mercados y % de acierto para este tipster.</div>
+    </div>`;
+    return;
+  }
+  const enriched=hist.map(r=>{
+    const t=r.pl+r.pv,rt=r.rl+r.rv,d=r.pl-r.pv;
+    const sp=r.pl>r.pv?'1':r.pl<r.pv?'2':'X';
+    const sr=r.rl>r.rv?'1':r.rl<r.rv?'2':'X';
+    return{...r,t,rt,d,sp,sr};
+  });
+  const n=enriched.length;
+  const sign_ok=enriched.filter(r=>r.sp===r.sr).length;
+  const bias_l=(enriched.reduce((a,r)=>a+(r.rl-r.pl),0)/n).toFixed(2);
+  const bias_v=(enriched.reduce((a,r)=>a+(r.rv-r.pv),0)/n).toFixed(2);
+  const bias_t=(enriched.reduce((a,r)=>a+(r.rt-r.t),0)/n).toFixed(2);
+  const mae_t=(enriched.reduce((a,r)=>a+Math.abs(r.rt-r.t),0)/n).toFixed(2);
+  const avg_pt=(enriched.reduce((a,r)=>a+r.t,0)/n).toFixed(2);
+  const avg_rt=(enriched.reduce((a,r)=>a+r.rt,0)/n).toFixed(2);
+  const rules=computeRules(hist)||[];
+  const topRules=rules.filter(r=>r.pct>=70).slice(0,10);
+
+  const qualityColor=hist.length>=100?'var(--grn)':hist.length>=50?'var(--t2)':'var(--dng)';
+  const qualityText=hist.length>=100?'Alta confianza':hist.length>=50?'Confianza media':'Muestra baja';
+
+  el.innerHTML=`
+  <div class="abox">
+    <div class="abox-title">Estadísticas generales — ${n} partidos</div>
+    <div class="stat-grid">
+      <div class="scard"><div class="sc-l">Acierto 1X2</div><div class="sc-v">${(sign_ok/n*100).toFixed(1)}%</div><div class="sc-s">${sign_ok}/${n}</div></div>
+      <div class="scard"><div class="sc-l">Sesgo total goles</div><div class="sc-v" style="color:${parseFloat(bias_t)>0.3||parseFloat(bias_t)<-0.3?'var(--t2)':'var(--grn)'}">${bias_t>0?'+':''}${bias_t}</div><div class="sc-s">Pron̄ ${avg_pt} → Real ${avg_rt}</div></div>
+      <div class="scard"><div class="sc-l">MAE goles</div><div class="sc-v">${mae_t}</div><div class="sc-s">Sesgo local ${bias_l>0?'+':''}${bias_l} / visit. ${bias_v>0?'+':''}${bias_v}</div></div>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;color:${qualityColor};margin-bottom:14px">Calidad de muestra: ${qualityText} (${n} partidos)</div>
+    <div class="abox-title" style="margin-bottom:10px">Mercados calculados automáticamente</div>
+    ${topRules.length?topRules.map(r=>`
+      <div class="rule-row ${r.pct>=85?'r-top':''}">
+        <div class="rr-mkt">${r.market}</div>
+        <div class="rr-cond">${r.cond}</div>
+        <div class="rr-n" style="color:var(--mu)">${r.n} ap.</div>
+        <div class="rr-pct" style="color:${r.pct>=90?'var(--t3)':r.pct>=80?'var(--grn)':r.pct>=70?'var(--t2)':'var(--mu)'}">${r.pct.toFixed(1)}%</div>
+      </div>`).join('')
+    :'<div style="font-size:12px;color:var(--mu)">Sin mercados con >70% de acierto aún. Añade más partidos.</div>'}
+    ${hist.length>=100?`<div style="margin-top:14px;padding:10px 12px;background:rgba(96,212,240,.06);border:1px solid rgba(96,212,240,.15);border-radius:8px;font-size:12px;color:var(--t3)">Las reglas generadas se aplican automáticamente al analizar jornadas con este tipster en la pestaña principal.</div>`:''}
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+renderTselTab0();
+selectTipster(0);
+document.getElementById('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey) analyze();});
+</script>
+</body>
+</html>
