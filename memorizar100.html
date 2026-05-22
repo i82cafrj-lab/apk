@@ -82,7 +82,7 @@
             width: 100%;
             box-sizing: border-box;
             background: #fff;
-            -webkit-appearance: none; /* Quita estilos nativos en iOS */
+            -webkit-appearance: none;
         }
 
         .range-inputs {
@@ -142,7 +142,7 @@
             box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
             width: 100%;
             user-select: none;
-            -webkit-tap-highlight-color: transparent; /* Elimina parpadeo azul en móvil */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .action-btn.next-state {
@@ -167,7 +167,7 @@
 
 <div class="container">
     <h1>Entrenador Mnemotécnico</h1>
-    <p class="p-subtitle">Código corregido (V exclusiva en el 7)</p>
+    <p class="p-subtitle">Tabla 100% Actualizada desde tu Imagen</p>
 
     <div class="config-panel">
         <div class="config-group">
@@ -195,29 +195,30 @@
     <button id="mainButton" class="action-btn">Mostrar Respuesta</button>
 
     <div class="stats">Tarjetas vistas: <span id="counterDisplay">0</span></div>
-    <div class="shortcuts-hint">Optimizado para pantallas táctiles y teclado.</div>
+    <div class="shortcuts-hint">Optimizado para pantallas táctiles de móvil y teclado.</div>
 </div>
 
 <script>
-    // Tabla adaptada: Eliminada la "V" del 9 (reemplazada por Apio para mantener P=9)
+    // Tu tabla exacta extraída de la imagen
     const mnemotecnica = {
         0: "Aro, rey, oro", 1: "Te, Día", 2: "Noe, Ñu", 3: "Amo", 4: "Oca", 5: "Ola, Olla", 
-        6: "Oso", 7: "Fe / Uva / Eje", 8: "Hacha", 9: "Búho, Apio, Pío", 10: "Toro", 
-        11: "Dado", 12: "Duna", 13: "Dama", 14: "Taco", 15: "Tela", 16: "Tieso", 
+        6: "Oso", 7: "Fe/Uva/Eje", 8: "Hacha", 9: "Buho, Ave, Pío", 10: "Toro", 
+        11: "Dado", 12: "Duna", 13: "Dama", 14: "Taco", 15: "Tela", 16: "Tasa", 
         17: "Tufo", 18: "Techo", 19: "Tubo", 20: "Noria", 21: "Nota", 22: "Nene", 
-        23: "Nemo", 24: "Nuca", 25: "Nilo", 26: "Anis", 27: "Nivea", 28: "Noche", 
-        29: "Nube", 30: "Moro", 31: "Moto", 32: "Mono", 33: "Momia", 34: "Maca", 
-        35: "Mula", 36: "Mesa", 37: "Mafia", 38: "Mucho", 39: "Mapa", 40: "Cera", 
+        23: "Nemo", 24: "Nuca", 25: "Nilo", 26: "Nasa", 27: "Nave", 28: "Noche", 
+        29: "Nube", 30: "Mar", 31: "Moto", 32: "Mono", 33: "Momia", 34: "Momo", 
+        35: "Mula", 36: "Mesa", 37: "Mafia", 38: "Mecha", 39: "Mapa", 40: "Cara", 
         41: "Cata", 42: "Cuna", 43: "Cama", 44: "CoCo", 45: "Cola", 46: "Casa", 
-        47: "Cafe", 48: "Cacho", 49: "Cubo", 50: "Loro", 51: "Lata", 52: "Luna", 
-        53: "Lama", 54: "Loco", 55: "Lulu", 56: "Losa", 57: "Lujo", 58: "Leche", 
-        59: "Lobo", 60: "Sera", 61: "Seta", 62: "Saña", 63: "Suma", 64: "Saco", 
-        65: "Sola", 66: "Seso", 67: "Sofa", 68: "Sacho", 69: "Sapo", 70: "Faro", 
-        71: "Foto", 72: "Fino", 73: "Fama", 74: "Foca", 75: "Fila", 76: "Vaso", 
-        77: "Fofo", 78: "Fecha", 79: "Fobia", 80: "Churro", 81: "Chita", 82: "China", 
-        83: "Chimo", 84: "Chico", 85: "Cholo", 86: "Achis", 87: "Chufa", 88: "Chucho", 
-        89: "Chapa", 90: "Pera", 91: "Pata", 92: "Pena", 93: "Puma", 94: "Pico", 
-        95: "Pelo", 96: "Peso", 97: "Pavo", 98: "Pecho", 99: "Pipa", 100: "Torero"
+        47: "Cava", 48: "Coche", 49: "Cubo", 50: "Loro", 51: "Lata", 52: "Luna", 
+        53: "Lima", 54: "Loco", 55: "Lala (Teletubbie Amarillo)", 56: "Losa", 57: "Lujo", 
+        58: "Leche", 59: "Lobo", 60: "Sera", 61: "Seta", 62: "Saña", 63: "Suma", 
+        64: "Saco", 65: "Sala", 66: "Seso", 67: "Sofa", 68: "Suchi (Sushi)", 69: "Sapo", 
+        70: "Faro", 71: "Foto", 72: "Fino", 73: "Fama", 74: "Foca", 75: "Falo", 
+        76: "Foso", 77: "Fofo", 78: "Fecha", 79: "Fiba", 80: "Churro", 81: "Chita", 
+        82: "Chino", 83: "Chimo", 84: "Chico", 85: "Cholo", 86: "Chosa (Choza)", 
+        87: "Chufa", 88: "Chucho", 89: "Chapa", 90: "Pera", 91: "Pata", 92: "Pino", 
+        93: "Puma", 94: "Pico", 95: "Pelo", 96: "Peso", 97: "Pavo", 98: "Pecho", 
+        99: "Pipa", 100: "Torero"
     };
 
     let currentNumber = null;
