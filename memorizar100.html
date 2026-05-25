@@ -3,172 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador de Sistema Mayor</title>
+    <title>Sistema Mayor</title>
+
     <style>
         :root {
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --primary: #3498db;
-            --primary-hover: #2980b9;
-            --accent: #e74c3c;
-            --border-radius: 12px;
+            --bg: #0f0f13;
+            --surface: #1a1a22;
+            --surface2: #22222e;
+            --border: #2e2e3e;
+            --text: #e8e8f0;
+            --muted: #6b6b85;
+            --accent: #f5a623;
+            --accent2: #e74c8b;
+            --green: #2ecc71;
+            --blue: #4a9eff;
+            --purple: #a78bfa;
+            --radius: 12px;
         }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 15px;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            padding: 16px;
         }
+        header { width: 100%; max-width: 680px; text-align: center; margin-bottom: 18px; }
+        header h1 {
+            font-family: Arial, sans-serif;
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            line-height: 1;
+        }
+        header p { color: var(--muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
 
-        .container {
-            max-width: 550px;
+        /* TABS */
+        .tabs {
+            display: flex;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 18px;
             width: 100%;
+            max-width: 680px;
+            border: 1px solid var(--border);
+        }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none; border-radius: 9px;
+            font-family: Arial, sans-serif; font-size: 0.9rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; background: transparent; color: var(--muted);
+        }
+        .tab-btn.active { background: var(--accent); color: #0f0f13; }
+
+        .view { width: 100%; max-width: 680px; display: none; }
+        .view.active { display: block; }
+
+        /* ─── LISTA ─── */
+        .digit-legend {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .digit-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 4px;
             text-align: center;
         }
+        .digit-card .d-num { font-family: Arial, sans-serif; font-size: 1.5rem; color: var(--accent); line-height: 1; }
+        .digit-card .d-cons { font-family: Arial, monospace; font-size: 0.7rem; color: var(--blue); font-weight: 500; margin-top: 2px; }
 
-        h1 {
-            font-size: 1.6rem;
-            margin-bottom: 5px;
-            color: #34495e;
-        }
-
-        .p-subtitle {
-            margin-top: 0;
-            color: #7f8c8d;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }
-
-        .config-panel {
-            background: var(--card-bg);
-            padding: 12px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
+        /* Toolbar lista */
+        .list-toolbar {
             display: flex;
-            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .list-search {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-family: Arial, monospace;
+            font-size: 0.92rem;
+            color: var(--text);
+            outline: none;
+        }
+        .list-search::placeholder { color: var(--muted); }
+        .list-search:focus { border-color: var(--accent); }
+
+        .toggle-all-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .toggle-all-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Cabecera de columnas */
+        .list-header {
+            display: grid;
+            grid-template-columns: 42px 72px 1fr 100px;
+            gap: 8px;
+            padding: 6px 12px;
+            margin-bottom: 4px;
+        }
+        .list-header span {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .list-header span:first-child { text-align: right; }
+        .list-header span:nth-child(2) { text-align: center; }
+        .list-header span:last-child { text-align: center; }
+
+        .number-list { display: flex; flex-direction: column; gap: 3px; }
+
+        .list-row {
+            display: grid;
+            grid-template-columns: 42px 72px 1fr 100px;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            padding: 8px 12px;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .list-row:hover { background: var(--surface2); border-color: #3e3e55; }
+
+        .row-num {
+            font-family: Arial, sans-serif;
+            font-size: 1.45rem;
+            color: var(--accent);
+            text-align: right;
+            line-height: 1;
+        }
+
+        /* Columna 2: consonantes fonéticas de la palabra */
+        .row-phon {
+            font-family: Arial, monospace;
+            font-size: 0.82rem;
+            color: var(--green);
+            font-weight: 500;
+            text-align: center;
+            background: rgba(46, 204, 113, 0.08);
+            border-radius: 5px;
+            padding: 4px 6px;
+            letter-spacing: 1.5px;
+        }
+
+        /* Columna 3: palabra con toggle */
+        .row-word-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .word-text {
+            font-size: 0.92rem;
+            color: var(--text);
+            font-weight: 500;
+            transition: filter 0.2s, opacity 0.2s;
+        }
+        .word-text.blurred {
+            filter: blur(5px);
+            opacity: 0.4;
+        }
+        .eye-btn {
+            flex-shrink: 0;
+            font-size: 0.85rem;
+            opacity: 0.3;
+            transition: opacity 0.15s;
+        }
+        .row-word-cell:hover .eye-btn { opacity: 0.8; }
+
+        /* Columna 4: consonantes de referencia del sistema */
+        .row-ref {
+            font-family: Arial, monospace;
+            font-size: 0.72rem;
+            color: var(--purple);
+            text-align: center;
+            background: rgba(167, 139, 250, 0.08);
+            border-radius: 5px;
+            padding: 4px 5px;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        /* ─── JUGAR ─── */
+        .config-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 16px;
+            display: flex;
             gap: 10px;
         }
-
-        .config-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            flex: 1;
+        .config-group { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+        .config-group label {
+            font-size: 0.65rem; font-weight: 700; color: var(--muted);
+            text-transform: uppercase; letter-spacing: 1.5px;
         }
-
-        label {
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #7f8c8d;
-            text-transform: uppercase;
+        .config-group select, .config-group input {
+            background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text); border-radius: 8px; padding: 9px 10px;
+            font-family: Arial, sans-serif; font-size: 0.9rem;
+            outline: none; width: 100%; -webkit-appearance: none;
         }
-
-        select, input {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 0.9rem;
-            outline: none;
-            width: 100%;
-            box-sizing: border-box;
-            background: #fff;
-            -webkit-appearance: none;
-        }
-
-        .range-inputs {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            width: 100%;
-        }
-
-        .range-inputs input {
-            text-align: center;
-        }
+        .config-group select:focus, .config-group input:focus { border-color: var(--accent); }
+        .range-inputs { display: flex; align-items: center; gap: 5px; }
+        .range-inputs span { color: var(--muted); font-size: 0.8rem; }
 
         .flashcard {
-            background: var(--card-bg);
-            min-height: 200px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-bottom: 4px solid var(--accent);
+            border-radius: var(--radius);
+            min-height: 210px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 24px 20px; margin-bottom: 16px;
+            position: relative; overflow: hidden;
+        }
+        .flashcard::before {
+            content: '';
+            position: absolute; top: -40px; right: -40px;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .card-consonants {
+            font-family: Arial, monospace;
+            font-size: 0.8rem; color: var(--blue);
+            letter-spacing: 3px; text-transform: uppercase;
+            margin-bottom: 8px; min-height: 1.1rem;
+        }
+        .stimulus {
+            font-family: Arial, sans-serif;
+            font-size: 4rem; color: var(--text); line-height: 1;
+        }
+        .answer {
+            font-size: 1.7rem; font-weight: 700;
+            margin-top: 16px; color: var(--accent2);
+            min-height: 2.2rem; text-align: center;
+            transition: opacity 0.25s, transform 0.25s;
+        }
+        .hidden { opacity: 0; transform: translateY(6px); pointer-events: none; }
+        .action-btn {
+            width: 100%; border: none; border-radius: var(--radius);
+            padding: 16px; font-family: Arial, sans-serif;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            letter-spacing: 0.5px; transition: all 0.2s;
+            background: var(--accent); color: #0f0f13;
+        }
+        .action-btn.next-state { background: var(--green); }
+        .action-btn:active { transform: scale(0.98); }
+        .stats-bar {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-top: 14px; padding: 0 2px;
+        }
+        .stats-bar span { font-size: 0.78rem; color: var(--muted); }
+        .stats-bar .count { font-family: Arial, monospace; color: var(--accent); font-weight: 500; }
+        .hint { text-align: center; margin-top: 8px; font-size: 0.7rem; color: var(--border); letter-spacing: 1px; }
+
+        /* ─── MEMORIZAR ─── */
+        .memo-config {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        .memo-config .config-group { flex: 1; }
+
+        /* Pantalla de números */
+        .memo-stage {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            min-height: 180px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-bottom: 5px solid var(--primary);
+            justify-content: center;
+            padding: 24px;
+            margin-bottom: 16px;
+            gap: 18px;
         }
 
-        .stimulus {
+        .memo-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .memo-num {
             font-size: 3.2rem;
-            font-weight: 800;
-            margin: 0;
-            color: #2c3e50;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1;
+            letter-spacing: 2px;
         }
 
-        .answer {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-top: 15px;
-            color: var(--accent);
-            min-height: 2.2rem;
-        }
-
-        .hidden {
-            opacity: 0;
-            transform: translateY(5px);
-        }
-
-        .action-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 16px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
-            width: 100%;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .action-btn.next-state {
-            background-color: #2ecc71;
-            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
-        }
-
-        .stats {
-            font-size: 0.85rem;
-            color: #7f8c8d;
-            margin-top: 15px;
-        }
-
-        .shortcuts-hint {
-            margin-top: 10px;
+        .memo-countdown {
             font-size: 0.75rem;
-            color: #bdc3c7;
+            color: var(--muted);
+            letter-spacing: 2px;
+        }
+
+        .memo-bar-wrap {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .memo-bar {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width linear;
+            width: 100%;
+        }
+
+        /* Fase de respuesta */
+        .memo-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .memo-input-box {
+            width: 64px;
+            padding: 10px 6px;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: var(--surface2);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+            -moz-appearance: textfield;
+        }
+        .memo-input-box::-webkit-outer-spin-button,
+        .memo-input-box::-webkit-inner-spin-button { -webkit-appearance: none; }
+        .memo-input-box:focus { border-color: var(--accent); }
+        .memo-input-box.correct { border-color: var(--green); color: var(--green); background: rgba(46,204,113,0.08); }
+        .memo-input-box.wrong   { border-color: var(--accent2); color: var(--accent2); background: rgba(231,76,139,0.08); }
+
+        .memo-result {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            min-height: 1.4rem;
+            color: var(--muted);
+        }
+
+        .memo-result .score-good { color: var(--green); }
+        .memo-result .score-bad  { color: var(--accent2); }
+
+        .memo-btn {
+            width: 100%; border: none; border-radius: var(--radius);
+            padding: 14px; font-family: Arial, sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; background: var(--accent); color: #0f0f13;
+        }
+        .memo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .memo-btn.check-state { background: var(--blue); color: #fff; }
+        .memo-btn:active:not(:disabled) { transform: scale(0.98); }
+
+        .memo-msg {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Entrenador Mnemotécnico</h1>
-    <p class="p-subtitle">Tabla 100% Actualizada desde tu Imagen</p>
+<header>
+    <h1>Sistema Mayor</h1>
+    <p>Entrenador Mnemotécnico · 0–100</p>
+</header>
 
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('play', this)">⚡ Jugar</button>
+    <button class="tab-btn" onclick="switchTab('list', this)">📋 Ver Lista</button>
+    <button class="tab-btn" onclick="switchTab('memo', this)">🧠 Memorizar</button>
+</div>
+
+<!-- ═══ JUGAR ═══ -->
+<div id="view-play" class="view active">
     <div class="config-panel">
         <div class="config-group">
             <label for="modeSelect">Dirección</label>
@@ -177,117 +435,457 @@
                 <option value="wordToNum">Palabra ➔ Número</option>
             </select>
         </div>
-
         <div class="config-group">
             <label>Rango</label>
             <div class="range-inputs">
                 <input type="number" id="minRange" value="0" min="0" max="100">
-                <input type="number" id="maxRange" value="10" min="0" max="100">
+                <span>—</span>
+                <input type="number" id="maxRange" value="20" min="0" max="100">
             </div>
         </div>
     </div>
 
     <div class="flashcard">
+        <div id="cardConsonants" class="card-consonants"></div>
         <div id="stimulusDisplay" class="stimulus">-</div>
         <div id="answerDisplay" class="answer hidden">-</div>
     </div>
 
     <button id="mainButton" class="action-btn">Mostrar Respuesta</button>
 
-    <div class="stats">Tarjetas vistas: <span id="counterDisplay">0</span></div>
-    <div class="shortcuts-hint">Optimizado para pantallas táctiles de móvil y teclado.</div>
+    <div class="stats-bar">
+        <span>Vistas: <span class="count" id="counterDisplay">0</span></span>
+        <span id="rangeLabel">0–20</span>
+    </div>
+    <p class="hint">SPACE / ENTER para avanzar</p>
+</div>
+
+<!-- ═══ LISTA ═══ -->
+<div id="view-list" class="view">
+    <div class="digit-legend" id="digitLegend"></div>
+
+    <div class="list-toolbar">
+        <input type="text" class="list-search" id="listSearch" placeholder="Buscar número o palabra…">
+        <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">👁 Mostrar todo</button>
+    </div>
+
+    <div class="list-header">
+        <span style="text-align:right">#</span>
+        <span style="text-align:center">Fonética</span>
+        <span>Palabra</span>
+        <span style="text-align:center">Referencia</span>
+    </div>
+
+    <div class="number-list" id="numberList"></div>
+</div>
+
+<!-- ═══ MEMORIZAR ═══ -->
+<div id="view-memo" class="view">
+
+    <div class="memo-config">
+        <div class="config-group">
+            <label for="memoCount">Nº de números</label>
+            <select id="memoCount">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div class="config-group">
+            <label for="memoSeconds">Segundos</label>
+            <select id="memoSeconds">
+                <option value="1">1 s</option>
+                <option value="2" selected>2 s</option>
+                <option value="3">3 s</option>
+                <option value="5">5 s</option>
+                <option value="10">10 s</option>
+                <option value="15">15 s</option>
+                <option value="30">30 s</option>
+            </select>
+        </div>
+        <div class="config-group">
+            <label for="memoRange">Rango máx.</label>
+            <select id="memoRange">
+                <option value="9">0–9</option>
+                <option value="99" selected>0–99</option>
+                <option value="100">0–100</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Pantalla principal -->
+    <div class="memo-stage" id="memoStage">
+        <p class="memo-msg">Pulsa <strong>Iniciar</strong> para comenzar.</p>
+    </div>
+
+    <!-- Inputs de respuesta (ocultos hasta fase 2) -->
+    <div class="memo-inputs" id="memoInputs" style="display:none"></div>
+
+    <!-- Resultado -->
+    <div class="memo-result" id="memoResult"></div>
+
+    <button class="memo-btn" id="memoBtn" onclick="memoAction()">▶ Iniciar</button>
 </div>
 
 <script>
-    // Tu tabla exacta extraída de la imagen
-    const mnemotecnica = {
-        0: "Aro, rey, oro", 1: "Te, Día", 2: "Noe, Ñu", 3: "Amo", 4: "Oca", 5: "Ola, Olla", 
-        6: "Oso", 7: "Fe/Uva/Eje", 8: "Hacha", 9: "Buho, Ave, Pío", 10: "Toro", 
-        11: "Dado", 12: "Duna", 13: "Dama", 14: "Taco", 15: "Tela", 16: "Tasa", 
-        17: "Tufo", 18: "Techo", 19: "Tubo", 20: "Noria", 21: "Nota", 22: "Nene", 
-        23: "Nemo", 24: "Nuca", 25: "Nilo", 26: "Nasa", 27: "Nave", 28: "Noche", 
-        29: "Nube", 30: "Mar", 31: "Moto", 32: "Mono", 33: "Momia", 34: "Momo", 
-        35: "Mula", 36: "Mesa", 37: "Mafia", 38: "Mecha", 39: "Mapa", 40: "Cara", 
-        41: "Cata", 42: "Cuna", 43: "Cama", 44: "CoCo", 45: "Cola", 46: "Casa", 
-        47: "Cava", 48: "Coche", 49: "Cubo", 50: "Loro", 51: "Lata", 52: "Luna", 
-        53: "Lima", 54: "Loco", 55: "Lala (Teletubbie Amarillo)", 56: "Losa", 57: "Lujo", 
-        58: "Leche", 59: "Lobo", 60: "Sera", 61: "Seta", 62: "Saña", 63: "Suma", 
-        64: "Saco", 65: "Sala", 66: "Seso", 67: "Sofa", 68: "Suchi (Sushi)", 69: "Sapo", 
-        70: "Faro", 71: "Foto", 72: "Fino", 73: "Fama", 74: "Foca", 75: "Falo", 
-        76: "Foso", 77: "Fofo", 78: "Fecha", 79: "Fiba", 80: "Churro", 81: "Chita", 
-        82: "Chino", 83: "Chimo", 84: "Chico", 85: "Cholo", 86: "Chosa (Choza)", 
-        87: "Chufa", 88: "Chucho", 89: "Chapa", 90: "Pera", 91: "Pata", 92: "Pino", 
-        93: "Puma", 94: "Pico", 95: "Pelo", 96: "Peso", 97: "Pavo", 98: "Pecho", 
-        99: "Pipa", 100: "Torero"
-    };
+// ─── DATOS ───────────────────────────────────────────────
+const mnemotecnica = {
+    0:"Aro, rey, oro", 1:"Te, Día", 2:"Noe, Ñu", 3:"Amo", 4:"Oca",
+    5:"Ola, Olla", 6:"Oso", 7:"Fe/Uva/Eje", 8:"Hacha", 9:"Buho, Ave, Pío",
+    10:"Toro", 11:"Dado", 12:"Duna", 13:"Dama", 14:"Taco", 15:"Tela",
+    16:"Tasa", 17:"Tufo", 18:"Techo", 19:"Tubo", 20:"Noria", 21:"Nota",
+    22:"Nene", 23:"Nemo", 24:"Nuca", 25:"Nilo", 26:"Nasa", 27:"Nave",
+    28:"Noche", 29:"Nube", 30:"Mar", 31:"Moto", 32:"Mono", 33:"Momia",
+    34:"Momo", 35:"Mula", 36:"Mesa", 37:"Mafia", 38:"Mecha", 39:"Mapa",
+    40:"Cara", 41:"Cata", 42:"Cuna", 43:"Cama", 44:"CoCo", 45:"Cola",
+    46:"Casa", 47:"Cava", 48:"Coche", 49:"Cubo", 50:"Loro", 51:"Lata",
+    52:"Luna", 53:"Lima", 54:"Loco", 55:"Lala (Teletubbie Amarillo)",
+    56:"Losa", 57:"Lujo", 58:"Leche", 59:"Lobo", 60:"Sera", 61:"Seta",
+    62:"Saña", 63:"Suma", 64:"Saco", 65:"Sala", 66:"Seso", 67:"Sofa",
+    68:"Suchi (Sushi)", 69:"Sapo", 70:"Faro", 71:"Foto", 72:"Fino",
+    73:"Fama", 74:"Foca", 75:"Falo", 76:"Foso", 77:"Fofo", 78:"Fecha",
+    79:"Fiba", 80:"Churro", 81:"Chita", 82:"Chino", 83:"Chimo", 84:"Chico",
+    85:"Cholo", 86:"Chosa (Choza)", 87:"Chufa", 88:"Chucho", 89:"Chapa",
+    90:"Pera", 91:"Pata", 92:"Pino", 93:"Puma", 94:"Pico", 95:"Pelo",
+    96:"Peso", 97:"Pavo", 98:"Pecho", 99:"Pipa", 100:"Torero"
+};
 
-    let currentNumber = null;
-    let isShowingAnswer = false;
-    let cardsViewed = 0;
+// Consonantes de referencia por dígito (Sistema Mayor)
+const digitRef = {
+    0:'R', 1:'T/D', 2:'N/Ñ', 3:'M', 4:'C/K',
+    5:'L', 6:'S/Z', 7:'F/V', 8:'CH', 9:'B/P'
+};
 
-    const stimulusDisplay = document.getElementById('stimulusDisplay');
-    const answerDisplay = document.getElementById('answerDisplay');
-    const mainButton = document.getElementById('mainButton');
-    const modeSelect = document.getElementById('modeSelect');
-    const minRangeInput = document.getElementById('minRange');
-    const maxRangeInput = document.getElementById('maxRange');
-    const counterDisplay = document.getElementById('counterDisplay');
+// Referencia del sistema para un número (por dígitos)
+function getRefConsonants(n) {
+    if (n === 100) return 'T/D · R · R';
+    if (n < 10) return digitRef[n];
+    const t = Math.floor(n / 10), u = n % 10;
+    return digitRef[t] + ' · ' + digitRef[u];
+}
 
-    function nextCard() {
-        const mode = modeSelect.value;
-        let min = parseInt(minRangeInput.value) || 0;
-        let max = parseInt(maxRangeInput.value) || 100;
+// Extrae las consonantes REALES de la primera palabra (fonética española)
+function extractPhoneticConsonants(wordStr) {
+    // Tomar primer token (antes de coma, barra, paréntesis)
+    let w = wordStr.split(/[,\/\(]/)[0].trim().toUpperCase();
 
-        if (min < 0) min = 0;
-        if (max > 100) max = 100;
-        if (min > max) { let temp = min; min = max; max = temp; minRangeInput.value = min; maxRangeInput.value = max; }
+    // Normalizar vocales acentuadas pero preservar Ñ
+    w = w.replace(/[ÁÀÂÄ]/g,'A').replace(/[ÉÈÊË]/g,'E')
+         .replace(/[ÍÌÎÏ]/g,'I').replace(/[ÓÒÔÖ]/g,'O')
+         .replace(/[ÚÙÛÜ]/g,'U');
 
-        const range = max - min + 1;
-        currentNumber = Math.floor(Math.random() * range) + min;
+    const VOWELS = new Set(['A','E','I','O','U']);
+    const result = [];
+    let i = 0;
 
-        if (mode === "numToWord") {
-            stimulusDisplay.textContent = currentNumber;
-            answerDisplay.textContent = mnemotecnica[currentNumber];
-        } else {
-            stimulusDisplay.textContent = mnemotecnica[currentNumber];
-            answerDisplay.textContent = currentNumber;
-        }
+    while (i < w.length) {
+        const c  = w[i];
+        const c2 = w[i+1] || '';
 
-        answerDisplay.classList.add('hidden');
-        mainButton.textContent = "Mostrar Respuesta";
-        mainButton.classList.remove('next-state');
-        isShowingAnswer = false;
+        // Dígrafos primero
+        if (c==='C' && c2==='H') { result.push('CH'); i+=2; continue; }
+        if (c==='L' && c2==='L') { result.push('LL'); i+=2; continue; }
+        if (c==='R' && c2==='R') { result.push('RR'); i+=2; continue; }
+        if (c==='Q' && c2==='U') { result.push('QU'); i+=2; continue; }
+
+        // Ignorar vocales y H muda
+        if (VOWELS.has(c) || c==='H') { i++; continue; }
+
+        // Ignorar espacios y caracteres no alfabéticos
+        if (!/[A-ZÑ]/.test(c)) { i++; continue; }
+
+        result.push(c);
+        i++;
+    }
+    return result.join(' · ');
+}
+
+// ─── ESTADO LISTA ────────────────────────────────────────
+let allHidden = true;
+
+function toggleAll() {
+    allHidden = !allHidden;
+    document.querySelectorAll('.word-text').forEach(el => {
+        el.classList.toggle('blurred', allHidden);
+    });
+    document.querySelectorAll('.eye-btn').forEach(el => {
+        el.textContent = allHidden ? '👁' : '🙈';
+    });
+    const btn = document.getElementById('toggleAllBtn');
+    btn.textContent = allHidden ? '👁 Mostrar todo' : '🙈 Ocultar todo';
+}
+
+function toggleWord(cell) {
+    const wordEl = cell.querySelector('.word-text');
+    const eyeEl  = cell.querySelector('.eye-btn');
+    const isBlurred = wordEl.classList.toggle('blurred');
+    eyeEl.textContent = isBlurred ? '👁' : '🙈';
+}
+
+// ─── RENDER LISTA ────────────────────────────────────────
+function buildLegend() {
+    const legend = document.getElementById('digitLegend');
+    for (let d = 0; d <= 9; d++) {
+        legend.innerHTML += `
+            <div class="digit-card">
+                <div class="d-num">${d}</div>
+                <div class="d-cons">${digitRef[d]}</div>
+            </div>`;
+    }
+}
+
+function buildList(filter = '') {
+    const container = document.getElementById('numberList');
+    container.innerHTML = '';
+    const q = filter.toLowerCase().trim();
+
+    for (let n = 0; n <= 100; n++) {
+        const word  = mnemotecnica[n];
+        const phon  = extractPhoneticConsonants(word);
+        const ref   = getRefConsonants(n);
+
+        if (q && !String(n).includes(q) && !word.toLowerCase().includes(q) && !phon.toLowerCase().includes(q)) continue;
+
+        const row = document.createElement('div');
+        row.className = 'list-row';
+
+        const wordBlurred = allHidden ? 'blurred' : '';
+        const eyeIcon     = allHidden ? '👁' : '🙈';
+
+        row.innerHTML = `
+            <div class="row-num">${n}</div>
+            <div class="row-phon">${phon}</div>
+            <div class="row-word-cell" onclick="toggleWord(this)">
+                <span class="word-text ${wordBlurred}">${word}</span>
+                <span class="eye-btn">${eyeIcon}</span>
+            </div>
+            <div class="row-ref">${ref}</div>
+        `;
+        container.appendChild(row);
+    }
+}
+
+document.getElementById('listSearch').addEventListener('input', function() {
+    buildList(this.value);
+});
+
+// ─── JUGAR ───────────────────────────────────────────────
+let currentNumber = null, isShowingAnswer = false, cardsViewed = 0;
+
+const stimulusDisplay = document.getElementById('stimulusDisplay');
+const answerDisplay   = document.getElementById('answerDisplay');
+const cardConsonants  = document.getElementById('cardConsonants');
+const mainButton      = document.getElementById('mainButton');
+const modeSelect      = document.getElementById('modeSelect');
+const minRangeInput   = document.getElementById('minRange');
+const maxRangeInput   = document.getElementById('maxRange');
+const counterDisplay  = document.getElementById('counterDisplay');
+const rangeLabel      = document.getElementById('rangeLabel');
+
+function nextCard() {
+    const mode = modeSelect.value;
+    let min = parseInt(minRangeInput.value) || 0;
+    let max = parseInt(maxRangeInput.value) || 100;
+    if (min < 0) min = 0; if (max > 100) max = 100;
+    if (min > max) { [min, max] = [max, min]; minRangeInput.value = min; maxRangeInput.value = max; }
+
+    rangeLabel.textContent = min + '–' + max;
+    currentNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    const phon = extractPhoneticConsonants(mnemotecnica[currentNumber]);
+
+    if (mode === "numToWord") {
+        stimulusDisplay.textContent = currentNumber;
+        cardConsonants.textContent  = '';
+        answerDisplay.textContent   = mnemotecnica[currentNumber];
+    } else {
+        stimulusDisplay.textContent = mnemotecnica[currentNumber];
+        cardConsonants.textContent  = '';
+        answerDisplay.textContent   = currentNumber;
     }
 
-    function handleAdvance() {
-        if (!isShowingAnswer) {
-            answerDisplay.classList.remove('hidden');
-            mainButton.textContent = "Siguiente ➔";
-            mainButton.classList.add('next-state');
-            isShowingAnswer = true;
-        } else {
-            cardsViewed++;
-            counterDisplay.textContent = cardsViewed;
-            nextCard();
-        }
+    answerDisplay.classList.add('hidden');
+    mainButton.textContent = 'Mostrar Respuesta';
+    mainButton.classList.remove('next-state');
+    isShowingAnswer = false;
+}
+
+function handleAdvance() {
+    if (!isShowingAnswer) {
+        answerDisplay.classList.remove('hidden');
+        mainButton.textContent = 'Siguiente ➔';
+        mainButton.classList.add('next-state');
+        isShowingAnswer = true;
+    } else {
+        cardsViewed++;
+        counterDisplay.textContent = cardsViewed;
+        nextCard();
+    }
+}
+
+mainButton.addEventListener('click', handleAdvance);
+modeSelect.addEventListener('change', () => { cardsViewed = 0; counterDisplay.textContent = '0'; nextCard(); });
+minRangeInput.addEventListener('change', nextCard);
+maxRangeInput.addEventListener('change', nextCard);
+
+window.addEventListener('keydown', (e) => {
+    if ((e.code==='Space'||e.code==='Enter') && document.activeElement.tagName !== 'INPUT') {
+        e.preventDefault(); handleAdvance();
+    }
+});
+
+// ─── MEMORIZAR ───────────────────────────────────────────
+let memoState = 'idle';   // idle | showing | answering | checked
+let memoSequence = [];
+let memoTimer = null;
+let memoInterval = null;
+
+const memoStage   = document.getElementById('memoStage');
+const memoInputs  = document.getElementById('memoInputs');
+const memoResult  = document.getElementById('memoResult');
+const memoBtn     = document.getElementById('memoBtn');
+
+function memoAction() {
+    if (memoState === 'idle' || memoState === 'checked') {
+        startMemo();
+    } else if (memoState === 'answering') {
+        checkMemo();
+    }
+}
+
+function startMemo() {
+    const count   = parseInt(document.getElementById('memoCount').value);
+    const maxN    = parseInt(document.getElementById('memoRange').value);
+    const seconds = parseFloat(document.getElementById('memoSeconds').value);
+
+    // Generar secuencia aleatoria sin repetición
+    const pool = Array.from({length: maxN + 1}, (_, i) => i);
+    memoSequence = [];
+    while (memoSequence.length < count) {
+        const idx = Math.floor(Math.random() * pool.length);
+        memoSequence.push(pool.splice(idx, 1)[0]);
     }
 
-    mainButton.addEventListener('click', handleAdvance);
-    modeSelect.addEventListener('change', () => { cardsViewed = 0; counterDisplay.textContent = "0"; nextCard(); });
-    minRangeInput.addEventListener('change', nextCard);
-    maxRangeInput.addEventListener('change', nextCard);
+    // Mostrar números
+    memoState = 'showing';
+    memoInputs.style.display = 'none';
+    memoResult.textContent = '';
+    memoBtn.disabled = true;
+    memoBtn.textContent = '⏳ Memoriza…';
+    memoBtn.classList.remove('check-state');
 
-    window.addEventListener('keydown', (e) => {
-        if (e.code === "Space" || e.code === "Enter") {
-            if (document.activeElement.tagName !== 'INPUT') {
-                e.preventDefault();
-                handleAdvance();
+    // Construir stage: números + barra de progreso
+    memoStage.innerHTML = `
+        <div class="memo-numbers">
+            ${memoSequence.map(n => `<span class="memo-num">${n}</span>`).join('')}
+        </div>
+        <div class="memo-countdown" id="memoCountdown">${seconds.toFixed(1)} s</div>
+        <div class="memo-bar-wrap"><div class="memo-bar" id="memoBar"></div></div>
+    `;
+
+    // Animar barra
+    const bar = document.getElementById('memoBar');
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            bar.style.transition = `width ${seconds}s linear`;
+            bar.style.width = '0%';
+        });
+    });
+
+    // Countdown texto
+    let remaining = seconds;
+    memoInterval = setInterval(() => {
+        remaining -= 0.1;
+        const el = document.getElementById('memoCountdown');
+        if (el) el.textContent = Math.max(0, remaining).toFixed(1) + ' s';
+    }, 100);
+
+    // Al terminar → fase de respuesta
+    memoTimer = setTimeout(() => {
+        clearInterval(memoInterval);
+        showAnswerPhase();
+    }, seconds * 1000);
+}
+
+function showAnswerPhase() {
+    memoState = 'answering';
+
+    // Ocultar números, mostrar mensaje
+    memoStage.innerHTML = `<p class="memo-msg">¿Cuáles eran los números?</p>`;
+
+    // Construir inputs
+    memoInputs.style.display = 'flex';
+    memoInputs.innerHTML = memoSequence.map((_, i) =>
+        `<input class="memo-input-box" id="mi${i}" type="number" min="0" max="100" placeholder="?">`
+    ).join('');
+
+    memoResult.textContent = '';
+    memoBtn.disabled = false;
+    memoBtn.textContent = '✓ Comprobar';
+    memoBtn.classList.add('check-state');
+
+    // Focus primer input
+    setTimeout(() => { const f = document.getElementById('mi0'); if(f) f.focus(); }, 50);
+
+    // Enter avanza entre inputs
+    memoSequence.forEach((_, i) => {
+        const inp = document.getElementById('mi' + i);
+        inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+                const next = document.getElementById('mi' + (i+1));
+                if (next) next.focus(); else checkMemo();
             }
+        });
+    });
+}
+
+function checkMemo() {
+    if (memoState !== 'answering') return;
+    memoState = 'checked';
+
+    let correct = 0;
+    memoSequence.forEach((n, i) => {
+        const inp = document.getElementById('mi' + i);
+        const val = parseInt(inp.value);
+        if (val === n) {
+            inp.classList.add('correct');
+            correct++;
+        } else {
+            inp.classList.add('wrong');
+            inp.value = inp.value === '' ? '?' : inp.value;
+            // Mostrar respuesta correcta como placeholder
+            inp.placeholder = n;
         }
     });
 
-    nextCard();
-</script>
+    const total = memoSequence.length;
+    const pct   = Math.round((correct / total) * 100);
+    memoResult.innerHTML = correct === total
+        ? `<span class="score-good">✓ ¡Perfecto! ${correct}/${total}</span>`
+        : `<span class="score-bad">${correct}/${total} correctos (${pct}%)</span>`;
 
+    memoBtn.textContent = '▶ Otra vez';
+    memoBtn.classList.remove('check-state');
+    memoBtn.disabled = false;
+}
+
+// ─── TABS ────────────────────────────────────────────────
+function switchTab(name, btn) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+
+// ─── INIT ────────────────────────────────────────────────
+buildLegend();
+buildList();
+nextCard();
+</script>
 </body>
 </html>
