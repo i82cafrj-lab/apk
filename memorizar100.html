@@ -65,6 +65,18 @@
         .view.active { display: block; }
 
         /* ─── LISTA ─── */
+        .row-phon.blurred { filter: blur(5px); opacity: 0.4; }
+
+        .phon-eye {
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.15s;
+            user-select: none;
+        }
+        .phon-eye:hover { opacity: 1; }
+
         .digit-legend {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -120,10 +132,7 @@
         /* Cabecera de columnas */
         .list-header {
             display: grid;
-            grid-template-columns: 42px 72px 1fr 100px;
-            gap: 8px;
-            padding: 6px 12px;
-            margin-bottom: 4px;
+            grid-template-columns: 42px 90px 1fr 100px;
         }
         .list-header span {
             font-size: 0.62rem;
@@ -140,8 +149,7 @@
 
         .list-row {
             display: grid;
-            grid-template-columns: 42px 72px 1fr 100px;
-            align-items: center;
+            grid-template-columns: 42px 90px 1fr 100px;
             gap: 8px;
             background: var(--surface);
             border: 1px solid var(--border);
@@ -160,7 +168,16 @@
         }
 
         /* Columna 2: consonantes fonéticas de la palabra */
+        .row-phon-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            position: relative;
+        }
+
         .row-phon {
+            white-space: nowrap;
             font-family: Arial, monospace;
             font-size: 0.82rem;
             color: var(--green);
@@ -198,6 +215,144 @@
             transition: opacity 0.15s;
         }
         .row-word-cell:hover .eye-btn { opacity: 0.8; }
+
+        .edit-btn {
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            opacity: 0;
+            cursor: pointer;
+            transition: opacity 0.15s;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .list-row:hover .edit-btn { opacity: 0.5; }
+        .edit-btn:hover { opacity: 1 !important; background: rgba(245,166,35,0.15); }
+
+        /* ─── IMAGEN MODAL ─── */
+        .img-btn {
+            flex-shrink: 0;
+            font-size: 0.8rem;
+            opacity: 0;
+            cursor: pointer;
+            transition: opacity 0.15s;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .list-row:hover .img-btn { opacity: 0.5; }
+        .img-btn:hover { opacity: 1 !important; background: rgba(167,139,250,0.15); }
+
+        .img-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .img-overlay.open { display: flex; }
+
+        .img-modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            position: relative;
+        }
+        .img-modal h3 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        .img-modal .img-num {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+        .img-modal img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: block;
+            margin: 0 auto;
+        }
+        .img-modal .img-caption {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+        .img-modal .img-placeholder {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+            background: var(--surface2);
+            border-radius: 8px;
+        }
+        .img-close {
+            position: absolute;
+            top: 10px; right: 12px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .img-close:hover { color: var(--text); }
+        .img-wiki-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.72rem;
+            color: var(--blue);
+            text-decoration: none;
+        }
+        .img-wiki-link:hover { text-decoration: underline; }
+
+        .img-upload-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 16px;
+            background: var(--surface2);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .img-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .img-delete-btn {
+            display: inline-block;
+            margin-top: 8px;
+            margin-left: 8px;
+            padding: 4px 10px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .img-delete-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+            background: var(--surface2);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 3px 8px;
+            outline: none;
+            width: 160px;
+        }
 
         /* Columna 4: consonantes de referencia del sistema */
         .row-ref {
@@ -420,9 +575,9 @@
 </header>
 
 <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('play', this)">⚡ Jugar</button>
-    <button class="tab-btn" onclick="switchTab('list', this)">📋 Ver Lista</button>
-    <button class="tab-btn" onclick="switchTab('memo', this)">🧠 Memorizar</button>
+    <button class="tab-btn active" data-tab="play">⚡ Jugar</button>
+    <button class="tab-btn" data-tab="list">📋 Ver Lista</button>
+    <button class="tab-btn" data-tab="memo">🧠 Memorizar</button>
 </div>
 
 <!-- ═══ JUGAR ═══ -->
@@ -467,16 +622,29 @@
     <div class="list-toolbar">
         <input type="text" class="list-search" id="listSearch" placeholder="Buscar número o palabra…">
         <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">👁 Mostrar todo</button>
+        <button class="toggle-all-btn" id="togglePhonBtn" onclick="togglePhon()">🔤 Mostrar fonética</button>
+        <button class="toggle-all-btn" id="exportBtn" onclick="exportHtml()">💾 Exportar HTML</button>
     </div>
 
-    <div class="list-header">
+    <div class="list-header" id="listHeader">
         <span style="text-align:right">#</span>
-        <span style="text-align:center">Fonética</span>
+        <span class="phon-header" style="text-align:center">Fonética</span>
         <span>Palabra</span>
         <span style="text-align:center">Referencia</span>
     </div>
 
     <div class="number-list" id="numberList"></div>
+
+    <!-- Modal de imagen -->
+    <div class="img-overlay" id="imgOverlay" onclick="closeImgModal(event)">
+        <div class="img-modal" id="imgModal">
+            <button class="img-close" onclick="closeImgModal()">✕</button>
+            <h3 id="imgWord">-</h3>
+            <div class="img-num" id="imgNumLabel"></div>
+            <div id="imgContent"><div class="img-placeholder">Buscando imagen…</div></div>
+            <a class="img-wiki-link" id="imgWikiLink" href="#" target="_blank"></a>
+        </div>
+    </div>
 </div>
 
 <!-- ═══ MEMORIZAR ═══ -->
@@ -537,22 +705,25 @@ const mnemotecnica = {
     0:"Aro, rey, oro", 1:"Te, Día", 2:"Noe, Ñu", 3:"Amo", 4:"Oca",
     5:"Ola, Olla", 6:"Oso", 7:"Fe/Uva/Eje", 8:"Hacha", 9:"Buho, Ave, Pío",
     10:"Toro", 11:"Dado", 12:"Duna", 13:"Dama", 14:"Taco", 15:"Tela",
-    16:"Tasa", 17:"Tufo", 18:"Techo", 19:"Tubo", 20:"Noria", 21:"Nota",
+    16:"Tasa", 17:"Tofu", 18:"Techo", 19:"Tapa", 20:"Noria", 21:"Nota",
     22:"Nene", 23:"Nemo", 24:"Nuca", 25:"Nilo", 26:"Nasa", 27:"Nave",
     28:"Noche", 29:"Nube", 30:"Mar", 31:"Moto", 32:"Mono", 33:"Momia",
-    34:"Momo", 35:"Mula", 36:"Mesa", 37:"Mafia", 38:"Mecha", 39:"Mapa",
+    34:"Moco", 35:"Mula", 36:"Mesa", 37:"Mafia", 38:"Mecha", 39:"Mapa",
     40:"Cara", 41:"Cata", 42:"Cuna", 43:"Cama", 44:"CoCo", 45:"Cola",
     46:"Casa", 47:"Cava", 48:"Coche", 49:"Cubo", 50:"Loro", 51:"Lata",
     52:"Luna", 53:"Lima", 54:"Loco", 55:"Lala (Teletubbie Amarillo)",
-    56:"Losa", 57:"Lujo", 58:"Leche", 59:"Lobo", 60:"Sera", 61:"Seta",
-    62:"Saña", 63:"Suma", 64:"Saco", 65:"Sala", 66:"Seso", 67:"Sofa",
+    56:"Losa", 57:"Lava", 58:"Leche", 59:"Lobo", 60:"Ser", 61:"Seta",
+    62:"Seno", 63:"Suma", 64:"Saco", 65:"Sala", 66:"Seso", 67:"Sofa",
     68:"Suchi (Sushi)", 69:"Sapo", 70:"Faro", 71:"Foto", 72:"Fino",
     73:"Fama", 74:"Foca", 75:"Falo", 76:"Foso", 77:"Fofo", 78:"Fecha",
     79:"Fiba", 80:"Churro", 81:"Chita", 82:"Chino", 83:"Chimo", 84:"Chico",
     85:"Cholo", 86:"Chosa (Choza)", 87:"Chufa", 88:"Chucho", 89:"Chapa",
-    90:"Pera", 91:"Pata", 92:"Pino", 93:"Puma", 94:"Pico", 95:"Pelo",
+    90:"Pera", 91:"Pato", 92:"Pino", 93:"Puma", 94:"Pico", 95:"Pelo",
     96:"Peso", 97:"Pavo", 98:"Pecho", 99:"Pipa", 100:"Torero"
 };
+
+// Overrides manuales de fonética (editados por el usuario)
+const phoneticOverrides = {};
 
 // Consonantes de referencia por dígito (Sistema Mayor)
 const digitRef = {
@@ -607,6 +778,22 @@ function extractPhoneticConsonants(wordStr) {
 // ─── ESTADO LISTA ────────────────────────────────────────
 let allHidden = true;
 
+let phonVisible = false;
+function togglePhon() {
+    phonVisible = !phonVisible;
+    document.querySelectorAll('.row-phon').forEach(el => el.classList.toggle('blurred', !phonVisible));
+    document.querySelectorAll('.phon-eye').forEach(el => el.textContent = phonVisible ? '🙈' : '👁');
+    document.getElementById('togglePhonBtn').textContent = phonVisible ? '🔤 Ocultar fonética' : '🔤 Mostrar fonética';
+}
+
+function togglePhonRow(n) {
+    const cell    = document.querySelector(`.phon-eye[data-n="${n}"]`).closest('.row-phon-cell');
+    const span    = cell.querySelector('.row-phon');
+    const eye     = cell.querySelector('.phon-eye');
+    const blurred = span.classList.toggle('blurred');
+    eye.textContent = blurred ? '👁' : '🙈';
+}
+
 function toggleAll() {
     allHidden = !allHidden;
     document.querySelectorAll('.word-text').forEach(el => {
@@ -624,6 +811,120 @@ function toggleWord(cell) {
     const eyeEl  = cell.querySelector('.eye-btn');
     const isBlurred = wordEl.classList.toggle('blurred');
     eyeEl.textContent = isBlurred ? '👁' : '🙈';
+}
+
+function startEditPhon(n, editBtn) {
+
+    const cell      = editBtn.closest('.row-phon-cell');
+    const phonSpan  = cell.querySelector('.row-phon');
+
+    if (cell.querySelector('.edit-input')) return;
+
+    const currentPhon = phoneticOverrides[n] !== undefined
+        ? phoneticOverrides[n]
+        : extractPhoneticConsonants(mnemotecnica[n]);
+
+    const input = document.createElement('input');
+    input.className = 'edit-input';
+    input.style.width = '90px';
+    input.value = currentPhon;
+    input.type  = 'text';
+
+    phonSpan.replaceWith(input);
+    editBtn.style.display = 'none';
+    input.focus();
+    input.select();
+
+    let savedPhon = false;
+    function savePhon() {
+        if (savedPhon) return;
+        savedPhon = true;
+        const newPhon = input.value.trim() || currentPhon;
+        phoneticOverrides[n] = newPhon;
+
+        const newSpan = document.createElement('span');
+        newSpan.className   = 'row-phon';
+        newSpan.textContent = newPhon;
+        input.replaceWith(newSpan);
+        editBtn.style.display = '';
+    }
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter')  { e.preventDefault(); savePhon(); }
+        if (e.key === 'Escape') {
+            const span = document.createElement('span');
+            span.className   = 'row-phon';
+            span.textContent = currentPhon;
+            input.replaceWith(span);
+            editBtn.style.display = '';
+        }
+    });
+    input.addEventListener('blur', savePhon);
+}
+
+function startEdit(n, editBtn) {
+
+    const cell     = editBtn.closest('.row-word-cell');
+    const wordSpan = cell.querySelector('.word-text');
+    const eyeBtn   = cell.querySelector('.eye-btn');
+
+    // Evitar doble edición
+    if (cell.querySelector('.edit-input')) return;
+
+    const currentWord = mnemotecnica[n];
+
+    // Sustituir span por input
+    const input = document.createElement('input');
+    input.className   = 'edit-input';
+    input.value       = currentWord;
+    input.type        = 'text';
+
+    wordSpan.replaceWith(input);
+    eyeBtn.style.display  = 'none';
+    editBtn.style.display = 'none';
+    input.focus();
+    input.select();
+
+    let saved = false;
+    function saveEdit() {
+        if (saved) return;
+        saved = true;
+        const newWord = input.value.trim() || currentWord;
+        mnemotecnica[n] = newWord;
+
+        // Reconstruir la fila entera para actualizar también la fonética
+        const row  = cell.closest('.list-row');
+        const phon = extractPhoneticConsonants(newWord);
+        const ref  = getRefConsonants(n);
+        const isBlurred = allHidden;
+        const eyeIcon   = isBlurred ? '👁' : '🙈';
+
+        row.querySelector('.row-phon').textContent = phon;
+
+        const newWordSpan = document.createElement('span');
+        newWordSpan.className = 'word-text' + (isBlurred ? ' blurred' : '');
+        newWordSpan.textContent = newWord;
+        input.replaceWith(newWordSpan);
+
+        eyeBtn.style.display  = '';
+        editBtn.style.display = '';
+        eyeBtn.textContent    = eyeIcon;
+    }
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') { e.preventDefault(); saveEdit(); }
+        if (e.key === 'Escape') {
+            // Cancelar: restaurar sin guardar
+            mnemotecnica[n] = currentWord;
+            const span = document.createElement('span');
+            span.className   = 'word-text' + (allHidden ? ' blurred' : '');
+            span.textContent = currentWord;
+            input.replaceWith(span);
+            eyeBtn.style.display  = '';
+            editBtn.style.display = '';
+        }
+    });
+    input.addEventListener('blur', saveEdit);
 }
 
 // ─── RENDER LISTA ────────────────────────────────────────
@@ -645,7 +946,7 @@ function buildList(filter = '') {
 
     for (let n = 0; n <= 100; n++) {
         const word  = mnemotecnica[n];
-        const phon  = extractPhoneticConsonants(word);
+        const phon  = phoneticOverrides[n] !== undefined ? phoneticOverrides[n] : extractPhoneticConsonants(word);
         const ref   = getRefConsonants(n);
 
         if (q && !String(n).includes(q) && !word.toLowerCase().includes(q) && !phon.toLowerCase().includes(q)) continue;
@@ -658,10 +959,16 @@ function buildList(filter = '') {
 
         row.innerHTML = `
             <div class="row-num">${n}</div>
-            <div class="row-phon">${phon}</div>
-            <div class="row-word-cell" onclick="toggleWord(this)">
+            <div class="row-phon-cell">
+                <span class="row-phon ${phonVisible ? '' : 'blurred'}">${phon}</span>
+                <span class="phon-eye" data-n="${n}" data-type="phon-eye">${phonVisible ? '🙈' : '👁'}</span>
+                <span class="edit-btn" title="Editar fonética" data-n="${n}" data-type="phon">✏️</span>
+            </div>
+            <div class="row-word-cell" data-toggle="word">
                 <span class="word-text ${wordBlurred}">${word}</span>
                 <span class="eye-btn">${eyeIcon}</span>
+                <span class="edit-btn" title="Editar palabra" data-n="${n}" data-type="word">✏️</span>
+                <span class="img-btn" title="Ver imagen" data-n="${n}" data-type="img">🖼️</span>
             </div>
             <div class="row-ref">${ref}</div>
         `;
@@ -671,6 +978,27 @@ function buildList(filter = '') {
 
 document.getElementById('listSearch').addEventListener('input', function() {
     buildList(this.value);
+});
+
+// Delegated listener: toggle word blur + edit buttons
+document.getElementById('numberList').addEventListener('click', function(e) {
+    const actionBtn = e.target.closest('.edit-btn, .img-btn, .phon-eye');
+    const wordCell  = e.target.closest('[data-toggle="word"]');
+
+    if (actionBtn) {
+        e.stopPropagation();
+        const n    = parseInt(actionBtn.dataset.n);
+        const type = actionBtn.dataset.type;
+        if (type === 'word')     startEdit(n, actionBtn);
+        if (type === 'phon')     startEditPhon(n, actionBtn);
+        if (type === 'phon-eye') togglePhonRow(n);
+        if (type === 'img')      openImgModal(n);
+        return;
+    }
+
+    if (wordCell) {
+        toggleWord(wordCell);
+    }
 });
 
 // ─── JUGAR ───────────────────────────────────────────────
@@ -875,17 +1203,156 @@ function checkMemo() {
 }
 
 // ─── TABS ────────────────────────────────────────────────
-function switchTab(name, btn) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('view-' + name).classList.add('active');
-    btn.classList.add('active');
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const name = this.dataset.tab;
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('view-' + name).classList.add('active');
+        this.classList.add('active');
+    });
+});
+
+// Imágenes embebidas en base64 — se rellenan al exportar el HTML
+// IMGDATA_START
+const imgData = {};
+// IMGDATA_END
+// ─── IMAGEN ──────────────────────────────────────────────
+const imgCache = {};
+let currentImgN = null;
+
+function getLocalImg(n)         { return imgData[n] || null; }
+function saveLocalImg(n, dataUrl) { imgData[n] = dataUrl; }
+function deleteLocalImg(n)      { delete imgData[n]; }
+
+async function openImgModal(n) {
+    currentImgN = n;
+    const word     = mnemotecnica[n].split(/[,\/\(]/)[0].trim();
+    const overlay  = document.getElementById('imgOverlay');
+    const content  = document.getElementById('imgContent');
+    const wikiLink = document.getElementById('imgWikiLink');
+
+    document.getElementById('imgWord').textContent     = word;
+    document.getElementById('imgNumLabel').textContent = 'Número ' + n + ' · ' + getRefConsonants(n);
+    wikiLink.textContent = '';
+    wikiLink.href = '#';
+    overlay.classList.add('open');
+
+    // 1. ¿Hay imagen subida manualmente?
+    const local = getLocalImg(n);
+    if (local) { renderImg({ src: local, local: true, word }); return; }
+
+    // 2. Buscar en Wikipedia
+    content.innerHTML = '<div class="img-placeholder">Buscando en Wikipedia…</div>';
+    if (imgCache[n]) { renderImg(imgCache[n]); return; }
+
+    for (const lang of ['es', 'en']) {
+        try {
+            const url  = `https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=pageimages|info&inprop=url&format=json&pithumbsize=400&origin=*`;
+            const data = await (await fetch(url)).json();
+            const page = Object.values(data.query.pages)[0];
+            if (page && page.thumbnail) {
+                imgCache[n] = { src: page.thumbnail.source, pageUrl: page.fullurl, word, lang };
+                renderImg(imgCache[n]);
+                return;
+            }
+        } catch(e) {}
+    }
+
+    // 3. No encontrada → mostrar opción de subir
+    renderNoImage(word);
+}
+
+function renderImg(data) {
+    const content  = document.getElementById('imgContent');
+    const wikiLink = document.getElementById('imgWikiLink');
+
+    const deleteBtn = data.local
+        ? `<button class="img-delete-btn" onclick="deleteImg()">🗑 Eliminar</button>` : '';
+
+    content.innerHTML = `
+        <img src="${data.src}" alt="${data.word}"
+             onerror="this.closest('#imgContent').innerHTML='<div class=img-placeholder>Error al cargar</div>';renderNoImage('${data.word}')">
+        <div>${deleteBtn}<label class="img-upload-btn">📂 Cambiar imagen<input type="file" accept="image/*" style="display:none" onchange="handleUpload(event)"></label></div>
+    `;
+    if (!data.local && data.pageUrl) {
+        wikiLink.textContent = 'Ver en Wikipedia (' + data.lang.toUpperCase() + ') →';
+        wikiLink.href = data.pageUrl;
+    }
+}
+
+function renderNoImage(word) {
+    document.getElementById('imgContent').innerHTML = `
+        <div class="img-placeholder">Sin imagen para "${word}"</div>
+        <label class="img-upload-btn">📂 Subir imagen local<input type="file" accept="image/*" style="display:none" onchange="handleUpload(event)"></label>
+    `;
+}
+
+function handleUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        const dataUrl = ev.target.result;
+        saveLocalImg(currentImgN, dataUrl);
+        renderImg({ src: dataUrl, local: true, word: mnemotecnica[currentImgN].split(/[,\/\(]/)[0].trim() });
+        // Marcar la fila con indicador visual
+        markRowHasImg(currentImgN, true);
+    };
+    reader.readAsDataURL(file);
+}
+
+function deleteImg() {
+    deleteLocalImg(currentImgN);
+    delete imgCache[currentImgN];
+    markRowHasImg(currentImgN, false);
+    const word = mnemotecnica[currentImgN].split(/[,\/\(]/)[0].trim();
+    renderNoImage(word);
+    document.getElementById('imgWikiLink').textContent = '';
+}
+
+function markRowHasImg(n, has) {
+    // Cambiar el emoji del botón 🖼️ según si tiene imagen guardada
+    document.querySelectorAll(`.img-btn[data-n="${n}"]`).forEach(btn => {
+        btn.textContent = has ? '🖼️✓' : '🖼️';
+        btn.style.opacity = has ? '0.9' : '';
+    });
+}
+
+function closeImgModal(e) {
+    if (!e || e.target === document.getElementById('imgOverlay') || e.target.classList.contains('img-close')) {
+        document.getElementById('imgOverlay').classList.remove('open');
+    }
+}
+
+function exportHtml() {
+    const btn = document.getElementById('exportBtn');
+    btn.textContent = '⏳ Generando…';
+    btn.disabled = true;
+
+    // Serializar imgData con todas las imágenes en base64
+    const serialized = 'const imgData = ' + JSON.stringify(imgData) + ';';
+    const html = document.documentElement.outerHTML
+        .replace(/\/\/ IMGDATA_START[\s\S]*?\/\/ IMGDATA_END/, '// IMGDATA_START\n' + serialized + '\n// IMGDATA_END');
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const a    = document.createElement('a');
+    a.href     = URL.createObjectURL(blob);
+    a.download = 'sistema_mayor.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+
+    btn.textContent = '💾 Exportar HTML';
+    btn.disabled = false;
 }
 
 // ─── INIT ────────────────────────────────────────────────
 buildLegend();
 buildList();
 nextCard();
+for (let n = 0; n <= 100; n++) {
+    if (imgData[n]) markRowHasImg(n, true);
+}
 </script>
 </body>
 </html>
