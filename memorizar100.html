@@ -578,6 +578,7 @@
     <button class="tab-btn active" data-tab="play">⚡ Jugar</button>
     <button class="tab-btn" data-tab="list">📋 Ver Lista</button>
     <button class="tab-btn" data-tab="memo">🧠 Memorizar</button>
+    <button class="tab-btn" data-tab="dictado">🎙️ Dictado</button>
 </div>
 
 <!-- ═══ JUGAR ═══ -->
@@ -697,6 +698,60 @@
     <div class="memo-result" id="memoResult"></div>
 
     <button class="memo-btn" id="memoBtn" onclick="memoAction()">▶ Iniciar</button>
+</div>
+
+<!-- ═══ DICTADO ═══ -->
+<div id="view-dictado" class="view">
+
+    <div class="config-panel">
+        <div class="config-group">
+            <label>Rango</label>
+            <div class="range-inputs">
+                <input type="number" id="dictMin" value="0" min="0" max="100">
+                <span>—</span>
+                <input type="number" id="dictMax" value="100" min="0" max="100">
+            </div>
+        </div>
+        <div class="config-group">
+            <label for="dictVoice">Voz</label>
+            <select id="dictVoice"></select>
+        </div>
+        <div class="config-group">
+            <label for="dictSpeed">Velocidad</label>
+            <select id="dictSpeed">
+                <option value="0.7">Lenta</option>
+                <option value="1" selected>Normal</option>
+                <option value="1.4">Rápida</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Pantalla principal -->
+    <div class="flashcard" id="dictStage">
+        <div style="color:var(--muted);font-size:0.9rem;text-align:center">
+            Pulsa <strong>Iniciar</strong> para comenzar.<br>
+            <span style="font-size:0.75rem;opacity:0.6">Se leerá la palabra en voz alta — escribe el número.</span>
+        </div>
+    </div>
+
+    <!-- Input de respuesta -->
+    <div id="dictInputWrap" style="display:none;margin-bottom:16px">
+        <input id="dictInput" type="number" min="0" max="100"
+            style="width:100%;padding:16px;font-size:2rem;font-weight:700;text-align:center;
+                   background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius);
+                   color:var(--text);outline:none;-moz-appearance:textfield"
+            placeholder="?">
+    </div>
+
+    <div class="memo-result" id="dictResult"></div>
+
+    <button class="memo-btn" id="dictBtn" onclick="dictAction()">▶ Iniciar</button>
+
+    <div class="stats-bar" style="margin-top:14px">
+        <span>Correctas: <span class="count" id="dictCorrect">0</span></span>
+        <span>Errores: <span style="color:var(--accent2)" id="dictWrong">0</span></span>
+        <span>Total: <span class="count" id="dictTotal">0</span></span>
+    </div>
 </div>
 
 <script>
@@ -1345,6 +1400,114 @@ function exportHtml() {
     btn.textContent = '💾 Exportar HTML';
     btn.disabled = false;
 }
+
+// ─── DICTADO ─────────────────────────────────────────────
+let dictState    = 'idle';
+let dictNumber   = null;
+let dictCorrects = 0;
+let dictWrongs   = 0;
+let dictTotals   = 0;
+let voices       = [];
+
+function loadVoices() {
+    voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('es'));
+    if (!voices.length) voices = speechSynthesis.getVoices();
+    const sel = document.getElementById('dictVoice');
+    sel.innerHTML = '';
+    voices.forEach((v, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = v.name.replace('Microsoft ','').replace(' - Spanish (Spain)','');
+        if (v.lang === 'es-ES') opt.selected = true;
+        sel.appendChild(opt);
+    });
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+
+function speak(text, onEnd) {
+    speechSynthesis.cancel();
+    const utt   = new SpeechSynthesisUtterance(text);
+    const vIdx  = parseInt(document.getElementById('dictVoice').value) || 0;
+    utt.voice   = voices[vIdx] || null;
+    utt.lang    = 'es-ES';
+    utt.rate    = parseFloat(document.getElementById('dictSpeed').value);
+    if (onEnd) utt.onend = onEnd;
+    speechSynthesis.speak(utt);
+}
+
+function dictAction() {
+    if (dictState === 'idle' || dictState === 'done') {
+        startDictado();
+    } else if (dictState === 'waiting') {
+        checkDictado();
+    }
+}
+
+function startDictado() {
+    let min = parseInt(document.getElementById('dictMin').value) || 0;
+    let max = parseInt(document.getElementById('dictMax').value) || 100;
+    if (min > max) [min, max] = [max, min];
+
+    dictNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    const word = mnemotecnica[dictNumber].split(/[,\/\(]/)[0].trim();
+
+    dictState = 'waiting';
+    document.getElementById('dictResult').textContent = '';
+    document.getElementById('dictStage').innerHTML = `
+        <div style="font-size:1rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Escucha y escribe el número</div>
+        <div style="font-size:1.1rem;color:var(--blue);font-family:Arial,monospace;letter-spacing:3px" id="dictWordReveal" title="Haz clic para repetir" onclick="speak('${word.replace(/'/g,"\\'")}')">🔊</div>
+    `;
+    document.getElementById('dictInputWrap').style.display = 'block';
+    const inp = document.getElementById('dictInput');
+    inp.value = '';
+    inp.style.borderColor = 'var(--border)';
+    inp.removeAttribute('disabled');
+    document.getElementById('dictBtn').textContent = '✓ Comprobar';
+    inp.focus();
+
+    speak(word);
+}
+
+function checkDictado() {
+    const inp = document.getElementById('dictInput');
+    const val = parseInt(inp.value);
+    const word = mnemotecnica[dictNumber].split(/[,\/\(]/)[0].trim();
+
+    dictTotals++;
+    document.getElementById('dictTotal').textContent = dictTotals;
+
+    // Revelar la palabra
+    const revEl = document.getElementById('dictWordReveal');
+    if (revEl) revEl.textContent = '🔊 ' + word;
+
+    if (val === dictNumber) {
+        dictCorrects++;
+        document.getElementById('dictCorrect').textContent = dictCorrects;
+        inp.style.borderColor = 'var(--green)';
+        document.getElementById('dictResult').innerHTML = `<span style="color:var(--green)">✓ Correcto — ${word} = ${dictNumber}</span>`;
+        speak('Correcto');
+    } else {
+        dictWrongs++;
+        document.getElementById('dictWrong').textContent = dictWrongs;
+        inp.style.borderColor = 'var(--accent2)';
+        document.getElementById('dictResult').innerHTML = `<span style="color:var(--accent2)">✗ Era el ${dictNumber} — ${word}</span>`;
+        speak('Incorrecto. Era el ' + dictNumber + '. ' + word);
+    }
+
+    inp.setAttribute('disabled', true);
+    dictState = 'idle';
+    document.getElementById('dictBtn').textContent = '▶ Siguiente';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('view-dictado').classList.contains('active')) {
+        if (e.key === 'Enter' && document.activeElement.id !== 'dictInput') {
+            dictAction();
+        }
+    }
+});
 
 // ─── INIT ────────────────────────────────────────────────
 buildLegend();
