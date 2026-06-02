@@ -94,18 +94,20 @@
         /* Toolbar lista */
         .list-toolbar {
             display: flex;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
             margin-bottom: 10px;
             align-items: center;
         }
         .list-search {
             flex: 1;
+            min-width: 120px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 10px 14px;
+            padding: 9px 12px;
             font-family: Arial, monospace;
-            font-size: 0.92rem;
+            font-size: 0.85rem;
             color: var(--text);
             outline: none;
         }
@@ -116,10 +118,10 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 10px 14px;
+            padding: 8px 10px;
             color: var(--muted);
             font-family: Arial, sans-serif;
-            font-size: 0.82rem;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
@@ -448,7 +450,130 @@
         .stats-bar .count { font-family: Arial, monospace; color: var(--accent); font-weight: 500; }
         .hint { text-align: center; margin-top: 8px; font-size: 0.7rem; color: var(--border); letter-spacing: 1px; }
 
-        /* ─── MEMORIZAR ─── */
+        /* ─── ESTUDIO ─── */
+        .estudio-toolbar {
+            display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .estudio-toolbar select, .estudio-toolbar input {
+            background: var(--surface); border: 1px solid var(--border);
+            color: var(--text); border-radius: 8px; padding: 8px 10px;
+            font-family: Arial, sans-serif; font-size: 0.82rem; outline: none;
+            flex: 1; min-width: 100px;
+        }
+        .estudio-toolbar select:focus, .estudio-toolbar input:focus { border-color: var(--accent); }
+
+        .art-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 14px; margin-bottom: 8px;
+            border-left: 4px solid var(--border);
+            transition: border-color 0.2s;
+        }
+        .art-card.pendiente  { border-left-color: var(--border); }
+        .art-card.aprendiendo{ border-left-color: var(--accent); }
+        .art-card.dominado   { border-left-color: var(--green); }
+
+        .art-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 8px; cursor: pointer;
+        }
+        .art-num {
+            font-family: Arial, monospace; font-size: 1.3rem;
+            font-weight: 900; color: var(--accent); min-width: 38px;
+        }
+        .art-ley {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--muted); background: var(--surface2);
+            border-radius: 4px; padding: 2px 6px;
+        }
+        .art-titulo {
+            font-size: 0.88rem; font-weight: 700; color: var(--text); flex: 1;
+        }
+        .art-chevron {
+            color: var(--muted); font-size: 0.8rem; transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .art-card.open .art-chevron { transform: rotate(90deg); }
+
+        .art-body { display: none; }
+        .art-card.open .art-body { display: block; }
+
+        .art-section { margin-bottom: 10px; }
+        .art-section-label {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--muted); margin-bottom: 4px;
+        }
+        .art-section-text {
+            font-size: 0.85rem; color: var(--text); line-height: 1.6;
+            background: var(--surface2); border-radius: 6px; padding: 8px 10px;
+        }
+        .art-asociacion {
+            font-size: 0.85rem; color: var(--accent2); line-height: 1.6;
+            background: rgba(231,76,139,0.07); border-radius: 6px; padding: 8px 10px;
+            font-style: italic;
+        }
+        .art-casillero {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(245,166,35,0.1); border-radius: 6px;
+            padding: 4px 10px; margin-bottom: 8px;
+            font-size: 0.8rem; color: var(--accent);
+        }
+
+        .art-status-btns {
+            display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+        }
+        .art-status-btn {
+            padding: 5px 12px; border: 1px solid var(--border);
+            border-radius: 6px; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; background: transparent; color: var(--muted);
+            transition: all 0.15s;
+        }
+        .art-status-btn.active-pendiente   { border-color: var(--muted);   color: var(--muted);  background: var(--surface2); }
+        .art-status-btn.active-aprendiendo { border-color: var(--accent);  color: var(--accent); background: rgba(245,166,35,0.1); }
+        .art-status-btn.active-dominado    { border-color: var(--green);   color: var(--green);  background: rgba(46,204,113,0.1); }
+
+        .estudio-stats {
+            display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap;
+        }
+        .estudio-stat {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 8px 14px; text-align: center; flex: 1;
+        }
+        .estudio-stat .s-num { font-size: 1.4rem; font-weight: 900; }
+        .estudio-stat .s-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-p .s-num { color: var(--muted); }
+        .stat-a .s-num { color: var(--accent); }
+        .stat-d .s-num { color: var(--green); }
+
+        .add-art-btn {
+            width: 100%; padding: 12px; border: 1px dashed var(--border);
+            border-radius: var(--radius); background: transparent;
+            color: var(--muted); font-size: 0.85rem; cursor: pointer;
+            margin-top: 8px; transition: all 0.2s;
+        }
+        .add-art-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .add-art-form {
+            background: var(--surface); border: 1px solid var(--accent);
+            border-radius: var(--radius); padding: 14px; margin-bottom: 8px;
+            display: none;
+        }
+        .add-art-form.open { display: block; }
+        .add-art-form input, .add-art-form select, .add-art-form textarea {
+            width: 100%; background: var(--surface2); border: 1px solid var(--border);
+            color: var(--text); border-radius: 6px; padding: 8px 10px;
+            font-family: Arial, sans-serif; font-size: 0.85rem; outline: none;
+            margin-bottom: 8px; box-sizing: border-box; resize: vertical;
+        }
+        .add-art-form input:focus, .add-art-form textarea:focus { border-color: var(--accent); }
+        .form-row { display: flex; gap: 8px; }
+        .form-row > * { flex: 1; }
+        .form-btns { display: flex; gap: 8px; }
+        .form-save { background: var(--accent); color: #0f0f13; border: none;
+            border-radius: 6px; padding: 8px 16px; font-weight: 700;
+            font-size: 0.85rem; cursor: pointer; }
+        .form-cancel { background: transparent; border: 1px solid var(--border);
+            color: var(--muted); border-radius: 6px; padding: 8px 16px;
+            font-size: 0.85rem; cursor: pointer; }
         .memo-config {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -579,14 +704,15 @@
 </header>
 
 <div class="tabs">
-    <button class="tab-btn" data-tab="play">⚡ Jugar</button>
-    <button class="tab-btn active" data-tab="list">📋 Ver Lista</button>
+    <button class="tab-btn active" data-tab="play">⚡ Jugar</button>
+    <button class="tab-btn" data-tab="list">📋 Ver Lista</button>
     <button class="tab-btn" data-tab="memo">🧠 Memorizar</button>
     <button class="tab-btn" data-tab="dictado">🎙️ Dictado</button>
+    <button class="tab-btn" data-tab="estudio">📖 Estudio</button>
 </div>
 
 <!-- ═══ JUGAR ═══ -->
-<div id="view-play" class="view">
+<div id="view-play" class="view active">
     <div class="config-panel">
         <div class="config-group">
             <label for="modeSelect">Dirección</label>
@@ -607,8 +733,8 @@
 
     <div class="flashcard">
         <div id="cardConsonants" class="card-consonants"></div>
-        <div id="stimulusDisplay" class="stimulus">16</div>
-        <div id="answerDisplay" class="answer hidden">Tasa</div>
+        <div id="stimulusDisplay" class="stimulus">-</div>
+        <div id="answerDisplay" class="answer hidden">-</div>
     </div>
 
     <button id="mainButton" class="action-btn">Mostrar Respuesta</button>
@@ -621,55 +747,18 @@
 </div>
 
 <!-- ═══ LISTA ═══ -->
-<div id="view-list" class="view active">
-    <div class="digit-legend" id="digitLegend">
-            <div class="digit-card">
-                <div class="d-num">0</div>
-                <div class="d-cons">R</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">1</div>
-                <div class="d-cons">T/D</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">2</div>
-                <div class="d-cons">N/Ñ</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">3</div>
-                <div class="d-cons">M</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">4</div>
-                <div class="d-cons">C/K</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">5</div>
-                <div class="d-cons">L</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">6</div>
-                <div class="d-cons">S/Z</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">7</div>
-                <div class="d-cons">F/V</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">8</div>
-                <div class="d-cons">CH</div>
-            </div>
-            <div class="digit-card">
-                <div class="d-num">9</div>
-                <div class="d-cons">B/P</div>
-            </div></div>
+<div id="view-list" class="view">
+    <div class="digit-legend" id="digitLegend"></div>
 
     <div class="list-toolbar">
         <input type="text" class="list-search" id="listSearch" placeholder="Buscar número o palabra…">
-        <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">👁 Mostrar todo</button>
-        <button class="toggle-all-btn" id="togglePhonBtn" onclick="togglePhon()">🔤 Mostrar fonética</button>
-        <button class="toggle-all-btn" id="exportBtn" onclick="exportHtml()" disabled="">⏳ Generando…</button>
-        <label class="toggle-all-btn" id="loadFolderBtn" title="Carga una carpeta con imágenes nombradas 1.png, 2.png…">✅ 100 imágenes cargadas<input type="file" id="folderInput" accept="image/*" webkitdirectory="" multiple="" style="display:none" onchange="loadImageFolder(event)"></label>
+        <button class="toggle-all-btn" id="toggleAllBtn" onclick="toggleAll()">👁 Palabras</button>
+        <button class="toggle-all-btn" id="togglePhonBtn" onclick="togglePhon()">🔤 Fonética</button>
+        <button class="toggle-all-btn" id="exportBtn" onclick="exportHtml()">💾 Exportar</button>
+        <label class="toggle-all-btn" id="loadFolderBtn" title="Carga una carpeta con imágenes nombradas 1.png, 2.png…">
+            📂 Imágenes
+            <input type="file" id="folderInput" accept="image/*" webkitdirectory="" multiple="" style="display:none" onchange="loadImageFolder(event)">
+        </label>
     </div>
 
     <div class="list-header" id="listHeader">
@@ -679,1432 +768,15 @@
         <span style="text-align:center">Referencia</span>
     </div>
 
-    <div class="number-list" id="numberList"><div class="list-row">
-            <div class="row-num">0</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">R</span>
-                <span class="phon-eye" data-n="0" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="0" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Aro, rey, oro</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="0" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="0" data-type="img">🖼️</span>
-            </div>
-            <div class="row-ref">R</div>
-        </div><div class="list-row">
-            <div class="row-num">1</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T</span>
-                <span class="phon-eye" data-n="1" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="1" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Te, Día</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="1" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="1" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">2</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N</span>
-                <span class="phon-eye" data-n="2" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="2" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Noe, Ñu</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="2" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="2" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">3</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M</span>
-                <span class="phon-eye" data-n="3" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="3" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Amo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="3" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="3" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M</div>
-        </div><div class="list-row">
-            <div class="row-num">4</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C</span>
-                <span class="phon-eye" data-n="4" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="4" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Oca</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="4" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="4" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">5</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L</span>
-                <span class="phon-eye" data-n="5" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="5" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Ola, Olla</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="5" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="5" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L</div>
-        </div><div class="list-row">
-            <div class="row-num">6</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S</span>
-                <span class="phon-eye" data-n="6" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="6" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Oso</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="6" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="6" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">7</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F</span>
-                <span class="phon-eye" data-n="7" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="7" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fe/Uva/Eje</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="7" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="7" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">8</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH</span>
-                <span class="phon-eye" data-n="8" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="8" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Hacha</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="8" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="8" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH</div>
-        </div><div class="list-row">
-            <div class="row-num">9</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">B</span>
-                <span class="phon-eye" data-n="9" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="9" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Buho, Ave, Pío</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="9" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="9" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">10</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · R</span>
-                <span class="phon-eye" data-n="10" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="10" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Toro</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="10" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="10" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · R</div>
-        </div><div class="list-row">
-            <div class="row-num">11</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">D · D</span>
-                <span class="phon-eye" data-n="11" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="11" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Dado</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="11" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="11" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">12</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">D · N</span>
-                <span class="phon-eye" data-n="12" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="12" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Duna</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="12" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="12" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">13</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">D · M</span>
-                <span class="phon-eye" data-n="13" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="13" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Dama</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="13" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="13" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · M</div>
-        </div><div class="list-row">
-            <div class="row-num">14</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · C</span>
-                <span class="phon-eye" data-n="14" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="14" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Taco</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="14" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="14" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">15</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · L</span>
-                <span class="phon-eye" data-n="15" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="15" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Tela</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="15" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="15" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · L</div>
-        </div><div class="list-row">
-            <div class="row-num">16</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · S</span>
-                <span class="phon-eye" data-n="16" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="16" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Tasa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="16" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="16" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">17</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · F</span>
-                <span class="phon-eye" data-n="17" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="17" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Tofu</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="17" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="17" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">18</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · CH</span>
-                <span class="phon-eye" data-n="18" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="18" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Techo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="18" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="18" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">19</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · P</span>
-                <span class="phon-eye" data-n="19" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="19" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Tapa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="19" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="19" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">20</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · R</span>
-                <span class="phon-eye" data-n="20" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="20" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Noria</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="20" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="20" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · R</div>
-        </div><div class="list-row">
-            <div class="row-num">21</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · T</span>
-                <span class="phon-eye" data-n="21" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="21" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nota</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="21" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="21" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">22</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · N</span>
-                <span class="phon-eye" data-n="22" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="22" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nene</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="22" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="22" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">23</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · M</span>
-                <span class="phon-eye" data-n="23" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="23" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nemo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="23" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="23" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · M</div>
-        </div><div class="list-row">
-            <div class="row-num">24</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · C</span>
-                <span class="phon-eye" data-n="24" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="24" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nuca</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="24" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="24" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">25</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · L</span>
-                <span class="phon-eye" data-n="25" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="25" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nilo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="25" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="25" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · L</div>
-        </div><div class="list-row">
-            <div class="row-num">26</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · S</span>
-                <span class="phon-eye" data-n="26" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="26" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nasa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="26" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="26" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">27</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · V</span>
-                <span class="phon-eye" data-n="27" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="27" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nave</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="27" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="27" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">28</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · CH</span>
-                <span class="phon-eye" data-n="28" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="28" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Noche</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="28" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="28" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">29</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">N · B</span>
-                <span class="phon-eye" data-n="29" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="29" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Nube</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="29" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="29" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">N/Ñ · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">30</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · R</span>
-                <span class="phon-eye" data-n="30" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="30" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mar</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="30" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="30" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · R</div>
-        </div><div class="list-row">
-            <div class="row-num">31</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · T</span>
-                <span class="phon-eye" data-n="31" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="31" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Moto</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="31" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="31" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">32</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · N</span>
-                <span class="phon-eye" data-n="32" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="32" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mono</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="32" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="32" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">33</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · M</span>
-                <span class="phon-eye" data-n="33" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="33" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Momia</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="33" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="33" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · M</div>
-        </div><div class="list-row">
-            <div class="row-num">34</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · C</span>
-                <span class="phon-eye" data-n="34" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="34" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Moco</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="34" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="34" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">35</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · L</span>
-                <span class="phon-eye" data-n="35" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="35" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mula</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="35" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="35" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · L</div>
-        </div><div class="list-row">
-            <div class="row-num">36</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · S</span>
-                <span class="phon-eye" data-n="36" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="36" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mesa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="36" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="36" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">37</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · F</span>
-                <span class="phon-eye" data-n="37" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="37" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mafia</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="37" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="37" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">38</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · CH</span>
-                <span class="phon-eye" data-n="38" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="38" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mecha</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="38" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="38" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">39</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">M · P</span>
-                <span class="phon-eye" data-n="39" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="39" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Mapa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="39" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="39" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">M · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">40</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · R</span>
-                <span class="phon-eye" data-n="40" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="40" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cara</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="40" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="40" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · R</div>
-        </div><div class="list-row">
-            <div class="row-num">41</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · T</span>
-                <span class="phon-eye" data-n="41" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="41" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cata</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="41" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="41" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">42</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · N</span>
-                <span class="phon-eye" data-n="42" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="42" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cuna</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="42" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="42" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">43</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · M</span>
-                <span class="phon-eye" data-n="43" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="43" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cama</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="43" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="43" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · M</div>
-        </div><div class="list-row">
-            <div class="row-num">44</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · C</span>
-                <span class="phon-eye" data-n="44" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="44" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">CoCo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="44" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="44" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">45</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · L</span>
-                <span class="phon-eye" data-n="45" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="45" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cola</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="45" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="45" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · L</div>
-        </div><div class="list-row">
-            <div class="row-num">46</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · S</span>
-                <span class="phon-eye" data-n="46" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="46" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Casa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="46" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="46" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">47</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · V</span>
-                <span class="phon-eye" data-n="47" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="47" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cava</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="47" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="47" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">48</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · CH</span>
-                <span class="phon-eye" data-n="48" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="48" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Coche</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="48" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="48" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">49</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">C · B</span>
-                <span class="phon-eye" data-n="49" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="49" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cubo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="49" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="49" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">C/K · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">50</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · R</span>
-                <span class="phon-eye" data-n="50" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="50" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Loro</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="50" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="50" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · R</div>
-        </div><div class="list-row">
-            <div class="row-num">51</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · T</span>
-                <span class="phon-eye" data-n="51" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="51" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Lata</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="51" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="51" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">52</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · N</span>
-                <span class="phon-eye" data-n="52" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="52" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Luna</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="52" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="52" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">53</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · M</span>
-                <span class="phon-eye" data-n="53" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="53" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Lima</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="53" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="53" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · M</div>
-        </div><div class="list-row">
-            <div class="row-num">54</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · C</span>
-                <span class="phon-eye" data-n="54" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="54" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Loco</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="54" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="54" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">55</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · L</span>
-                <span class="phon-eye" data-n="55" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="55" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Lala (Teletubbie Amarillo)</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="55" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="55" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · L</div>
-        </div><div class="list-row">
-            <div class="row-num">56</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · S</span>
-                <span class="phon-eye" data-n="56" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="56" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Losa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="56" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="56" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">57</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · V</span>
-                <span class="phon-eye" data-n="57" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="57" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Lava</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="57" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="57" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">58</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · CH</span>
-                <span class="phon-eye" data-n="58" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="58" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Leche</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="58" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="58" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">59</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">L · B</span>
-                <span class="phon-eye" data-n="59" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="59" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Lobo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="59" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="59" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">L · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">60</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · R</span>
-                <span class="phon-eye" data-n="60" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="60" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Ser</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="60" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="60" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · R</div>
-        </div><div class="list-row">
-            <div class="row-num">61</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · T</span>
-                <span class="phon-eye" data-n="61" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="61" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Seta</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="61" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="61" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">62</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · N</span>
-                <span class="phon-eye" data-n="62" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="62" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Seno</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="62" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="62" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">63</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · M</span>
-                <span class="phon-eye" data-n="63" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="63" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Suma</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="63" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="63" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · M</div>
-        </div><div class="list-row">
-            <div class="row-num">64</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · C</span>
-                <span class="phon-eye" data-n="64" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="64" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Saco</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="64" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="64" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">65</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · L</span>
-                <span class="phon-eye" data-n="65" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="65" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Sala</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="65" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="65" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · L</div>
-        </div><div class="list-row">
-            <div class="row-num">66</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · S</span>
-                <span class="phon-eye" data-n="66" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="66" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Seso</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="66" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="66" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">67</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · F</span>
-                <span class="phon-eye" data-n="67" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="67" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Sofa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="67" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="67" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">68</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · CH</span>
-                <span class="phon-eye" data-n="68" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="68" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Suchi (Sushi)</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="68" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="68" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">69</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">S · P</span>
-                <span class="phon-eye" data-n="69" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="69" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Sapo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="69" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="69" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">S/Z · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">70</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · R</span>
-                <span class="phon-eye" data-n="70" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="70" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Faro</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="70" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="70" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · R</div>
-        </div><div class="list-row">
-            <div class="row-num">71</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · T</span>
-                <span class="phon-eye" data-n="71" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="71" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Foto</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="71" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="71" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">72</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · N</span>
-                <span class="phon-eye" data-n="72" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="72" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fino</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="72" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="72" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">73</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · M</span>
-                <span class="phon-eye" data-n="73" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="73" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fama</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="73" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="73" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · M</div>
-        </div><div class="list-row">
-            <div class="row-num">74</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · C</span>
-                <span class="phon-eye" data-n="74" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="74" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Foca</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="74" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="74" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">75</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">V · L</span>
-                <span class="phon-eye" data-n="75" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="75" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Vela</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="75" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="75" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · L</div>
-        </div><div class="list-row">
-            <div class="row-num">76</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · S</span>
-                <span class="phon-eye" data-n="76" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="76" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Foso</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="76" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="76" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">77</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · F</span>
-                <span class="phon-eye" data-n="77" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="77" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fofo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="77" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="77" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">78</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · CH</span>
-                <span class="phon-eye" data-n="78" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="78" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fecha</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="78" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="78" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">79</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">F · B</span>
-                <span class="phon-eye" data-n="79" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="79" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Fiba</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="79" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="79" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">F/V · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">80</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · RR</span>
-                <span class="phon-eye" data-n="80" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="80" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Churro</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="80" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="80" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · R</div>
-        </div><div class="list-row">
-            <div class="row-num">81</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · T</span>
-                <span class="phon-eye" data-n="81" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="81" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chita</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="81" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="81" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">82</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · N</span>
-                <span class="phon-eye" data-n="82" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="82" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chino</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="82" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="82" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">83</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · M</span>
-                <span class="phon-eye" data-n="83" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="83" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chimo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="83" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="83" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · M</div>
-        </div><div class="list-row">
-            <div class="row-num">84</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · C</span>
-                <span class="phon-eye" data-n="84" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="84" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chico</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="84" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="84" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">85</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · L</span>
-                <span class="phon-eye" data-n="85" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="85" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Cholo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="85" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="85" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · L</div>
-        </div><div class="list-row">
-            <div class="row-num">86</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · S</span>
-                <span class="phon-eye" data-n="86" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="86" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chosa (Choza)</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="86" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="86" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">87</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · F</span>
-                <span class="phon-eye" data-n="87" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="87" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chufa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="87" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="87" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">88</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · CH</span>
-                <span class="phon-eye" data-n="88" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="88" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chucho</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="88" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="88" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">89</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">CH · P</span>
-                <span class="phon-eye" data-n="89" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="89" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Chapa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="89" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="89" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">CH · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">90</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">B · R</span>
-                <span class="phon-eye" data-n="90" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="90" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Bar</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="90" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="90" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · R</div>
-        </div><div class="list-row">
-            <div class="row-num">91</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · T</span>
-                <span class="phon-eye" data-n="91" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="91" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pato</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="91" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="91" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · T/D</div>
-        </div><div class="list-row">
-            <div class="row-num">92</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · N</span>
-                <span class="phon-eye" data-n="92" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="92" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pino</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="92" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="92" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · N/Ñ</div>
-        </div><div class="list-row">
-            <div class="row-num">93</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · M</span>
-                <span class="phon-eye" data-n="93" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="93" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Puma</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="93" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="93" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · M</div>
-        </div><div class="list-row">
-            <div class="row-num">94</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · C</span>
-                <span class="phon-eye" data-n="94" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="94" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pico</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="94" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="94" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · C/K</div>
-        </div><div class="list-row">
-            <div class="row-num">95</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · L</span>
-                <span class="phon-eye" data-n="95" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="95" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pelo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="95" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="95" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · L</div>
-        </div><div class="list-row">
-            <div class="row-num">96</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · S</span>
-                <span class="phon-eye" data-n="96" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="96" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Peso</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="96" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="96" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · S/Z</div>
-        </div><div class="list-row">
-            <div class="row-num">97</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · V</span>
-                <span class="phon-eye" data-n="97" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="97" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pavo</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="97" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="97" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · F/V</div>
-        </div><div class="list-row">
-            <div class="row-num">98</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · CH</span>
-                <span class="phon-eye" data-n="98" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="98" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pecho</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="98" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="98" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · CH</div>
-        </div><div class="list-row">
-            <div class="row-num">99</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">P · P</span>
-                <span class="phon-eye" data-n="99" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="99" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Pipa</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="99" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="99" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">B/P · B/P</div>
-        </div><div class="list-row">
-            <div class="row-num">100</div>
-            <div class="row-phon-cell">
-                <span class="row-phon blurred">T · R · R</span>
-                <span class="phon-eye" data-n="100" data-type="phon-eye">👁</span>
-                <span class="edit-btn" title="Editar fonética" data-n="100" data-type="phon">✏️</span>
-            </div>
-            <div class="row-word-cell" data-toggle="word">
-                <span class="word-text blurred">Torero</span>
-                <span class="eye-btn">👁</span>
-                <span class="edit-btn" title="Editar palabra" data-n="100" data-type="word">✏️</span>
-                <span class="img-btn" title="Ver imagen" data-n="100" data-type="img" style="opacity: 0.9;">🖼️✓</span>
-            </div>
-            <div class="row-ref">T/D · R · R</div>
-        </div></div>
+    <div class="number-list" id="numberList"></div>
 
     <!-- Modal de imagen -->
     <div class="img-overlay" id="imgOverlay" onclick="closeImgModal(event)">
         <div class="img-modal" id="imgModal">
             <button class="img-close" onclick="closeImgModal()">✕</button>
-            <h3 id="imgWord">Vela</h3>
-            <div class="img-num" id="imgNumLabel">Número 75 · F/V · L</div>
-            <div id="imgContent">
-        <img src="data:image/png;base64,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" alt="Vela" onerror="this.closest('#imgContent').innerHTML='&lt;div class=img-placeholder&gt;Error al cargar&lt;/div&gt;';renderNoImage('Vela')">
-        <div><button class="img-delete-btn" onclick="deleteImg()">🗑 Eliminar</button><label class="img-upload-btn">📂 Cambiar imagen<input type="file" accept="image/*" style="display:none" onchange="handleUpload(event)"></label></div>
-    </div>
+            <h3 id="imgWord">-</h3>
+            <div class="img-num" id="imgNumLabel"></div>
+            <div id="imgContent"><div class="img-placeholder">Buscando imagen…</div></div>
             <a class="img-wiki-link" id="imgWikiLink" href="#" target="_blank"></a>
         </div>
     </div>
@@ -2176,7 +848,7 @@
         </div>
         <div class="config-group">
             <label for="dictVoice">Voz</label>
-            <select id="dictVoice"><option value="0">Helena</option><option value="1">Laura</option><option value="2">Pablo</option></select>
+            <select id="dictVoice"></select>
         </div>
         <div class="config-group">
             <label for="dictSpeed">Velocidad</label>
@@ -2263,11 +935,85 @@
     </div>
 
 
+<!-- ═══ ESTUDIO ═══ -->
+<div id="view-estudio" class="view">
+
+    <div class="estudio-stats">
+        <div class="estudio-stat stat-p"><div class="s-num" id="statP">0</div><div class="s-lbl">Pendiente</div></div>
+        <div class="estudio-stat stat-a"><div class="s-num" id="statA">0</div><div class="s-lbl">Aprendiendo</div></div>
+        <div class="estudio-stat stat-d"><div class="s-num" id="statD">0</div><div class="s-lbl">Dominado</div></div>
+    </div>
+
+    <div class="estudio-toolbar">
+        <input type="text" id="estudioSearch" placeholder="Buscar artículo, ley, texto…">
+        <select id="estudioFilterLey">
+            <option value="">Todas las leyes</option>
+            <option value="Constitución">Constitución</option>
+            <option value="Administración Local">Administración Local</option>
+            <option value="Empleo Público">Empleo Público</option>
+            <option value="LGT">LGT</option>
+            <option value="IBI">IBI</option>
+            <option value="IVTM">IVTM</option>
+            <option value="ICIO">ICIO</option>
+            <option value="Plusvalía">Plusvalía</option>
+            <option value="IAE">IAE</option>
+            <option value="Tasas">Tasas</option>
+            <option value="Haciendas Locales">Haciendas Locales</option>
+            <option value="Igualdad">Igualdad</option>
+            <option value="Prevención">Prevención</option>
+        </select>
+        <select id="estudioFilterStatus">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprendiendo">Aprendiendo</option>
+            <option value="dominado">Dominado</option>
+        </select>
+    </div>
+
+    <div id="estudioList"></div>
+
+    <!-- Formulario añadir artículo -->
+    <div class="add-art-form" id="addArtForm">
+        <div class="form-row">
+            <input type="number" id="formArt" placeholder="Nº Artículo" min="1">
+            <select id="formLey">
+                <option value="Constitución">Constitución</option>
+                <option value="Administración Local">Administración Local</option>
+                <option value="Empleo Público">Empleo Público</option>
+                <option value="LGT">LGT</option>
+                <option value="IBI">IBI</option>
+                <option value="IVTM">IVTM</option>
+                <option value="ICIO">ICIO</option>
+                <option value="Plusvalía">Plusvalía</option>
+                <option value="IAE">IAE</option>
+                <option value="Tasas">Tasas</option>
+                <option value="Haciendas Locales">Haciendas Locales</option>
+                <option value="Igualdad">Igualdad</option>
+                <option value="Prevención">Prevención</option>
+            </select>
+        </div>
+        <input type="text" id="formTitulo" placeholder="Título / Idea clave del artículo">
+        <textarea id="formContenido" rows="3" placeholder="Contenido o resumen del artículo…"></textarea>
+        <textarea id="formAsociacion" rows="2" placeholder="Asociación mnemotécnica (imagen, historia…)"></textarea>
+        <div class="form-btns">
+            <button class="form-save" onclick="saveArt()">Guardar</button>
+            <button class="form-cancel" onclick="closeForm()">Cancelar</button>
+        </div>
+    </div>
+
+    <button class="add-art-btn" id="addArtBtn" onclick="openForm()">＋ Añadir artículo</button>
+</div>
+
 <script>
+
+// Captura del HTML limpio ANTES de cualquier modificación del DOM
+// Esto garantiza que el export no incluye contenido dinámico problemático
+const _htmlTemplate = document.documentElement.outerHTML;
+
 // ─── DATOS ───────────────────────────────────────────────
 const mnemotecnica = {
-    0:"Aro, rey, oro", 1:"Te, Día", 2:"Noe, Ñu", 3:"Amo", 4:"Oca",
-    5:"Ola, Olla", 6:"Oso", 7:"Fe/Uva/Eje", 8:"Hacha", 9:"Buho, Ave, Pío",
+    0:"oro", 1:"Te", 2:"Noe", 3:"Amo", 4:"Oca",
+    5:"Ola", 6:"Oso", 7:"Fe/Uva", 8:"Hacha", 9:"Buho",
     10:"Toro", 11:"Dado", 12:"Duna", 13:"Dama", 14:"Taco", 15:"Tela",
     16:"Tasa", 17:"Tofu", 18:"Techo", 19:"Tapa", 20:"Noria", 21:"Nota",
     22:"Nene", 23:"Nemo", 24:"Nuca", 25:"Nilo", 26:"Nasa", 27:"Nave",
@@ -2279,7 +1025,7 @@ const mnemotecnica = {
     56:"Losa", 57:"Lava", 58:"Leche", 59:"Lobo", 60:"Ser", 61:"Seta",
     62:"Seno", 63:"Suma", 64:"Saco", 65:"Sala", 66:"Seso", 67:"Sofa",
     68:"Suchi (Sushi)", 69:"Sapo", 70:"Faro", 71:"Foto", 72:"Fino",
-    73:"Fama", 74:"Foca", 75:"Vela", 76:"Foso", 77:"Fofo", 78:"Fecha",
+    73:"Fama", 74:"Foca", 75:"Falo", 76:"Foso", 77:"Fofo", 78:"Fecha",
     79:"Fiba", 80:"Churro", 81:"Chita", 82:"Chino", 83:"Chimo", 84:"Chico",
     85:"Cholo", 86:"Chosa (Choza)", 87:"Chufa", 88:"Chucho", 89:"Chapa",
     90:"Bar", 91:"Pato", 92:"Pino", 93:"Puma", 94:"Pico", 95:"Pelo",
@@ -2347,7 +1093,7 @@ function togglePhon() {
     phonVisible = !phonVisible;
     document.querySelectorAll('.row-phon').forEach(el => el.classList.toggle('blurred', !phonVisible));
     document.querySelectorAll('.phon-eye').forEach(el => el.textContent = phonVisible ? '🙈' : '👁');
-    document.getElementById('togglePhonBtn').textContent = phonVisible ? '🔤 Ocultar fonética' : '🔤 Mostrar fonética';
+    document.getElementById('togglePhonBtn').textContent = phonVisible ? '🔤 Fonética' : '🔤 Fonética';
 }
 
 function togglePhonRow(n) {
@@ -2367,7 +1113,7 @@ function toggleAll() {
         el.textContent = allHidden ? '👁' : '🙈';
     });
     const btn = document.getElementById('toggleAllBtn');
-    btn.textContent = allHidden ? '👁 Mostrar todo' : '🙈 Ocultar todo';
+    btn.textContent = allHidden ? '👁 Palabras' : '🙈 Palabras';
 }
 
 function toggleWord(cell) {
@@ -2902,10 +1648,30 @@ function exportHtml() {
     btn.textContent = '⏳ Generando…';
     btn.disabled = true;
 
-    // Serializar imgData con todas las imágenes en base64
-    const serialized = 'const imgData = ' + JSON.stringify(imgData) + ';';
-    const html = document.documentElement.outerHTML
-        .replace(/\/\/ IMGDATA_START[\s\S]*?\/\/ IMGDATA_END/, '// IMGDATA_START\n' + serialized + '\n// IMGDATA_END');
+    // safeJson: escapa la secuencia de cierre de etiqueta para evitar corte prematuro del script HTML
+    // y usa función en replace para evitar que $ en JSON corrompa el resultado
+    const safeJson = obj => JSON.stringify(obj).replace(/<\//g, '<\\/');
+
+    const serializedImgs = 'const imgData = ' + safeJson(imgData) + ';';
+    const serializedArts = 'let artData = '   + safeJson(artData) + ';';
+
+    // Usar textContent del <script> (texto raw, sin codificación HTML)
+    // en lugar de outerHTML que puede convertir á→&aacute; dentro del script
+    const scriptEl = Array.from(document.querySelectorAll('script'))
+                          .find(s => s.textContent.includes('IMGDATA_START'));
+
+    const updatedScript = scriptEl.textContent
+        .replace(/\/\/ IMGDATA_START[\s\S]*?\/\/ IMGDATA_END/,
+                 () => '// IMGDATA' + '_START\n' + serializedImgs + '\n// IMGDATA' + '_END')
+        .replace(/\/\/ ARTDATA_START[\s\S]*?\/\/ ARTDATA_END/,
+                 () => '// ARTDATA' + '_START\n' + serializedArts + '\n// ARTDATA' + '_END');
+
+    // Usar la plantilla limpia capturada al inicio (sin contenido dinámico)
+    const tagStart = _htmlTemplate.indexOf('<script>');
+    const tagEnd   = _htmlTemplate.lastIndexOf('</' + 'script>') + ('</' + 'script>').length;
+    const html     = _htmlTemplate.substring(0, tagStart)
+                   + '<script>\n' + updatedScript + '\n</' + 'script>'
+                   + _htmlTemplate.substring(tagEnd);
 
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const a    = document.createElement('a');
@@ -2914,7 +1680,7 @@ function exportHtml() {
     a.click();
     URL.revokeObjectURL(a.href);
 
-    btn.textContent = '💾 Exportar HTML';
+    btn.textContent = '💾 Exportar';
     btn.disabled = false;
 }
 
@@ -3094,14 +1860,151 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
+// ─── ESTUDIO ─────────────────────────────────────────────
+// ARTDATA_START
+let artData = [{"id":1,"art":1,"ley":"Constitución","titulo":"Estado social, democrático y de derecho. Soberanía nacional. Monarquía parlamentaria.","contenido":"España se constituye en Estado social y democrático de Derecho. La soberanía nacional reside en el pueblo español. La forma política del Estado español es la Monarquía parlamentaria.","asociacion":"Casilla 1 = Te. En un solo TE (taza de té) amanece España entera: el sol sale con una balanza (derecho), una urna de votar (democrático) y un hospital lleno de gente (social). Al fondo, un rey saluda desde el balcón.","status":"pendiente"},{"id":2,"art":2,"ley":"Constitución","titulo":"Unidad de la nación + derecho a la autonomía de nacionalidades y regiones.","contenido":"La Constitución se fundamenta en la indisoluble unidad de la Nación española, patria común e indivisible de todos los españoles, y reconoce y garantiza el derecho a la autonomía de las nacionalidades y regiones.","asociacion":"Casilla 2 = Noe. NOE en su arca lleva a todos los pueblos juntos (unidad de la nación) pero cada especie va en su compartimento propio (autonomías). Unidos en el arca pero diferenciados.","status":"pendiente"},{"id":3,"art":3,"ley":"Constitución","titulo":"Castellano como lengua oficial del Estado. Lenguas cooficiales en sus CCAA.","contenido":"El castellano es la lengua española oficial del Estado. Las demás lenguas españolas serán también oficiales en las respectivas Comunidades Autónomas.","asociacion":"Casilla 3 = Amo. Tu AMO solo habla castellano en público pero en casa habla catalán, euskera o gallego. Lo oficial es el castellano, lo cooficial depende de dónde estés.","status":"pendiente"},{"id":4,"art":4,"ley":"Constitución","titulo":"La bandera de España: roja, amarilla, roja. La amarilla de doble anchura.","contenido":"La bandera de España está formada por tres franjas horizontales, roja, amarilla y roja, siendo la amarilla de doble anchura que cada una de las rojas.","asociacion":"Casilla 4 = Oca. Una OCA pintada con franjas rojas y amarillas caminando muy seria como si fuera un desfile oficial.","status":"pendiente"},{"id":5,"art":5,"ley":"Constitución","titulo":"Capital del Estado: Madrid.","contenido":"La capital del Estado es la villa de Madrid.","asociacion":"Casilla 5 = Ola. Una OLA gigante entra por la Puerta del Sol y moja toda Madrid. La capital se inunda.","status":"pendiente"},{"id":6,"art":6,"ley":"Constitución","titulo":"Partidos políticos: expresan pluralismo, concurren a elecciones, estructura democrática interna.","contenido":"Los partidos políticos expresan el pluralismo político, concurren a la formación y manifestación de la voluntad popular. Su estructura interna y funcionamiento deberán ser democráticos.","asociacion":"Casilla 6 = Oso. Un OSO enorme sale a dar mítines. Hay varios osos de distintos colores (pluralismo) compitiendo en una carrera (elecciones). Todos respetan las mismas reglas internas.","status":"pendiente"},{"id":7,"art":7,"ley":"Constitución","titulo":"Sindicatos y asociaciones empresariales defienden intereses económicos y sociales.","contenido":"Los sindicatos de trabajadores y las asociaciones empresariales contribuyen a la defensa y promoción de los intereses económicos y sociales que les son propios. Su estructura interna y funcionamiento deberán ser democráticos.","asociacion":"Casilla 7 = Fe/Uva. Una UVA gigante con dos grupos tirando desde lados opuestos: trabajadores (sindicato) y empresarios (patronal). La uva no se parte — están en equilibrio.","status":"pendiente"},{"id":8,"art":8,"ley":"Constitución","titulo":"Fuerzas Armadas: defensa, integridad territorial, orden constitucional.","contenido":"Las Fuerzas Armadas, constituidas por el Ejército de Tierra, la Armada y el Ejército del Aire, tienen como misión garantizar la soberanía e independencia de España, defender su integridad territorial y el ordenamiento constitucional.","asociacion":"Casilla 8 = Hacha. Un soldado con un HACHA enorme protege el mapa de España. Tres misiones del hacha: defender, proteger el territorio, garantizar la Constitución.","status":"pendiente"},{"id":9,"art":9,"ley":"Constitución","titulo":"Ciudadanos y poderes públicos sujetos a la CE. 7 principios del art. 9.3.","contenido":"Los ciudadanos y los poderes públicos están sujetos a la Constitución. Art. 9.3: legalidad, jerarquía normativa, publicidad de normas, irretroactividad de disposiciones sancionadoras no favorables, seguridad jurídica, responsabilidad e interdicción de la arbitrariedad.","asociacion":"Casilla 9 = Buho. Un BUHO con toga de juez sentado sobre la Constitución. Con mazo (legalidad), libros apilados (jerarquía), megáfono (publicidad), mirando solo adelante (irretroactividad), candado (seguridad), factura (responsabilidad), encadenando al político caprichoso (interdicción arbitrariedad).","status":"pendiente"},{"id":10,"art":10,"ley":"Constitución","titulo":"Dignidad de la persona como fundamento del orden político. Interpretación según DUDH y tratados internacionales.","contenido":"La dignidad de la persona, los derechos inviolables que le son inherentes, el libre desarrollo de la personalidad, el respeto a la ley y a los derechos de los demás son fundamento del orden político y de la paz social. Las normas sobre derechos fundamentales se interpretarán de conformidad con la Declaración Universal de Derechos Humanos y los tratados internacionales.","asociacion":"Casilla 10 = Toro. Un TORO enorme con corona (dignidad) que nadie puede tocar. Todos los derechos giran a su alrededor. Bajo el toro, la Declaración Universal de DDHH como alfombra que guía la interpretación.","status":"pendiente"},{"id":11,"art":11,"ley":"Constitución","titulo":"Nacionalidad española. Los españoles de origen no pueden ser privados de ella.","contenido":"La nacionalidad española se adquiere, se conserva y se pierde de acuerdo con lo establecido por la ley. Ningún español de origen podrá ser privado de su nacionalidad.","asociacion":"Casilla 11 = Dado. Lanzas un DADO para ver si naces español. Si sale español de origen, es para siempre — no te la pueden quitar. Si sale extranjero, puedes naturalizarte pero con condiciones.","status":"pendiente"},{"id":12,"art":12,"ley":"Constitución","titulo":"Mayoría de edad: 18 años.","contenido":"Los españoles son mayores de edad a los dieciocho años.","asociacion":"Casilla 12 = Duna. Una DUNA de arena con el número 18 grabado. Al llegar a los 18 años alcanzas la cima de la duna y eres mayor de edad a todos los efectos.","status":"pendiente"},{"id":13,"art":13,"ley":"Constitución","titulo":"Derechos de los extranjeros. Único artículo reformado en 1992 (voto europeos en municipales).","contenido":"Los extranjeros gozarán en España de las libertades públicas que garantiza el Título I. El art. 13.2 fue reformado en 1992 para añadir el sufragio pasivo a los ciudadanos de la UE en elecciones municipales.","asociacion":"Casilla 13 = Dama. Una DAMA extranjera con pasaporte intentando votar en las elecciones municipales. En 1992 se reformó este artículo para permitir el voto de ciudadanos europeos en elecciones locales.","status":"pendiente"},{"id":14,"art":14,"ley":"Constitución","titulo":"Igualdad ante la ley. Prohibición de discriminación.","contenido":"Los españoles son iguales ante la ley, sin que pueda prevalecer discriminación alguna por razón de nacimiento, raza, sexo, religión, opinión o cualquier otra condición o circunstancia personal o social.","asociacion":"Casilla 14 = Taco. Dos personas exactamente iguales (gemelas) comiéndose el mismo TACO partido por la mitad. Nadie recibe más que el otro por ninguna razón.","status":"pendiente"},{"id":15,"art":15,"ley":"Constitución","titulo":"Derecho a la vida. Prohibición de tortura y pena de muerte.","contenido":"Todos tienen derecho a la vida y a la integridad física y moral, sin que, en ningún caso, puedan ser sometidos a tortura ni a penas o tratos inhumanos o degradantes. Queda abolida la pena de muerte, salvo lo que puedan disponer las leyes penales militares para tiempos de guerra.","asociacion":"Casilla 15 = Tela. Una TELA de araña que atrapa todo intento de quitarle la vida a alguien. La tela protege el derecho a la vida. La pena de muerte está abolida (salvo tiempos de guerra).","status":"pendiente"},{"id":16,"art":16,"ley":"Constitución","titulo":"Libertad ideológica, religiosa y de culto. Ninguna religión tiene carácter estatal.","contenido":"Se garantiza la libertad ideológica, religiosa y de culto de los individuos y las comunidades sin más limitación que el orden público. Nadie podrá ser obligado a declarar sobre su ideología, religión o creencias. Ninguna confesión tendrá carácter estatal.","asociacion":"Casilla 16 = Tasa. Una TASA de café con símbolos de todas las religiones flotando dentro: una cruz, una media luna, una estrella de David. Nadie está obligado a declarar su religión. Ninguna religión es oficial.","status":"pendiente"},{"id":17,"art":17,"ley":"Constitución","titulo":"Derecho a la libertad y seguridad. Habeas corpus. Detención máximo 72 horas.","contenido":"Toda persona tiene derecho a la libertad y a la seguridad. La detención preventiva no podrá durar más de las setenta y dos horas sin que el detenido sea puesto a disposición judicial. La ley regulará el procedimiento de habeas corpus.","asociacion":"Casilla 17 = Tofu. Un bloque de TOFU con esposas intentando apresar a alguien — pero el tofu escurridizo se escapa antes de las 72 horas. Nadie puede estar detenido más de 72 horas sin pasar ante el juez.","status":"pendiente"},{"id":18,"art":18,"ley":"Constitución","titulo":"Derecho al honor, intimidad, propia imagen. Inviolabilidad del domicilio. Secreto de comunicaciones.","contenido":"Se garantiza el derecho al honor, a la intimidad personal y familiar y a la propia imagen. El domicilio es inviolable. Se garantiza el secreto de las comunicaciones.","asociacion":"Casilla 18 = Techo. El TECHO de tu casa es sagrado — nadie puede entrar sin permiso (inviolabilidad del domicilio). Bajo ese techo también están protegidos tu imagen, tu honor y tus comunicaciones privadas.","status":"pendiente"},{"id":19,"art":19,"ley":"Constitución","titulo":"Libertad de residencia y circulación por todo el territorio nacional.","contenido":"Los españoles tienen derecho a elegir libremente su residencia y a circular por el territorio nacional. Tienen también derecho a entrar y salir libremente de España.","asociacion":"Casilla 19 = Tapa. Una TAPA de bar en cada ciudad de España — puedes ir libremente de tapa en tapa por todo el territorio. Los españoles tienen derecho a entrar y salir libremente del país.","status":"pendiente"},{"id":20,"art":20,"ley":"Constitución","titulo":"Libertad de expresión, información, cátedra y producción artística. Límites: honor, intimidad, juventud.","contenido":"Se reconoce el derecho a expresar y difundir libremente pensamientos, ideas y opiniones; a la producción y creación literaria, artística, científica y técnica; a la libertad de cátedra; y a comunicar o recibir información veraz. Sus límites: el derecho al honor, a la intimidad, a la propia imagen y a la protección de la juventud y de la infancia.","asociacion":"Casilla 20 = Noria. Una NORIA gigante con micrófonos, cámaras y libros colgando. Da vueltas libremente pero tiene un límite: cuando pasa cerca del honor, la intimidad y la protección de la juventud, frena.","status":"pendiente"},{"id":21,"art":21,"ley":"Constitución","titulo":"Derecho de reunión pacífica y sin armas. Sin autorización previa. Solo comunicación a autoridad en vía pública.","contenido":"Se reconoce el derecho de reunión pacífica y sin armas. El ejercicio de este derecho no necesitará autorización previa. En los casos de reuniones en lugares de tránsito público y manifestaciones se dará comunicación previa a la autoridad.","asociacion":"Casilla 21 = Nota. Una NOTA musical convoca a todo el mundo a reunirse en la calle. No necesitan permiso previo, solo avisar a la autoridad si es en vía pública. Las reuniones pacíficas y sin armas son libres.","status":"pendiente"},{"id":22,"art":22,"ley":"Constitución","titulo":"Derecho de asociación. Prohibidas las asociaciones ilegales, secretas y paramilitares.","contenido":"Se reconoce el derecho de asociación. Las asociaciones que persigan fines o utilicen medios tipificados como delito son ilegales. Se prohíben las asociaciones secretas y las de carácter paramilitar.","asociacion":"Casilla 22 = Nene. Varios NENES formando un grupito (asociación). Las asociaciones ilegales, secretas o paramilitares están prohibidas. Los demás se pueden asociar libremente.","status":"pendiente"},{"id":23,"art":23,"ley":"Constitución","titulo":"Derecho de participación política. Acceso en condiciones de igualdad a cargos públicos.","contenido":"Los ciudadanos tienen el derecho a participar en los asuntos públicos, directamente o por medio de representantes, libremente elegidos en elecciones periódicas por sufragio universal. Asimismo, tienen derecho a acceder en condiciones de igualdad a las funciones y cargos públicos.","asociacion":"Casilla 23 = Nemo. NEMO nada hacia las urnas para votar. Todos los ciudadanos participan en política directamente o eligiendo representantes. También tienen derecho a acceder a cargos públicos en igualdad.","status":"pendiente"},{"id":24,"art":24,"ley":"Constitución","titulo":"Derecho a la tutela judicial efectiva. Proceso sin dilaciones. No declarar contra uno mismo ni confesarse culpable.","contenido":"Todas las personas tienen derecho a obtener la tutela efectiva de los jueces y tribunales. Se garantiza el derecho a la defensa, a ser informado de la acusación, a un proceso público sin dilaciones, a la presunción de inocencia, a no declarar contra sí mismo y a no confesarse culpable.","asociacion":"Casilla 24 = Nuca. Alguien con la mano en la NUCA frente a un juez — pero el juez le dice: tienes derecho a defensa, a no declararte culpable y a un juicio justo sin esperas. La nuca protegida = derecho de defensa.","status":"pendiente"},{"id":25,"art":25,"ley":"Constitución","titulo":"Principio de legalidad penal. Reinserción social. Prohibición de trabajos forzados.","contenido":"Nadie puede ser condenado o sancionado por acciones u omisiones que en el momento de producirse no constituyan delito. Las penas privativas de libertad estarán orientadas hacia la reeducación y reinserción social. Se prohíben los trabajos forzados.","asociacion":"Casilla 25 = Nilo. El NILO como río de la justicia: solo puedes ser castigado si había una ley previa que lo dijera. Las penas buscan la reinserción, no el castigo eterno. Sin trabajos forzados.","status":"pendiente"},{"id":26,"art":26,"ley":"Constitución","titulo":"Prohibición de tribunales de honor en el ámbito civil y de organizaciones militares.","contenido":"Se prohíben los tribunales de honor en el ámbito de la Administración civil y de las organizaciones profesionales.","asociacion":"Casilla 26 = Nasa. La NASA lanza al espacio los viejos tribunales de honor — quedan abolidos en el ámbito civil y de organizaciones profesionales y militares.","status":"pendiente"},{"id":27,"art":27,"ley":"Constitución","titulo":"Derecho a la educación. Libertad de enseñanza. Educación obligatoria y gratuita.","contenido":"Todos tienen el derecho a la educación. Se reconoce la libertad de enseñanza. La enseñanza básica es obligatoria y gratuita. Los poderes públicos inspeccionan y homologan el sistema educativo.","asociacion":"Casilla 27 = Nave. Una NAVE espacial llena de niños con mochilas escolares. La educación tiene por objeto el pleno desarrollo de la personalidad. La enseñanza básica es obligatoria y gratuita.","status":"pendiente"},{"id":28,"art":28,"ley":"Constitución","titulo":"Libertad sindical. Derecho a la huelga. Mantenimiento de servicios esenciales.","contenido":"Todos tienen derecho a sindicarse libremente. La ley podrá limitar o exceptuar el ejercicio de este derecho a las Fuerzas o Institutos armados. Se reconoce el derecho a la huelga de los trabajadores. La ley establecerá las garantías precisas para asegurar el mantenimiento de los servicios esenciales de la comunidad.","asociacion":"Casilla 28 = Noche. En plena NOCHE, los trabajadores salen con pancartas (huelga) y carnets sindicales. La huelga es un derecho fundamental — pero los servicios esenciales de la comunidad deben mantenerse.","status":"pendiente"},{"id":29,"art":29,"ley":"Constitución","titulo":"Derecho de petición individual y colectiva. Los militares solo individualmente.","contenido":"Todos los españoles tendrán el derecho de petición individual y colectiva, por escrito, en la forma y con los efectos que determine la ley. Los miembros de las Fuerzas o Institutos armados o de los Cuerpos sometidos a disciplina militar podrán ejercer este derecho solo individualmente.","asociacion":"Casilla 29 = Nube. Una NUBE con un buzón de sugerencias colgando. Todos los españoles pueden dirigir peticiones a los poderes públicos. Los militares solo pueden ejercerlo individualmente.","status":"pendiente"}];
+// ARTDATA_END
+
+let artIdCounter = 30;
+
+function saveArtData() {
+    // Se persiste en el HTML al exportar — igual que imgData
+}
+
+function getArtId() { return artIdCounter++; }
+
+function renderEstudio() {
+    const search  = document.getElementById('estudioSearch').value.toLowerCase();
+    const ley     = document.getElementById('estudioFilterLey').value;
+    const status  = document.getElementById('estudioFilterStatus').value;
+    const container = document.getElementById('estudioList');
+    container.innerHTML = '';
+
+    let counts = { pendiente: 0, aprendiendo: 0, dominado: 0 };
+    artData.forEach(a => counts[a.status]++);
+    document.getElementById('statP').textContent = counts.pendiente;
+    document.getElementById('statA').textContent = counts.aprendiendo;
+    document.getElementById('statD').textContent = counts.dominado;
+
+    const filtered = artData.filter(a => {
+        if (ley && a.ley !== ley) return false;
+        if (status && a.status !== status) return false;
+        if (search && !`${a.art} ${a.ley} ${a.titulo} ${a.contenido} ${a.asociacion}`.toLowerCase().includes(search)) return false;
+        return true;
+    });
+
+    filtered.sort((a, b) => {
+        if (a.ley < b.ley) return -1;
+        if (a.ley > b.ley) return 1;
+        return a.art - b.art;
+    });
+
+    if (!filtered.length) {
+        container.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:0.85rem">No hay artículos con estos filtros.</div>';
+        return;
+    }
+
+    // Agrupar por ley
+    let lastLey = null;
+    filtered.forEach(a => {
+        if (a.ley !== lastLey) {
+            const h = document.createElement('div');
+            h.style.cssText = 'font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);padding:10px 4px 4px';
+            h.textContent = a.ley;
+            container.appendChild(h);
+            lastLey = a.ley;
+        }
+
+        // Casillero info
+        const casN   = a.art <= 100 ? a.art : (a.art % 100);
+        const casWord = mnemotecnica[casN] ? mnemotecnica[casN].split(/[,\/\(]/)[0].trim() : '—';
+
+        const card = document.createElement('div');
+        card.className = `art-card ${a.status}`;
+        card.dataset.id = a.id;
+        card.innerHTML = `
+            <div class="art-header" onclick="toggleCard(this)">
+                <span class="art-num">Art. ${a.art}</span>
+                <span class="art-ley">${a.ley}</span>
+                <span class="art-titulo">${a.titulo}</span>
+                <span class="art-chevron">▶</span>
+            </div>
+            <div class="art-body">
+                <div class="art-casillero">🔑 Casilla ${casN} = <strong>${casWord}</strong></div>
+                <div class="art-section">
+                    <div class="art-section-label">Contenido</div>
+                    <div class="art-section-text">${a.contenido}</div>
+                </div>
+                <div class="art-section">
+                    <div class="art-section-label">Asociación mnemotécnica</div>
+                    <div class="art-asociacion">${a.asociacion}</div>
+                </div>
+                <div class="art-status-btns">
+                    <span style="font-size:0.72rem;color:var(--muted);align-self:center">Estado:</span>
+                    <button class="art-status-btn ${a.status==='pendiente'?'active-pendiente':''}"   onclick="setStatus(${a.id},'pendiente')">⬜ Pendiente</button>
+                    <button class="art-status-btn ${a.status==='aprendiendo'?'active-aprendiendo':''}" onclick="setStatus(${a.id},'aprendiendo')">🔶 Aprendiendo</button>
+                    <button class="art-status-btn ${a.status==='dominado'?'active-dominado':''}"     onclick="setStatus(${a.id},'dominado')">✅ Dominado</button>
+                    <button class="art-status-btn" style="margin-left:auto;border-color:var(--accent2);color:var(--accent2)" onclick="deleteArt(${a.id})">🗑</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function toggleCard(header) {
+    header.closest('.art-card').classList.toggle('open');
+}
+
+function setStatus(id, status) {
+    const a = artData.find(x => x.id === id);
+    if (a) { a.status = status; renderEstudio(); }
+}
+
+function deleteArt(id) {
+    if (!confirm('¿Eliminar este artículo?')) return;
+    artData = artData.filter(x => x.id !== id);
+    renderEstudio();
+}
+
+function openForm() {
+    document.getElementById('addArtForm').classList.add('open');
+    document.getElementById('addArtBtn').style.display = 'none';
+    document.getElementById('formArt').focus();
+}
+
+function closeForm() {
+    document.getElementById('addArtForm').classList.remove('open');
+    document.getElementById('addArtBtn').style.display = '';
+    ['formArt','formTitulo','formContenido','formAsociacion'].forEach(id => document.getElementById(id).value = '');
+}
+
+function saveArt() {
+    const art   = parseInt(document.getElementById('formArt').value);
+    const ley   = document.getElementById('formLey').value;
+    const titulo= document.getElementById('formTitulo').value.trim();
+    const cont  = document.getElementById('formContenido').value.trim();
+    const asoc  = document.getElementById('formAsociacion').value.trim();
+    if (!art || !titulo) { alert('Nº de artículo y título son obligatorios.'); return; }
+    artData.push({ id: getArtId(), art, ley, titulo, contenido: cont, asociacion: asoc, status: 'pendiente' });
+    artData.sort((a, b) => a.ley.localeCompare(b.ley) || a.art - b.art);
+    closeForm();
+    renderEstudio();
+}
+
+// Filtros en tiempo real
+['estudioSearch','estudioFilterLey','estudioFilterStatus'].forEach(id => {
+    document.getElementById(id).addEventListener('input', renderEstudio);
+    document.getElementById(id).addEventListener('change', renderEstudio);
+});
+
 // ─── INIT ────────────────────────────────────────────────
 buildLegend();
 buildList();
 nextCard();
+renderEstudio();
 for (let n = 0; n <= 100; n++) {
     if (imgData[n]) markRowHasImg(n, true);
 }
-</script>
 
-
-</body></html>
+</script></body></html>
