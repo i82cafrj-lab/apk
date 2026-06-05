@@ -718,6 +718,7 @@
     <button class="tab-btn" data-tab="memo">🧠 Memorizar</button>
     <button class="tab-btn" data-tab="dictado">🎙️ Dictado</button>
     <button class="tab-btn" data-tab="estudio">📖 Estudio</button>
+    <button class="tab-btn" data-tab="resumen">📊 Resumen</button>
 </div>
 
 <!-- ═══ JUGAR ═══ -->
@@ -1024,6 +1025,91 @@
     </div>
 
     <button class="add-art-btn" id="addArtBtn" onclick="openForm()">＋ Añadir artículo</button>
+</div>
+
+<!-- ═══ RESUMEN ═══ -->
+<div id="view-resumen" class="view">
+<style>
+.r-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.r-kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px;text-align:center}
+.r-kpi-card.ac{border-color:var(--blue)}
+.r-kpi-num{font-size:1.2rem;font-weight:700;color:var(--text)}
+.r-kpi-card.ac .r-kpi-num{color:var(--blue)}
+.r-kpi-lbl{font-size:0.65rem;color:var(--muted);margin-top:2px}
+.r-reforms{display:flex;gap:8px;margin-bottom:16px}
+.r-reform{flex:1;background:var(--surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 12px}
+.r-reform-year{font-size:0.95rem;font-weight:700;color:var(--accent)}
+.r-reform-txt{font-size:0.72rem;color:var(--muted);margin-top:3px}
+.r-shdr{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px}
+.r-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:16px}
+.r-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;cursor:pointer;transition:border-color .15s;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px}
+.r-row:hover{border-color:var(--accent)}
+.r-prelim{grid-column:1/-1;border-color:var(--blue)}
+.r-arts{font-size:0.68rem;font-weight:700;color:var(--blue);background:rgba(74,158,255,0.1);border-radius:4px;padding:2px 5px;text-align:center;white-space:nowrap;flex-shrink:0}
+.r-tit{font-size:0.82rem;font-weight:700;color:var(--text)}
+.r-tema{font-size:0.68rem;color:var(--muted);margin-top:1px}
+.r-badge{font-size:0.62rem;padding:2px 6px;border-radius:8px;background:rgba(245,166,35,0.15);color:var(--accent);font-weight:700;white-space:nowrap}
+.r-c3{font-size:0.62rem;padding:2px 6px;border-radius:8px;background:var(--surface2);color:var(--muted);white-space:nowrap}
+.r-datos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px}
+.r-dato{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px}
+.r-dato-num{font-size:1rem;font-weight:700;color:var(--text)}
+.r-dato-lbl{font-size:0.68rem;color:var(--muted);margin-top:2px}
+.r-cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:14px}
+.r-cap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px}
+.r-cap-tit{font-size:0.78rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.r-cap-sub{font-size:0.68rem;color:var(--muted)}
+</style>
+
+<div class="r-kpi">
+  <div class="r-kpi-card ac"><div class="r-kpi-num">6-12-1978</div><div class="r-kpi-lbl">Aprobada en referéndum</div></div>
+  <div class="r-kpi-card"><div class="r-kpi-num">169</div><div class="r-kpi-lbl">Artículos totales</div></div>
+  <div class="r-kpi-card"><div class="r-kpi-num">11</div><div class="r-kpi-lbl">Títulos + Preliminar</div></div>
+  <div class="r-kpi-card"><div class="r-kpi-num">2</div><div class="r-kpi-lbl">Reformas (1992, 2011)</div></div>
+</div>
+
+<div class="r-reforms">
+  <div class="r-reform"><div class="r-reform-year">Reforma 1992</div><div class="r-reform-txt">Art. 13.2 — Voto europeos en elecciones municipales (sufragio pasivo). Única reforma del s. XX.</div></div>
+  <div class="r-reform"><div class="r-reform-year">Reforma 2011</div><div class="r-reform-txt">Art. 135 — Estabilidad presupuestaria y límite de déficit estructural. Exigida por la UE.</div></div>
+</div>
+
+<div class="r-shdr">Estructura de títulos</div>
+<div class="r-grid">
+  <div class="r-row r-prelim"><div class="r-arts">Arts. 1–9</div><div><div class="r-tit">Título Preliminar</div><div class="r-tema">Forma del Estado, lengua, bandera, partidos, FF.AA.</div></div><div class="r-badge">Clave</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 10–55</div><div><div class="r-tit">Título I — Derechos y libertades</div><div class="r-tema">5 capítulos · el más extenso y preguntado</div></div><div class="r-badge">Clave</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 56–65</div><div><div class="r-tit">Título II — La Corona</div><div class="r-tema">Rey, funciones, sucesión, refrendo</div></div><div class="r-c3">Capa 3</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 66–96</div><div><div class="r-tit">Título III — Las Cortes Generales</div><div class="r-tema">Congreso (350 dip.), Senado, función legislativa</div></div><div class="r-c3">Capa 3</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 97–107</div><div><div class="r-tit">Título IV — El Gobierno</div><div class="r-tema">Funciones ejecutivas, Administración, principios</div></div><div class="r-badge">Clave</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 108–116</div><div><div class="r-tit">Título V — Gobierno y Cortes</div><div class="r-tema">Confianza, censura, disolución, estados excepcionales</div></div><div class="r-badge">Clave</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 117–127</div><div><div class="r-tit">Título VI — Poder Judicial</div><div class="r-tema">Independencia judicial, TS, CGPJ, Ministerio Fiscal</div></div><div class="r-c3">Capa 3</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 128–136</div><div><div class="r-tit">Título VII — Economía y Hacienda</div><div class="r-tema">Tributos, presupuestos, Tribunal de Cuentas</div></div><div class="r-c3">Capa 3</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 137–158</div><div><div class="r-tit">Título VIII — Organización Territorial</div><div class="r-tema">Municipios, provincias, CCAA, competencias</div></div><div class="r-badge">Clave</div></div>
+  <div class="r-row"><div class="r-arts">Arts. 159–165</div><div><div class="r-tit">Título IX — Tribunal Constitucional</div><div class="r-tema">12 miembros, 9 años, amparo, inconstitucionalidad</div></div><div class="r-c3">Capa 3</div></div>
+  <div class="r-row" style="grid-column:1/-1"><div class="r-arts">Arts. 166–169</div><div><div class="r-tit">Título X — Reforma constitucional</div><div class="r-tema">Ordinaria (3/5) · Agravada (2/3 + disolución + referéndum)</div></div><div class="r-badge">Clave</div></div>
+</div>
+
+<div class="r-shdr">Datos puros más preguntados</div>
+<div class="r-datos">
+  <div class="r-dato"><div class="r-dato-num">350</div><div class="r-dato-lbl">Diputados mínimo (máx. 400), mandato 4 años</div></div>
+  <div class="r-dato"><div class="r-dato-num">72 h</div><div class="r-dato-lbl">Detención preventiva máxima (art. 17)</div></div>
+  <div class="r-dato"><div class="r-dato-num">18 años</div><div class="r-dato-lbl">Mayoría de edad (art. 12)</div></div>
+  <div class="r-dato"><div class="r-dato-num">12</div><div class="r-dato-lbl">Miembros del TC · mandato 9 años · renovación por tercios c/3</div></div>
+  <div class="r-dato"><div class="r-dato-num">500.000</div><div class="r-dato-lbl">Firmas para iniciativa legislativa popular (art. 87)</div></div>
+  <div class="r-dato"><div class="r-dato-num">15 días</div><div class="r-dato-lbl">Plazo del Rey para sancionar leyes (art. 91)</div></div>
+  <div class="r-dato"><div class="r-dato-num">30 días</div><div class="r-dato-lbl">Convalidación decretos-leyes por el Congreso (art. 86)</div></div>
+  <div class="r-dato"><div class="r-dato-num">1 oct.</div><div class="r-dato-lbl">Plazo presentación Presupuestos Generales (art. 134)</div></div>
+  <div class="r-dato"><div class="r-dato-num">3/5 · 2/3</div><div class="r-dato-lbl">Mayorías reforma ordinaria y agravada (arts. 167–168)</div></div>
+</div>
+
+<div class="r-shdr">Título I — Estructura interna</div>
+<div class="r-cap-grid">
+  <div class="r-cap"><div class="r-cap-tit">Cap. I — Españoles y extranjeros</div><div class="r-cap-sub">Arts. 10–13 · Dignidad, nacionalidad, mayoría de edad, extranjeros</div></div>
+  <div class="r-cap"><div class="r-cap-tit">Cap. II Sec. 1ª — Derechos fundamentales</div><div class="r-cap-sub">Arts. 14–29 · Los más protegidos · Recurso de amparo ante el TC</div></div>
+  <div class="r-cap"><div class="r-cap-tit">Cap. II Sec. 2ª — Derechos y deberes</div><div class="r-cap-sub">Arts. 30–38 · Trabajo, propiedad, empresa, defensa, tributación</div></div>
+  <div class="r-cap"><div class="r-cap-tit">Cap. III — Principios rectores</div><div class="r-cap-sub">Arts. 39–52 · Familia, sanidad, vivienda, medioambiente</div></div>
+  <div class="r-cap"><div class="r-cap-tit">Cap. IV — Garantías</div><div class="r-cap-sub">Arts. 53–54 · 3 niveles de protección · Defensor del Pueblo</div></div>
+  <div class="r-cap"><div class="r-cap-tit">Cap. V — Suspensión de derechos</div><div class="r-cap-sub">Art. 55 · Estados de excepción y sitio · Terrorismo</div></div>
+</div>
+
 </div>
 
 <script>
